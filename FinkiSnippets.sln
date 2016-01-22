@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinkiSnippets.Entity", "Fin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinkiSnippets.Web", "FinkiSnippets.Web\FinkiSnippets.Web.csproj", "{9E3C232C-F8BD-46B0-B8A5-B2F67FCB1A66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinkiSnippets.Data", "FinkiSnippets.Data\FinkiSnippets.Data.csproj", "{BCE4F34E-07FA-4D28-A417-66FE9451E4CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinkiSnippets.Service", "FinkiSnippets.Service\FinkiSnippets.Service.csproj", "{0CFDF048-09CF-4789-8FEA-DFA1D07BB9B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{9E3C232C-F8BD-46B0-B8A5-B2F67FCB1A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E3C232C-F8BD-46B0-B8A5-B2F67FCB1A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E3C232C-F8BD-46B0-B8A5-B2F67FCB1A66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCE4F34E-07FA-4D28-A417-66FE9451E4CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCE4F34E-07FA-4D28-A417-66FE9451E4CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCE4F34E-07FA-4D28-A417-66FE9451E4CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCE4F34E-07FA-4D28-A417-66FE9451E4CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CFDF048-09CF-4789-8FEA-DFA1D07BB9B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CFDF048-09CF-4789-8FEA-DFA1D07BB9B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CFDF048-09CF-4789-8FEA-DFA1D07BB9B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CFDF048-09CF-4789-8FEA-DFA1D07BB9B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
