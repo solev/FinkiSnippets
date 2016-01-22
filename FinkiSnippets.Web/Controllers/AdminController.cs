@@ -14,6 +14,7 @@ using DocumentFormat.OpenXml.Packaging;
 using System.Data;
 using System.Data.Entity;
 using Entity;
+using FinkiSnippets.Data;
 
 namespace App.Controllers
 {
@@ -21,10 +22,11 @@ namespace App.Controllers
     public class AdminController : Controller
     {
         ApplicationUserManager _userManager;
-        
-        public AdminController(ApplicationUserManager userManager)
+        private CodeDatabase db;
+        public AdminController(ApplicationUserManager userManager,CodeDatabase _db)
         {
             _userManager = userManager;
+            db = _db;
         }
         
         public void ExportResults(int id)
@@ -122,7 +124,7 @@ namespace App.Controllers
                     string password = index+"!";
 
                     ApplicationUser userTemp = new ApplicationUser { UserName = index, FirstName = firstName, LastName = lastName,Email = email };
-                    var res = userManager.Create(userTemp, password);
+                    var res = _userManager.Create(userTemp, password);
 
                     if(res.Succeeded == false)
                     {
@@ -140,16 +142,16 @@ namespace App.Controllers
         public ActionResult Users(int id)
         {
             int userNum = db.Users.Count();
-            userNum = (int)Math.Ceiling((double)(userNum /stuffPerPage));
-            ViewBag.pages = userNum;            
-            var users = db.Users.OrderBy(x=>x.FirstName).Skip((id-1)*stuffPerPage).Take(stuffPerPage).ToList();
+            userNum = (int)Math.Ceiling((double)(userNum /Utilities.Constants.stuffPerPage));
+            ViewBag.pages = userNum;
+            var users = db.Users.OrderBy(x => x.FirstName).Skip((id - 1) * Utilities.Constants.stuffPerPage).Take(Utilities.Constants.stuffPerPage).ToList();
             return View(users);
         }
 
         public ActionResult Edit(string id)
         {
 
-            var user = userManager.FindById(id);
+            var user = _userManager.FindById(id);
             return View(new RegisterViewModel { Ime = user.FirstName, Prezime = user.LastName, email = user.Email, ID = user.Id });
         }
 
@@ -158,12 +160,12 @@ namespace App.Controllers
         {
             if(ModelState.IsValid)
             {
-                var user = userManager.FindById(model.ID);
+                var user = _userManager.FindById(model.ID);
 
                 user.FirstName = model.Ime;
                 user.LastName = model.Prezime;
 
-                var res = userManager.Update(user);
+                var res = _userManager.Update(user);
                 return RedirectToAction("Index");
 
             }
@@ -196,7 +198,7 @@ namespace App.Controllers
         {
             if(ModelState.IsValid)
             {
-                var result = userManager.Create(new ApplicationUser { FirstName = model.Ime, LastName = model.Prezime, Email = model.email, UserName = model.email }, model.Password);
+                var result = _userManager.Create(new ApplicationUser { FirstName = model.Ime, LastName = model.Prezime, Email = model.email, UserName = model.email }, model.Password);
                 if(result.Succeeded)
                     return RedirectToAction("Users", new { id=1});
             }

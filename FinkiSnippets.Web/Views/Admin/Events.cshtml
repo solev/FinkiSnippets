@@ -1,4 +1,4 @@
-﻿@model List<App.Models.Event>
+﻿@model List<Entity.Event>
 @{
     ViewBag.Title = "Events";
     var upcoming = Model.Where(x => x.End > DateTime.Now.AddHours(1)).OrderBy(x=>x.Start);
