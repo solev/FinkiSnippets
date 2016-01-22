@@ -15,15 +15,20 @@ using ExportToExcel;
 using DocumentFormat.OpenXml.Packaging;
 using System.Data;
 using System.Data.Entity;
+using Entity;
 
 namespace App.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        CodeDatabase db = new CodeDatabase();
-        ApplicationUserManager userManager = new ApplicationUserManager();
-        const int stuffPerPage = 10;
+
+        ApplicationUserManager _userManager;
+        
+        public AdminController(ApplicationUserManager userManager)
+        {
+            _userManager = userManager;
+        }
 
 
         public void ExportResults(int id)
@@ -101,20 +106,7 @@ namespace App.Controllers
             CreateExcelFile.CreateExcelDocument(dtSnippets, "Zadaci.xlsx", System.Web.HttpContext.Current.Response);
         } 
         
-        public ActionResult CreateTestUsers()
-        {
-            for(int i=1;i<=30;i++)
-            {
-                string username = String.Format("user{0}@gmail.com", i);
-                string fname = "User" + i,lname = "Test";
-                string password = "123456";
-
-                ApplicationUser us = new ApplicationUser { UserName = username, FirstName = fname, LastName = lname };
-                userManager.Create(us, password);
-            }
-            return RedirectToAction("Users");
-        }
-
+        
         public ActionResult AddTestUsers()
         {
             var path = @"C:\Users\solev\Desktop\Whatever\IT_Sistemi_Users.xlsx";

@@ -1,18 +1,18 @@
-namespace App.Migrations
+namespace FinkiSnippets.Data.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Data_Access.CodeDatabase>
+    internal sealed class Configuration : DbMigrationsConfiguration<CodeDatabase>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(Data_Access.CodeDatabase context)
+        protected override void Seed(CodeDatabase context)
         {
             //  This method will be called after migrating to the latest version.
 

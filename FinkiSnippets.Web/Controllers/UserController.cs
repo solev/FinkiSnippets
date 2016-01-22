@@ -6,19 +6,22 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
-using Data_Access;
 using App.ViewModels;
 using App.Models;
+using Entity;
 
 
 
 namespace App.Controllers
-{
-           
+{           
     public class UserController : Controller
     {
-        ApplicationUserManager userManager = new ApplicationUserManager();
-        CodeDatabase db = new CodeDatabase();
+        ApplicationUserManager _userManager;
+        
+        public UserController(ApplicationUserManager userManager)
+        {
+            _userManager = userManager;
+        }
         
         public ActionResult Login()
         {
@@ -36,18 +39,17 @@ namespace App.Controllers
         }
 
 
-
         [HttpPost]
         public ActionResult Login(LoginViewModel model)
         {            
             if(ModelState.IsValid)
             {
-                var user = userManager.Find(model.Username, model.Password);            
+                var user = _userManager.Find(model.Username, model.Password);            
                 if(user != null)
                 {
                     var authManager = HttpContext.GetOwinContext().Authentication;
                     authManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                    var identity = userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                    var identity = _userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                     authManager.SignIn(new AuthenticationProperties() { IsPersistent = false }, identity);
 
                     return RedirectToAction("Login");

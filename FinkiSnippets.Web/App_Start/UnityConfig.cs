@@ -1,6 +1,9 @@
 using System;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
+using Data_Access;
+using Entity;
+using FinkiSnippets.Service;
 
 namespace App.App_Start
 {
@@ -38,7 +41,11 @@ namespace App.App_Start
             // TODO: Register your types here
             // container.RegisterType<IProductRepository, ProductRepository>();
 
-
+            container.RegisterType<CodeDatabase>(new PerRequestLifetimeManager());
+            container.RegisterType<ApplicationUserManager>(new PerRequestLifetimeManager());
+            container.RegisterType<ISnippetService, SnippetService>(new PerRequestLifetimeManager());
+            container.RegisterType<IEventService, EventService>(new PerRequestLifetimeManager());
+            
         }
     }
 }

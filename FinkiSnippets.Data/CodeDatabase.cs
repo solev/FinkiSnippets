@@ -1,5 +1,4 @@
-﻿using App.Models;
-using Data_Access.Models;
+﻿using Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -8,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data_Access
+namespace FinkiSnippets.Data
 {
-    class CodeDatabase : IdentityDbContext<ApplicationUser>
+    public class CodeDatabase : IdentityDbContext<ApplicationUser>
     {
         public CodeDatabase() : base("name = DefaultConnection") { }
         public DbSet<Snippet> Snippets { get; set; }

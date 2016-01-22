@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace FinkiSnippets.Service
 {
-    public interface IUserService : IDisposable
+    public interface IEventService
     {
-        //bool Authenticate();
+        Event GetCurrentEvent();
+        List<Event> GetCurrentEvents();
     }
 }

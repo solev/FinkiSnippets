@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinkiSnippets.Service
+namespace Utilities
 {
-    public interface IUserService : IDisposable
+    public class Constants
     {
-        //bool Authenticate();
+        public static int stuffPerPage = 10;
     }
 }
