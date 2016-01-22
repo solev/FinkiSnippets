@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinkiSnippets.Entity", "FinkiSnippets.Entity\FinkiSnippets.Entity.csproj", "{63762623-5D76-4BF3-A357-1F66D82E0A9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "..\..\..\..\Desktop\Projects\Whatever(Statistics of code)\App\App.csproj", "{9E3C232C-F8BD-46B0-B8A5-B2F67FCB1A66}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{63762623-5D76-4BF3-A357-1F66D82E0A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63762623-5D76-4BF3-A357-1F66D82E0A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{63762623-5D76-4BF3-A357-1F66D82E0A9A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9E3C232C-F8BD-46B0-B8A5-B2F67FCB1A66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E3C232C-F8BD-46B0-B8A5-B2F67FCB1A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E3C232C-F8BD-46B0-B8A5-B2F67FCB1A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E3C232C-F8BD-46B0-B8A5-B2F67FCB1A66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
