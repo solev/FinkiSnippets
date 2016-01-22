@@ -1,0 +1,32 @@
+﻿@model Dictionary<App.Models.ApplicationUser, int[]>
+@{
+    ViewBag.Title = "Results";
+}
+
+<h2>Резултати</h2>
+
+<table class="table bordered" >
+    <thead>
+        <tr>
+            <th class="text-left">Име и Презиме</th>
+            <th class="text-left">Бодови</th>
+            <th class="text-left">Време</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Key.FirstName @item.Key.LastName
+                </td>
+                <td>
+                    @item.Value[0]
+                </td>
+                <td>
+                    @(item.Value[1]/60) : @(item.Value[1]%60)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

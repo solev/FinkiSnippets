@@ -1,0 +1,47 @@
+﻿@model App.Models.Event
+
+@{
+    ViewBag.Title = "Start";
+}
+
+
+
+@if(Model == null)
+{
+    <h2 style="text-align:center">Нема закажани натпреварувања... :(</h2>
+}
+else
+{
+    <h2>Правила и информации за натпреварот:</h2>
+    <ul>
+        <li><p class="subheader-secondary">Тестот содржи вкупно 18 прашања</p></li>
+        <li><p class="subheader-secondary">Прашањата се одговараат редоследно (нема скокање од едно на друго прашање)</p></li>
+        <li><p class="subheader-secondary">Откога ќе одговорите на прашање неможете да се вратите на истото</p></li>
+        <li><p class="subheader-secondary">Ако го оставите празно полето за одговор, прашањето ќе ви се смета како неточно</p></li>
+    </ul>
+
+
+    if(Model != null && DateTime.Now.AddHours(1) > Model.Start && DateTime.Now.AddHours(1) < Model.End)
+    {
+        
+        @Html.ActionLink("Започни", "Game", null, new { @class = "button large default", @id = "start" })
+    }
+    else
+    {
+
+        if(Model != null)
+        {
+
+            <h2 style="text-align:center;margin-top:30px;">Следно натпреварување почнува за </h2>
+            <div class="countdown" data-role="countdown" data-blink="false" data-days="1" data-stoptimer="@Model.Start" style="font-size: 20px;margin-top:15px;"></div>
+        }
+        else
+        {
+            <h2 style="text-align:center">Нема закажани натпреварувања... :(</h2>
+        }
+    }
+}
+
+@section Scripts{
+    <script src="~/Scripts/metro-countdown.js"></script>
+}

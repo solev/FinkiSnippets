@@ -1,0 +1,90 @@
+﻿@model List<App.Models.Event>
+@{
+    ViewBag.Title = "Events";
+    var upcoming = Model.Where(x => x.End > DateTime.Now.AddHours(1)).OrderBy(x=>x.Start);
+    var active = Model.FirstOrDefault(x => x.Start < DateTime.Now.AddHours(1) && x.End > DateTime.Now.AddHours(1));
+    Model.Remove(active);
+}
+
+@Html.ActionLink("Ново натпреварување", "CreateEvent", "Admin", new { @class = "button large" })
+
+<h2>Тековен Натпревар</h2>
+
+<table class="table bordered">
+    <thead>
+        <tr>
+            <th class="text-left">Датум</th>
+            <th class="text-left">Почеток</th>
+            <th class="text-left">Крај</th>   
+            <th class="text-left"></th>  
+            <th class="text-left"></th>       
+        </tr>
+    </thead>
+    <tbody>
+        @if(active != null) { 
+        <tr class="success">
+            <td>@String.Format("{0} / {1} / {2}", active.Start.Day, active.Start.Month, active.Start.Year)</td>
+            <td>@active.Start.TimeOfDay</td>
+            <td>@active.End.TimeOfDay</td>  
+            <td >@Html.ActionLink("Види резултати", "Results", "Admin", new { id = active.ID }, new { @style = "color:black!important;" })</td>          
+            <td style="width:40px;"><a href="@Url.Action("EditEvent", "Admin", new { id=active.ID })" class="button danger small">Измени</a></td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+<h2 style="margin-top:70px;">Следни Натпреварувања</h2>
+<table class="table bordered">
+    <thead>
+        <tr>
+            <th class="text-left">Датум</th>
+            <th class="text-left">Почеток</th>
+            <th class="text-left">Крај</th>
+            <th class="text-left"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in upcoming)
+        {
+            <tr class="selected">
+                <td>@String.Format("{0} / {1} / {2}", item.Start.Day, item.Start.Month, item.Start.Year)</td>
+                <td>@item.Start.TimeOfDay</td>
+                <td>@item.End.TimeOfDay</td>
+                <td style="width:40px;"><a href="@Url.Action("EditEvent", "Admin", new { id=item.ID })" class="button danger small">Измени</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<h2 style="margin-top:70px;">Поминати Натпреварувања</h2>
+<table class="table bordered">
+    <thead>
+        <tr>
+            <th class="text-left">Датум</th>
+            <th class="text-left">Почеток</th>
+            <th class="text-left">Крај</th>
+            <th class="text-left"></th>
+            <th class="text-left">Export</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            if(upcoming.Contains(item))
+            {
+                continue;
+            }
+            <tr>
+                <td>@String.Format("{0} / {1} / {2}", item.Start.Day, item.Start.Month, item.Start.Year)</td>
+                <td>@item.Start.TimeOfDay</td>
+                <td>@item.End.TimeOfDay</td>
+                <td>@Html.ActionLink("Види резултати", "Results", "Admin", new { id = item.ID }, null)</td>
+                <td>@Html.ActionLink("Операции", "ExportOperations", "Admin", new { id = item.ID }, null) | @Html.ActionLink("Резултати", "ExportResults", "Admin", new { id = item.ID }, null)</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

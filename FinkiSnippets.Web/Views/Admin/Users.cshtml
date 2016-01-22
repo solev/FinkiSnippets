@@ -1,0 +1,77 @@
+﻿@model List<App.Models.ApplicationUser>
+
+
+@{
+    ViewBag.Title = "Index";
+    int page = Int32.Parse(ViewContext.RouteData.Values["id"].ToString());
+}
+
+<h2>Корисници</h2>
+<hr />
+
+@Html.ActionLink("Додади нов корисник", "Register", "Admin", null, new { @class = "button" })
+
+@if(Model.Count > 0)
+{
+    <table class="table striped" style="margin-top:15px;">
+        <thead>
+            <tr>
+                <th class="text-left">Име</th>
+                <th class="text-left">Презиме</th>
+                <td class="text-left">Корисничко име</td>
+                <th class="text-right"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.UserName</td>
+                    <td class="place-right">@Html.ActionLink("Измени", "Edit", "Admin", new { id = item.Id }, new { @class = "text-warning" }) | <a href="" class="text-alert">Избриши</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+ if(ViewBag.pages > 1) { 
+    <div class="pagination" >
+        <ul>
+            <li class="first"><a href="@Url.Action("Users", "Admin", new { id=1 })"><i class="icon-first-2"></i></a></li>
+            @if(page == 1) {
+                <li class="prev"><a href="#" class="disabled"><i class="icon-previous"></i></a></li>
+            } 
+            else { 
+                <li class="prev"><a href="@Url.Action("Users", "Admin", new { id=page-1 })"><i class="icon-previous"></i></a></li>
+            }
+            @for(int i = 1; i <= ViewBag.pages; i++)
+            {
+                if(page == i) { 
+                    <li><a class="disabled">@i</a></li>
+                }
+                else
+                {
+                   <li><a href="@Url.Action("Users", "Admin", new { id=i })">@i</a></li> 
+                }
+            }
+
+            @if(page == ViewBag.pages)
+            {
+                <li class="prev"><a href="#" class="disabled"><i class="icon-next"></i></a></li>
+            }
+            else
+            {
+               <li class="next"><a href="@Url.Action("Users", "Admin", new { id=page+1 })"><i class="icon-next"></i></a></li>
+            }
+            
+            <li class="last"><a href="@Url.Action("Users", "Admin", new { id=ViewBag.pages })"><i class="icon-last-2"></i></a></li>
+        </ul>
+    </div>
+ }
+
+}
+else
+{
+    <h2>Нема додадено корисници...</h2>
+}

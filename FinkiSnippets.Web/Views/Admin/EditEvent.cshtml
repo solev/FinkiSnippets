@@ -1,0 +1,159 @@
+﻿@model App.Models.Event
+
+@{
+    ViewBag.Title = "CreateEvent";
+    string tempDate = String.Format("{0}.{1}.{2}", Model.Start.Day, Model.Start.Month, Model.Start.Year);
+}
+
+<h2>
+    Нов натпревар
+</h2>
+<hr />
+@using(Html.BeginForm())
+{
+    
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <div class="span3">
+            <label>Датум на натпреварот</label>
+            <div class="input-control text" data-role="datepicker" data-weekstart="1">                
+                <input type="text" name="date" value="@tempDate" id="datepicker">
+                <button class="btn-date"></button>
+            </div>
+        </div>
+        <div class="grid">
+            <p>Почеток - крај</p>
+            <div class="row">
+                <div class="input-control text size1">
+                    <input type="text" name="hourStart" value="@Model.Start.TimeOfDay.Hours" id="hourStart" />
+                </div>
+                <span>:</span>
+                <div class="input-control text size1">
+                    <input type="text" name="minStart" value="@Model.Start.TimeOfDay.Minutes" id="minStart" />
+                </div>
+                <span>до</span>
+                <div class="input-control text size1">
+                    <input type="text" name="hourEnd" value="@Model.End.TimeOfDay.Hours" id="hourEnd" />
+                </div>
+                <span>:</span>
+                <div class="input-control text size1">
+                    <input type="text" name="minEnd" value="@Model.End.TimeOfDay.Minutes" id="minEnd" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Зачувај" class="btn btn-default" /> <span id="error-message"></span>
+            </div>
+        </div>
+    </fieldset>
+}
+
+<div id="backBtn">
+    @Html.ActionLink("Назад", "Events")
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/metro-calendar.js"></script>
+    <script src="~/Scripts/metro-datepicker.js"></script>
+
+    <script>
+        $(function () {
+            $("#hourStart,#hourEnd").focusin(function () {
+                $(this).attr("data-state", "");
+            });
+
+            $("#hourStart, #hourEnd").focusout(function () {
+                var h = $(this).val();
+                if (h < 0 || h > 23 || h == "") {
+                    $(this).attr("data-state", "error");
+                }
+            });
+
+            $("#minStart, #minEnd").focusin(function () {
+                $(this).attr("data-state", "");
+            });
+
+            $("#minStart,#minEnd").focusout(function () {
+                var h = $(this).val();
+                if (h < 0 || h > 59 || h == "") {
+                    $(this).attr("data-state", "error");
+                }
+            });
+
+            $("#datepicker").focusin(function () {
+                $(this).attr("data-state", "");
+            })
+
+            $("form").submit(function (event) {
+                event.preventDefault();
+
+                var dateTemp = $("#datepicker").val();
+                var hs = $("#hourStart");
+                var ms = $("#minStart");
+                var he = $("#hourEnd");
+                var me = $("#minEnd");
+                var modelid = '@Model.ID';
+
+                var error = false;
+
+
+                if (hs.val() < 0 || hs.val() > 23 || hs.val() == "") {
+                    hs.attr("data-state", "error");
+                    error = true;
+                }
+
+                if (ms.val() < 0 || ms.val() > 59 || ms.val() == "") {
+                    ms.attr("data-state", "error");
+                    error = true;
+                }
+                if (he.val() < 0 || he.val() > 23 || he.val() == "") {
+                    he.attr("data-state", "error");
+                    error = true;
+                }
+
+                if (me.val() < 0 || me.val() > 59 || me.val() == "") {
+                    me.attr("data-state", "error");
+                    error = true;
+                }
+
+                if ($("#datepicker").val() == "") {
+                    error = true;
+                    $("#datepicker").attr("data-state", "error");
+                }
+
+                if (error) {
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("EditEvent","Admin")',
+                    type: "POST",
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        date: dateTemp,
+                        hourStart: hs.val(),
+                        minStart: ms.val(),
+                        hourEnd: he.val(),
+                        minEnd: me.val(),
+                        id:modelid
+                    })
+                }).done(function (data) {
+
+                    var label = $("#error-message");
+
+                    if (data == "error") {
+                        label.addClass("text-alert").html("Во посакуваното време има активен натпревар!");
+                    } else {
+                        label.removeClass("text-alert").addClass("text-success").html("Натпреварот е додаден! За 3 секунди ќе бидете пренасочени...");
+                        setTimeout(function () { window.location.replace('@Url.Action("Events","Admin")'); }, 3000);
+                    }
+                });
+
+            });
+
+        });
+    </script>
+
+}

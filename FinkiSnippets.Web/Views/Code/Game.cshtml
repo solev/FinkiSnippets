@@ -1,0 +1,101 @@
+﻿@model App.Models.Snippet
+
+@{
+    ViewBag.Title = "Game";
+
+}
+
+
+
+<div class="span11">
+    <ul style="list-style-type:none;margin:0 0 30px 0;padding:0;">
+        @for (int i = 1; i <= (int)ViewBag.lastOrderNumber; i++)
+        {
+            if(i == Model.OrderNumber)
+            {
+                <li style="display:inline;"><button class="danger mini">@i</button></li>
+            }
+            else
+            {
+                <li style="display:inline;"><button class="mini">@i</button></li>
+            }
+        }
+    </ul>
+</div>
+
+<h2 style="margin-bottom:25px;">@Model.Question</h2>
+<div id="editor">
+
+</div>
+
+
+@using(Html.BeginForm("NextSnippet", "Code"))
+{
+    <br>
+    <label>Внесете го одговорот овде:</label>
+    <br>
+    <input id="output" name="answer" type="text">
+    <input type="text" name="timeInSeconds" hidden value="180" />
+    <input type="text" name="id" value="@Model.ID" hidden />
+    <div style="padding-top:10px;">
+        <button class="button" id="btnClear">Clear</button>
+        <input type="submit" value="Next" class="button" />
+    </div>
+}
+
+@section Scripts{
+    <script src="~/Scripts/src-noconflict/ace.js"></script>
+    <script src="~/Scripts/metro-times.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#btnClear").click(function (event) {
+                event.preventDefault();
+                $("#output").val("");
+            });
+
+            var code = decodeURIComponent('@Model.Code');
+
+            console.log(code);
+
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/eclipse");
+            editor.getSession().setMode("ace/mode/java");
+            editor.setOptions({
+                readOnly: true,
+                highlightActiveLine: false,
+                highlightGutterLine: false
+            });
+            editor.renderer.$cursorLayer.element.style.opacity = 0;
+
+            var heightUpdateFunction = function () {
+
+                // http://stackoverflow.com/questions/11584061/
+                var newHeight =
+                          editor.getSession().getScreenLength()
+                          * editor.renderer.lineHeight
+                          + editor.renderer.scrollBar.getWidth();
+
+                $('#editor').height(newHeight.toString() + "px");
+                $('#editor-section').height(newHeight.toString() + "px");
+
+                // This call is required for the editor to fix all of
+                // its inner structure for adapting to a change in size
+                editor.resize();
+            };
+
+            editor.getSession().setValue(code);
+
+            // Set initial size to match initial content
+            heightUpdateFunction();
+
+            // Whenever a change happens inside the ACE editor, update
+            // the size again
+            editor.getSession().on('change', heightUpdateFunction);
+
+            var timeSinceStart = '@ViewBag.time';
+
+
+        });
+    </script>
+}

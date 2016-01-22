@@ -1,0 +1,214 @@
+﻿@model App.ViewModels.CreateSnippetViewModel
+@{
+    ViewBag.Title = "CreateSnippet";
+}
+
+
+<div class="grid">
+    <div class="row">
+        <div class="span8">
+            <h2>Кодот овде:</h2>
+            <div id="editor"></div>
+
+            <br>
+        </div>
+
+        <div class="span6">
+            <h2>Операции во овој код:</h2>
+            <div class="row">
+                <div class="span3 input-control select">
+                    <select id="operatorSelect">
+                        @foreach(var item in Model.Operations)
+                        {
+                            <option value="@item.ID">@item.Name  ( @item.Operator )</option>
+                        }
+                    </select>
+                </div>
+                <div class="input-control number span2" style="padding-left:15px">
+                    <input type="number" value="1" id="operatorFrequency" />
+                </div>
+
+                <div class="span1">
+                    <button class="large" id="btnAddOperator">Додади</button>
+                </div>
+            </div>
+
+            <table class="table hovered">
+                <thead>
+                    <tr>
+                        <th class="text-left">Оператор</th>
+                        <th class="text-left">Честота</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            
+            <div class="row">
+                <div class="input-control select">
+                    <select id="groupSelect">
+                        <option value="">--Одбери група--</option>
+                        @foreach (var item in Model.Groups)
+                        {
+                            <option value="@item.ID">@item.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+                
+            <div class="row">
+
+                <label>Прашање:</label>
+                <div class="input-control text" >
+                    <input type="text" id="Question"  />
+                </div>
+
+                <label>Излез:</label>
+                <div class="input-control text">
+                    <input type="text" id="outputData" />                    
+                </div>
+                
+                <div>
+                    <button id="btnAdd" class="success large" style="width:150px;height:50px;margin-top:11px">Зачувај код</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/src-noconflict/ace.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/eclipse");
+            editor.getSession().setMode("ace/mode/java");
+            editor.setOptions({
+                readOnly: false,
+                highlightActiveLine: false,
+                highlightGutterLine: false
+            });
+            //editor.renderer.$cursorLayer.element.style.opacity = 0;
+
+            var heightUpdateFunction = function () {
+
+                // http://stackoverflow.com/questions/11584061/
+                var newHeight =
+                            editor.getSession().getScreenLength()
+                            * editor.renderer.lineHeight
+                            + editor.renderer.scrollBar.getWidth() + 20;
+
+                $('#editor').height(newHeight.toString() + "px");
+                $('#editor-section').height(newHeight.toString() + "px");
+
+                // This call is required for the editor to fix all of
+                // its inner structure for adapting to a change in size
+                editor.resize();
+            };
+
+            // Set initial size to match initial content
+            heightUpdateFunction();
+
+            // Whenever a change happens inside the ACE editor, update
+            // the size again
+            editor.getSession().on('change', heightUpdateFunction);
+
+            $("#btnAdd").click(function (event) {
+                var code = editor.getSession().getValue();
+                var outputData = $("#outputData").val();
+                var ques = $("#Question").val();
+                var group = $("#groupSelect").val();
+
+                var dataModel = {
+                    snippet: {
+                        Code: encodeURIComponent(code),
+                        Output: outputData,
+                        Group: {
+                            ID:group
+                        }
+                    },
+                    Operators: addedOperators
+                }
+
+                console.log(dataModel);
+
+                $.ajax({
+                    url: '@Url.Action("CreateSnippet","Admin")',
+                    type: "POST",
+                    traditional: true,
+                    dataType: "json",
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        Code: encodeURIComponent(code),
+                        Group: {
+                            ID:group
+                        },
+                        Output: outputData,
+                        Question:ques,
+                        Operators: addedOperators
+                    })
+                }).done(function (data) {
+                    var not = $.Notify({
+                        caption: "Статус",
+                        content: data,
+                        timeout: 10000, // 10 seconds
+                        style: { background: "#60a917",color:"#fff" }
+                });
+                });
+            })
+
+            $("#btnAddOperator").click(function () {
+                var oper = $("#operatorSelect").find(":selected").text();
+                var operId = $("#operatorSelect").val();
+                var freq = $("#operatorFrequency").val();
+
+                var t = addedOperators.filter(function (el) {
+                    return el.OperationID == operId;
+                });
+
+                if (t.length > 0)
+                    return;
+
+                var result = "<tr><td>" + oper + "</td><td>" + freq + "</td><td style='width:60px;'><a href='#' data-operid='" + operId + "' class='text-alert deleteBtn' hidden>Delete</a></td></tr>";
+                $(".table > tbody").append(result);
+
+
+                var operator = {
+                    OperationID: operId,
+                    Frequency: freq
+                }
+
+                addedOperators.push(operator);
+
+            });
+
+            $(".table").on("mouseenter", "tr", function () {
+
+                $(this).find(".deleteBtn").show();
+            });
+
+            $(".table").on("mouseleave", "tr", function () {
+
+                $(this).find(".deleteBtn").hide();
+            });
+
+            $(".table").on("click", ".deleteBtn", function () {
+
+                var tmpOperId = $(this).attr("data-operid");
+
+                addedOperators = addedOperators.filter(function (el) {
+                    return el.OperationID !== tmpOperId;
+                });
+
+                $(this).parent().parent().remove();
+                console.log(addedOperators);
+            });
+
+            var addedOperators = [];
+
+        });
+    </script>
+}

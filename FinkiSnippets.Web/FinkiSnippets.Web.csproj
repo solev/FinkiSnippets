@@ -1,0 +1,597 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9E3C232C-F8BD-46B0-B8A5-B2F67FCB1A66}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>App</RootNamespace>
+    <AssemblyName>App</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Excel">
+      <HintPath>..\..\NBCfakturiranje\packages\Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.2.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.1\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.0.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <Private>True</Private>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="CodeDatabase.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CodeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AnswerLog.cs" />
+    <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\ApplicationUserManager.cs" />
+    <Compile Include="Models\CreateExcelFile.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\Operation.cs" />
+    <Compile Include="Models\Snippet.cs" />
+    <Compile Include="Models\SnippetOperation.cs" />
+    <Compile Include="Models\Text.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\AdminViewModel.cs" />
+    <Compile Include="ViewModels\CreateEventViewModel.cs" />
+    <Compile Include="ViewModels\CreateSnippetViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\OperatorsHelper.cs" />
+    <Compile Include="ViewModels\RegisterViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\iconFont.min.css" />
+    <Content Include="Content\metro-bootstrap-responsive.min.css" />
+    <Content Include="Content\metro-bootstrap.min.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="fonts\metroSysIcons.woff" />
+    <Content Include="fonts\metroSysIcons.ttf" />
+    <Content Include="fonts\iconFont.ttf" />
+    <Content Include="fonts\iconFont.woff" />
+    <None Include="Properties\PublishProfiles\finkisnippets - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\finkisnippets - Web Deploy.pubxml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.widget.min.js" />
+    <Content Include="Scripts\metro-calendar.js" />
+    <Content Include="Scripts\metro-countdown.js" />
+    <Content Include="Scripts\metro-datepicker.js" />
+    <Content Include="Scripts\metro-times.js" />
+    <Content Include="Scripts\metro.min.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\respond.js" />
+    <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\src-noconflict\ace.js" />
+    <Content Include="Scripts\src-noconflict\ext-beautify.js" />
+    <Content Include="Scripts\src-noconflict\ext-chromevox.js" />
+    <Content Include="Scripts\src-noconflict\ext-elastic_tabstops_lite.js" />
+    <Content Include="Scripts\src-noconflict\ext-emmet.js" />
+    <Content Include="Scripts\src-noconflict\ext-error_marker.js" />
+    <Content Include="Scripts\src-noconflict\ext-keybinding_menu.js" />
+    <Content Include="Scripts\src-noconflict\ext-language_tools.js" />
+    <Content Include="Scripts\src-noconflict\ext-linking.js" />
+    <Content Include="Scripts\src-noconflict\ext-modelist.js" />
+    <Content Include="Scripts\src-noconflict\ext-old_ie.js" />
+    <Content Include="Scripts\src-noconflict\ext-searchbox.js" />
+    <Content Include="Scripts\src-noconflict\ext-settings_menu.js" />
+    <Content Include="Scripts\src-noconflict\ext-spellcheck.js" />
+    <Content Include="Scripts\src-noconflict\ext-split.js" />
+    <Content Include="Scripts\src-noconflict\ext-static_highlight.js" />
+    <Content Include="Scripts\src-noconflict\ext-statusbar.js" />
+    <Content Include="Scripts\src-noconflict\ext-textarea.js" />
+    <Content Include="Scripts\src-noconflict\ext-themelist.js" />
+    <Content Include="Scripts\src-noconflict\ext-whitespace.js" />
+    <Content Include="Scripts\src-noconflict\keybinding-emacs.js" />
+    <Content Include="Scripts\src-noconflict\keybinding-vim.js" />
+    <Content Include="Scripts\src-noconflict\mode-abap.js" />
+    <Content Include="Scripts\src-noconflict\mode-abc.js" />
+    <Content Include="Scripts\src-noconflict\mode-actionscript.js" />
+    <Content Include="Scripts\src-noconflict\mode-ada.js" />
+    <Content Include="Scripts\src-noconflict\mode-apache_conf.js" />
+    <Content Include="Scripts\src-noconflict\mode-applescript.js" />
+    <Content Include="Scripts\src-noconflict\mode-asciidoc.js" />
+    <Content Include="Scripts\src-noconflict\mode-assembly_x86.js" />
+    <Content Include="Scripts\src-noconflict\mode-autohotkey.js" />
+    <Content Include="Scripts\src-noconflict\mode-batchfile.js" />
+    <Content Include="Scripts\src-noconflict\mode-c9search.js" />
+    <Content Include="Scripts\src-noconflict\mode-cirru.js" />
+    <Content Include="Scripts\src-noconflict\mode-clojure.js" />
+    <Content Include="Scripts\src-noconflict\mode-cobol.js" />
+    <Content Include="Scripts\src-noconflict\mode-coffee.js" />
+    <Content Include="Scripts\src-noconflict\mode-coldfusion.js" />
+    <Content Include="Scripts\src-noconflict\mode-csharp.js" />
+    <Content Include="Scripts\src-noconflict\mode-css.js" />
+    <Content Include="Scripts\src-noconflict\mode-curly.js" />
+    <Content Include="Scripts\src-noconflict\mode-c_cpp.js" />
+    <Content Include="Scripts\src-noconflict\mode-d.js" />
+    <Content Include="Scripts\src-noconflict\mode-dart.js" />
+    <Content Include="Scripts\src-noconflict\mode-diff.js" />
+    <Content Include="Scripts\src-noconflict\mode-django.js" />
+    <Content Include="Scripts\src-noconflict\mode-dockerfile.js" />
+    <Content Include="Scripts\src-noconflict\mode-dot.js" />
+    <Content Include="Scripts\src-noconflict\mode-eiffel.js" />
+    <Content Include="Scripts\src-noconflict\mode-ejs.js" />
+    <Content Include="Scripts\src-noconflict\mode-elixir.js" />
+    <Content Include="Scripts\src-noconflict\mode-elm.js" />
+    <Content Include="Scripts\src-noconflict\mode-erlang.js" />
+    <Content Include="Scripts\src-noconflict\mode-forth.js" />
+    <Content Include="Scripts\src-noconflict\mode-ftl.js" />
+    <Content Include="Scripts\src-noconflict\mode-gcode.js" />
+    <Content Include="Scripts\src-noconflict\mode-gherkin.js" />
+    <Content Include="Scripts\src-noconflict\mode-gitignore.js" />
+    <Content Include="Scripts\src-noconflict\mode-glsl.js" />
+    <Content Include="Scripts\src-noconflict\mode-golang.js" />
+    <Content Include="Scripts\src-noconflict\mode-groovy.js" />
+    <Content Include="Scripts\src-noconflict\mode-haml.js" />
+    <Content Include="Scripts\src-noconflict\mode-handlebars.js" />
+    <Content Include="Scripts\src-noconflict\mode-haskell.js" />
+    <Content Include="Scripts\src-noconflict\mode-haxe.js" />
+    <Content Include="Scripts\src-noconflict\mode-html.js" />
+    <Content Include="Scripts\src-noconflict\mode-html_ruby.js" />
+    <Content Include="Scripts\src-noconflict\mode-ini.js" />
+    <Content Include="Scripts\src-noconflict\mode-io.js" />
+    <Content Include="Scripts\src-noconflict\mode-jack.js" />
+    <Content Include="Scripts\src-noconflict\mode-jade.js" />
+    <Content Include="Scripts\src-noconflict\mode-java.js" />
+    <Content Include="Scripts\src-noconflict\mode-javascript.js" />
+    <Content Include="Scripts\src-noconflict\mode-json.js" />
+    <Content Include="Scripts\src-noconflict\mode-jsoniq.js" />
+    <Content Include="Scripts\src-noconflict\mode-jsp.js" />
+    <Content Include="Scripts\src-noconflict\mode-jsx.js" />
+    <Content Include="Scripts\src-noconflict\mode-julia.js" />
+    <Content Include="Scripts\src-noconflict\mode-latex.js" />
+    <Content Include="Scripts\src-noconflict\mode-lean.js" />
+    <Content Include="Scripts\src-noconflict\mode-less.js" />
+    <Content Include="Scripts\src-noconflict\mode-liquid.js" />
+    <Content Include="Scripts\src-noconflict\mode-lisp.js" />
+    <Content Include="Scripts\src-noconflict\mode-livescript.js" />
+    <Content Include="Scripts\src-noconflict\mode-live_script.js" />
+    <Content Include="Scripts\src-noconflict\mode-logiql.js" />
+    <Content Include="Scripts\src-noconflict\mode-lsl.js" />
+    <Content Include="Scripts\src-noconflict\mode-lua.js" />
+    <Content Include="Scripts\src-noconflict\mode-luapage.js" />
+    <Content Include="Scripts\src-noconflict\mode-lucene.js" />
+    <Content Include="Scripts\src-noconflict\mode-makefile.js" />
+    <Content Include="Scripts\src-noconflict\mode-markdown.js" />
+    <Content Include="Scripts\src-noconflict\mode-mask.js" />
+    <Content Include="Scripts\src-noconflict\mode-matlab.js" />
+    <Content Include="Scripts\src-noconflict\mode-mel.js" />
+    <Content Include="Scripts\src-noconflict\mode-mipsassembler.js" />
+    <Content Include="Scripts\src-noconflict\mode-mips_assembler.js" />
+    <Content Include="Scripts\src-noconflict\mode-mushcode.js" />
+    <Content Include="Scripts\src-noconflict\mode-mysql.js" />
+    <Content Include="Scripts\src-noconflict\mode-nix.js" />
+    <Content Include="Scripts\src-noconflict\mode-objectivec.js" />
+    <Content Include="Scripts\src-noconflict\mode-ocaml.js" />
+    <Content Include="Scripts\src-noconflict\mode-pascal.js" />
+    <Content Include="Scripts\src-noconflict\mode-perl.js" />
+    <Content Include="Scripts\src-noconflict\mode-pgsql.js" />
+    <Content Include="Scripts\src-noconflict\mode-php.js" />
+    <Content Include="Scripts\src-noconflict\mode-plain_text.js" />
+    <Content Include="Scripts\src-noconflict\mode-powershell.js" />
+    <Content Include="Scripts\src-noconflict\mode-praat.js" />
+    <Content Include="Scripts\src-noconflict\mode-prolog.js" />
+    <Content Include="Scripts\src-noconflict\mode-properties.js" />
+    <Content Include="Scripts\src-noconflict\mode-protobuf.js" />
+    <Content Include="Scripts\src-noconflict\mode-python.js" />
+    <Content Include="Scripts\src-noconflict\mode-r.js" />
+    <Content Include="Scripts\src-noconflict\mode-rdoc.js" />
+    <Content Include="Scripts\src-noconflict\mode-rhtml.js" />
+    <Content Include="Scripts\src-noconflict\mode-ruby.js" />
+    <Content Include="Scripts\src-noconflict\mode-rust.js" />
+    <Content Include="Scripts\src-noconflict\mode-sass.js" />
+    <Content Include="Scripts\src-noconflict\mode-scad.js" />
+    <Content Include="Scripts\src-noconflict\mode-scala.js" />
+    <Content Include="Scripts\src-noconflict\mode-scheme.js" />
+    <Content Include="Scripts\src-noconflict\mode-scss.js" />
+    <Content Include="Scripts\src-noconflict\mode-sh.js" />
+    <Content Include="Scripts\src-noconflict\mode-sjs.js" />
+    <Content Include="Scripts\src-noconflict\mode-smarty.js" />
+    <Content Include="Scripts\src-noconflict\mode-snippets.js" />
+    <Content Include="Scripts\src-noconflict\mode-soy_template.js" />
+    <Content Include="Scripts\src-noconflict\mode-space.js" />
+    <Content Include="Scripts\src-noconflict\mode-sql.js" />
+    <Content Include="Scripts\src-noconflict\mode-stylus.js" />
+    <Content Include="Scripts\src-noconflict\mode-svg.js" />
+    <Content Include="Scripts\src-noconflict\mode-tcl.js" />
+    <Content Include="Scripts\src-noconflict\mode-tex.js" />
+    <Content Include="Scripts\src-noconflict\mode-text.js" />
+    <Content Include="Scripts\src-noconflict\mode-textile.js" />
+    <Content Include="Scripts\src-noconflict\mode-toml.js" />
+    <Content Include="Scripts\src-noconflict\mode-twig.js" />
+    <Content Include="Scripts\src-noconflict\mode-typescript.js" />
+    <Content Include="Scripts\src-noconflict\mode-vala.js" />
+    <Content Include="Scripts\src-noconflict\mode-vbscript.js" />
+    <Content Include="Scripts\src-noconflict\mode-velocity.js" />
+    <Content Include="Scripts\src-noconflict\mode-verilog.js" />
+    <Content Include="Scripts\src-noconflict\mode-vhdl.js" />
+    <Content Include="Scripts\src-noconflict\mode-xml.js" />
+    <Content Include="Scripts\src-noconflict\mode-xquery.js" />
+    <Content Include="Scripts\src-noconflict\mode-yaml.js" />
+    <Content Include="Scripts\src-noconflict\snippets\abap.js" />
+    <Content Include="Scripts\src-noconflict\snippets\abc.js" />
+    <Content Include="Scripts\src-noconflict\snippets\actionscript.js" />
+    <Content Include="Scripts\src-noconflict\snippets\ada.js" />
+    <Content Include="Scripts\src-noconflict\snippets\apache_conf.js" />
+    <Content Include="Scripts\src-noconflict\snippets\applescript.js" />
+    <Content Include="Scripts\src-noconflict\snippets\asciidoc.js" />
+    <Content Include="Scripts\src-noconflict\snippets\assembly_x86.js" />
+    <Content Include="Scripts\src-noconflict\snippets\autohotkey.js" />
+    <Content Include="Scripts\src-noconflict\snippets\batchfile.js" />
+    <Content Include="Scripts\src-noconflict\snippets\c9search.js" />
+    <Content Include="Scripts\src-noconflict\snippets\cirru.js" />
+    <Content Include="Scripts\src-noconflict\snippets\clojure.js" />
+    <Content Include="Scripts\src-noconflict\snippets\cobol.js" />
+    <Content Include="Scripts\src-noconflict\snippets\coffee.js" />
+    <Content Include="Scripts\src-noconflict\snippets\coldfusion.js" />
+    <Content Include="Scripts\src-noconflict\snippets\csharp.js" />
+    <Content Include="Scripts\src-noconflict\snippets\css.js" />
+    <Content Include="Scripts\src-noconflict\snippets\curly.js" />
+    <Content Include="Scripts\src-noconflict\snippets\c_cpp.js" />
+    <Content Include="Scripts\src-noconflict\snippets\d.js" />
+    <Content Include="Scripts\src-noconflict\snippets\dart.js" />
+    <Content Include="Scripts\src-noconflict\snippets\diff.js" />
+    <Content Include="Scripts\src-noconflict\snippets\django.js" />
+    <Content Include="Scripts\src-noconflict\snippets\dockerfile.js" />
+    <Content Include="Scripts\src-noconflict\snippets\dot.js" />
+    <Content Include="Scripts\src-noconflict\snippets\eiffel.js" />
+    <Content Include="Scripts\src-noconflict\snippets\ejs.js" />
+    <Content Include="Scripts\src-noconflict\snippets\elixir.js" />
+    <Content Include="Scripts\src-noconflict\snippets\elm.js" />
+    <Content Include="Scripts\src-noconflict\snippets\erlang.js" />
+    <Content Include="Scripts\src-noconflict\snippets\forth.js" />
+    <Content Include="Scripts\src-noconflict\snippets\ftl.js" />
+    <Content Include="Scripts\src-noconflict\snippets\gcode.js" />
+    <Content Include="Scripts\src-noconflict\snippets\gherkin.js" />
+    <Content Include="Scripts\src-noconflict\snippets\gitignore.js" />
+    <Content Include="Scripts\src-noconflict\snippets\glsl.js" />
+    <Content Include="Scripts\src-noconflict\snippets\golang.js" />
+    <Content Include="Scripts\src-noconflict\snippets\groovy.js" />
+    <Content Include="Scripts\src-noconflict\snippets\haml.js" />
+    <Content Include="Scripts\src-noconflict\snippets\handlebars.js" />
+    <Content Include="Scripts\src-noconflict\snippets\haskell.js" />
+    <Content Include="Scripts\src-noconflict\snippets\haxe.js" />
+    <Content Include="Scripts\src-noconflict\snippets\html.js" />
+    <Content Include="Scripts\src-noconflict\snippets\html_ruby.js" />
+    <Content Include="Scripts\src-noconflict\snippets\ini.js" />
+    <Content Include="Scripts\src-noconflict\snippets\io.js" />
+    <Content Include="Scripts\src-noconflict\snippets\jack.js" />
+    <Content Include="Scripts\src-noconflict\snippets\jade.js" />
+    <Content Include="Scripts\src-noconflict\snippets\java.js" />
+    <Content Include="Scripts\src-noconflict\snippets\javascript.js" />
+    <Content Include="Scripts\src-noconflict\snippets\json.js" />
+    <Content Include="Scripts\src-noconflict\snippets\jsoniq.js" />
+    <Content Include="Scripts\src-noconflict\snippets\jsp.js" />
+    <Content Include="Scripts\src-noconflict\snippets\jsx.js" />
+    <Content Include="Scripts\src-noconflict\snippets\julia.js" />
+    <Content Include="Scripts\src-noconflict\snippets\latex.js" />
+    <Content Include="Scripts\src-noconflict\snippets\lean.js" />
+    <Content Include="Scripts\src-noconflict\snippets\less.js" />
+    <Content Include="Scripts\src-noconflict\snippets\liquid.js" />
+    <Content Include="Scripts\src-noconflict\snippets\lisp.js" />
+    <Content Include="Scripts\src-noconflict\snippets\livescript.js" />
+    <Content Include="Scripts\src-noconflict\snippets\live_script.js" />
+    <Content Include="Scripts\src-noconflict\snippets\logiql.js" />
+    <Content Include="Scripts\src-noconflict\snippets\lsl.js" />
+    <Content Include="Scripts\src-noconflict\snippets\lua.js" />
+    <Content Include="Scripts\src-noconflict\snippets\luapage.js" />
+    <Content Include="Scripts\src-noconflict\snippets\lucene.js" />
+    <Content Include="Scripts\src-noconflict\snippets\makefile.js" />
+    <Content Include="Scripts\src-noconflict\snippets\markdown.js" />
+    <Content Include="Scripts\src-noconflict\snippets\mask.js" />
+    <Content Include="Scripts\src-noconflict\snippets\matlab.js" />
+    <Content Include="Scripts\src-noconflict\snippets\mel.js" />
+    <Content Include="Scripts\src-noconflict\snippets\mipsassembler.js" />
+    <Content Include="Scripts\src-noconflict\snippets\mips_assembler.js" />
+    <Content Include="Scripts\src-noconflict\snippets\mushcode.js" />
+    <Content Include="Scripts\src-noconflict\snippets\mysql.js" />
+    <Content Include="Scripts\src-noconflict\snippets\nix.js" />
+    <Content Include="Scripts\src-noconflict\snippets\objectivec.js" />
+    <Content Include="Scripts\src-noconflict\snippets\ocaml.js" />
+    <Content Include="Scripts\src-noconflict\snippets\pascal.js" />
+    <Content Include="Scripts\src-noconflict\snippets\perl.js" />
+    <Content Include="Scripts\src-noconflict\snippets\pgsql.js" />
+    <Content Include="Scripts\src-noconflict\snippets\php.js" />
+    <Content Include="Scripts\src-noconflict\snippets\plain_text.js" />
+    <Content Include="Scripts\src-noconflict\snippets\powershell.js" />
+    <Content Include="Scripts\src-noconflict\snippets\praat.js" />
+    <Content Include="Scripts\src-noconflict\snippets\prolog.js" />
+    <Content Include="Scripts\src-noconflict\snippets\properties.js" />
+    <Content Include="Scripts\src-noconflict\snippets\protobuf.js" />
+    <Content Include="Scripts\src-noconflict\snippets\python.js" />
+    <Content Include="Scripts\src-noconflict\snippets\r.js" />
+    <Content Include="Scripts\src-noconflict\snippets\rdoc.js" />
+    <Content Include="Scripts\src-noconflict\snippets\rhtml.js" />
+    <Content Include="Scripts\src-noconflict\snippets\ruby.js" />
+    <Content Include="Scripts\src-noconflict\snippets\rust.js" />
+    <Content Include="Scripts\src-noconflict\snippets\sass.js" />
+    <Content Include="Scripts\src-noconflict\snippets\scad.js" />
+    <Content Include="Scripts\src-noconflict\snippets\scala.js" />
+    <Content Include="Scripts\src-noconflict\snippets\scheme.js" />
+    <Content Include="Scripts\src-noconflict\snippets\scss.js" />
+    <Content Include="Scripts\src-noconflict\snippets\sh.js" />
+    <Content Include="Scripts\src-noconflict\snippets\sjs.js" />
+    <Content Include="Scripts\src-noconflict\snippets\smarty.js" />
+    <Content Include="Scripts\src-noconflict\snippets\snippets.js" />
+    <Content Include="Scripts\src-noconflict\snippets\soy_template.js" />
+    <Content Include="Scripts\src-noconflict\snippets\space.js" />
+    <Content Include="Scripts\src-noconflict\snippets\sql.js" />
+    <Content Include="Scripts\src-noconflict\snippets\stylus.js" />
+    <Content Include="Scripts\src-noconflict\snippets\svg.js" />
+    <Content Include="Scripts\src-noconflict\snippets\tcl.js" />
+    <Content Include="Scripts\src-noconflict\snippets\tex.js" />
+    <Content Include="Scripts\src-noconflict\snippets\text.js" />
+    <Content Include="Scripts\src-noconflict\snippets\textile.js" />
+    <Content Include="Scripts\src-noconflict\snippets\toml.js" />
+    <Content Include="Scripts\src-noconflict\snippets\twig.js" />
+    <Content Include="Scripts\src-noconflict\snippets\typescript.js" />
+    <Content Include="Scripts\src-noconflict\snippets\vala.js" />
+    <Content Include="Scripts\src-noconflict\snippets\vbscript.js" />
+    <Content Include="Scripts\src-noconflict\snippets\velocity.js" />
+    <Content Include="Scripts\src-noconflict\snippets\verilog.js" />
+    <Content Include="Scripts\src-noconflict\snippets\vhdl.js" />
+    <Content Include="Scripts\src-noconflict\snippets\xml.js" />
+    <Content Include="Scripts\src-noconflict\snippets\xquery.js" />
+    <Content Include="Scripts\src-noconflict\snippets\yaml.js" />
+    <Content Include="Scripts\src-noconflict\theme-ambiance.js" />
+    <Content Include="Scripts\src-noconflict\theme-chaos.js" />
+    <Content Include="Scripts\src-noconflict\theme-chrome.js" />
+    <Content Include="Scripts\src-noconflict\theme-clouds.js" />
+    <Content Include="Scripts\src-noconflict\theme-clouds_midnight.js" />
+    <Content Include="Scripts\src-noconflict\theme-cobalt.js" />
+    <Content Include="Scripts\src-noconflict\theme-crimson_editor.js" />
+    <Content Include="Scripts\src-noconflict\theme-dawn.js" />
+    <Content Include="Scripts\src-noconflict\theme-dreamweaver.js" />
+    <Content Include="Scripts\src-noconflict\theme-eclipse.js" />
+    <Content Include="Scripts\src-noconflict\theme-github.js" />
+    <Content Include="Scripts\src-noconflict\theme-idle_fingers.js" />
+    <Content Include="Scripts\src-noconflict\theme-katzenmilch.js" />
+    <Content Include="Scripts\src-noconflict\theme-kr_theme.js" />
+    <Content Include="Scripts\src-noconflict\theme-kuroir.js" />
+    <Content Include="Scripts\src-noconflict\theme-merbivore.js" />
+    <Content Include="Scripts\src-noconflict\theme-merbivore_soft.js" />
+    <Content Include="Scripts\src-noconflict\theme-monokai.js" />
+    <Content Include="Scripts\src-noconflict\theme-mono_industrial.js" />
+    <Content Include="Scripts\src-noconflict\theme-pastel_on_dark.js" />
+    <Content Include="Scripts\src-noconflict\theme-solarized_dark.js" />
+    <Content Include="Scripts\src-noconflict\theme-solarized_light.js" />
+    <Content Include="Scripts\src-noconflict\theme-terminal.js" />
+    <Content Include="Scripts\src-noconflict\theme-textmate.js" />
+    <Content Include="Scripts\src-noconflict\theme-tomorrow.js" />
+    <Content Include="Scripts\src-noconflict\theme-tomorrow_night.js" />
+    <Content Include="Scripts\src-noconflict\theme-tomorrow_night_blue.js" />
+    <Content Include="Scripts\src-noconflict\theme-tomorrow_night_bright.js" />
+    <Content Include="Scripts\src-noconflict\theme-tomorrow_night_eighties.js" />
+    <Content Include="Scripts\src-noconflict\theme-twilight.js" />
+    <Content Include="Scripts\src-noconflict\theme-vibrant_ink.js" />
+    <Content Include="Scripts\src-noconflict\theme-xcode.js" />
+    <Content Include="Scripts\src-noconflict\worker-coffee.js" />
+    <Content Include="Scripts\src-noconflict\worker-css.js" />
+    <Content Include="Scripts\src-noconflict\worker-html.js" />
+    <Content Include="Scripts\src-noconflict\worker-javascript.js" />
+    <Content Include="Scripts\src-noconflict\worker-json.js" />
+    <Content Include="Scripts\src-noconflict\worker-lua.js" />
+    <Content Include="Scripts\src-noconflict\worker-php.js" />
+    <Content Include="Scripts\src-noconflict\worker-xml.js" />
+    <Content Include="Scripts\src-noconflict\worker-xquery.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
+    <Content Include="Views\Code\Start.cshtml" />
+    <Content Include="Views\Code\Game.cshtml" />
+    <Content Include="Views\Admin\Users.cshtml" />
+    <Content Include="Views\Admin\Register.cshtml" />
+    <Content Include="Views\Admin\CreateSnippet.cshtml" />
+    <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Admin\CreateEvent.cshtml" />
+    <Content Include="Views\Admin\Events.cshtml" />
+    <Content Include="Views\Admin\Results.cshtml" />
+    <Content Include="Views\Code\Result.cshtml" />
+    <Content Include="Views\Admin\EditEvent.cshtml" />
+    <Content Include="Views\Code\Test.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="packages.config" />
+    <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>60885</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:60885/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>
