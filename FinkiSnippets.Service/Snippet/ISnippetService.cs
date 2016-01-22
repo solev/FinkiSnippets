@@ -10,6 +10,6 @@ namespace FinkiSnippets.Service
     public interface ISnippetService
     {
         bool SubmitAnswer(string UserID, int SnippetID, string Answer);
-        Snippet 
+        //Snippet 
     }
 }
