@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Utilities;
 
 namespace App.Controllers
 {
@@ -17,23 +18,19 @@ namespace App.Controllers
         private ApplicationUserManager _userManager;
         private readonly IEventService _eventService;
         private readonly ISnippetService _snippetService;
-        public CodeController(IEventService eventService, ISnippetService snippetService,ApplicationUserManager userManager)
+        public CodeController(IEventService eventService, ISnippetService snippetService, ApplicationUserManager userManager)
         {
             _eventService = eventService;
             _snippetService = snippetService;
             _userManager = userManager;
         }
 
-        public static DateTime getMyTime()
-        {
-            return DateTime.Now.AddHours(1);
-        }
-
+        
         public ActionResult Start()
         {
-            Event ev = _eventService.GetCurrentEvent();
+            Event ev = _eventService.GetNextEvent();
 
-            if(ev!=null)
+            if (ev != null)
                 return View(ev);
 
             return View();
@@ -43,47 +40,43 @@ namespace App.Controllers
         public ActionResult Game()
         {
             DateTime t = DateTime.Now.AddHours(1);
+            
+            // I DONT NEED ALL EVENT DATA
+            var ev = _eventService.GetCurrentEvent();
 
-            var ev = db.Events.FirstOrDefault(x => x.Start < t && x.End > t);
+            //no event at current time
             if (ev == null)
                 return RedirectToAction("Start");
 
-            AnswerLog last = null;
 
-            try
-            {
-                last = db.Answers.Where(x => x.User.UserName == User.Identity.Name && x.Event.ID == ev.ID && x.answered && x.snippet.Group.ID == ev.Group.ID).OrderByDescending(x => x.snippet.OrderNumber).Take(1).Single();
-            }
-            catch
-            {
-                last = null;
-            }
+            int lastAnsweredOrderNumber = _snippetService.GetLastAnsweredSnippetOrderNumber(User.Identity.GetUserId(), ev.ID, ev.Group.ID);
 
-            int id = 1;
-            if (last != null)
-                id = last.snippet.OrderNumber + 1;
+            int orderNumber = lastAnsweredOrderNumber + 1;
 
             Snippet snippet;
-            int lastOrderNumber = db.Snippets.Where(x => x.Group.ID == ev.Group.ID).OrderByDescending(x => x.ID).Take(1).Single().OrderNumber;
-            if (id > lastOrderNumber)
+
+            int lastOrderNumber = _snippetService.GetLastSnippetOrderNumber(ev.Group.ID);
+
+            if (orderNumber > lastOrderNumber)
             {
+
                 return RedirectToAction("Result", new { status = "YzK12QQu" });
             }
 
-            snippet = db.Snippets.FirstOrDefault(x => x.OrderNumber == id && x.Group.ID == ev.Group.ID);
+            snippet = _snippetService.GetSnippetWithOrderNumber(orderNumber, ev.Group.ID);
 
-            var check = db.Answers.FirstOrDefault(x => x.User.UserName == User.Identity.Name && x.snippet.ID == snippet.ID && x.Event.ID == ev.ID);
+            bool check = _snippetService.CheckIfFirstSnippetAccess(User.Identity.GetUserId(),snippet.ID,ev.ID);
 
-            if (check == null)
+            if (!check)
             {
-                var user = db.Users.FirstOrDefault(x => x.UserName == User.Identity.Name);
-                db.Answers.Add(new AnswerLog { DateCreated = getMyTime(), User = user, snippet = snippet, Event = ev });
-                db.SaveChanges();
+                ApplicationUser user = _userManager.FindById(User.Identity.GetUserId());
+                bool res = _snippetService.CreateInitialAnswer(new AnswerLog { DateCreated = DateHelper.GetCurrentTime(), User = user, snippet = snippet, Event = ev });                
             }
+
             ViewBag.lastOrderNumber = lastOrderNumber;
             return View(snippet);
         }
-        
+
         [HttpPost]
         public ActionResult NextSnippet(int id, string answer)
         {
@@ -93,7 +86,7 @@ namespace App.Controllers
             int snippetID = id;
             bool res = _snippetService.SubmitAnswer(userID, snippetID, answer);
 
-            if(!res)
+            if (!res)
             {
 
             }
@@ -107,7 +100,7 @@ namespace App.Controllers
                 return RedirectToAction("Game");
             return View();
         }
-              
+
 
     }
 }

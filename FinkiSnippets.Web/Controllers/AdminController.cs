@@ -1,7 +1,5 @@
 ﻿using App.Models;
 using App.ViewModels;
-using Data_Access;
-using Data_Access.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -22,15 +20,13 @@ namespace App.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-
         ApplicationUserManager _userManager;
         
         public AdminController(ApplicationUserManager userManager)
         {
             _userManager = userManager;
         }
-
-
+        
         public void ExportResults(int id)
         {
             //Create table for results
@@ -105,8 +101,7 @@ namespace App.Controllers
             }
             CreateExcelFile.CreateExcelDocument(dtSnippets, "Zadaci.xlsx", System.Web.HttpContext.Current.Response);
         } 
-        
-        
+                
         public ActionResult AddTestUsers()
         {
             var path = @"C:\Users\solev\Desktop\Whatever\IT_Sistemi_Users.xlsx";
@@ -195,8 +190,7 @@ namespace App.Controllers
         {
             return View();
         }
-
-        
+                
         [HttpPost]
         public ActionResult Register(RegisterViewModel model)
         {

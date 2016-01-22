@@ -9,7 +9,7 @@ namespace FinkiSnippets.Service
 {
     public interface IEventService
     {
+        Event GetNextEvent();
         Event GetCurrentEvent();
-        List<Event> GetCurrentEvents();
     }
 }

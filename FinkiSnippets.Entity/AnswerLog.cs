@@ -10,13 +10,13 @@ namespace Entity
         public int ID { get; set; }
         
         public int timeElapsed { get; set; }
-        public bool isCorrect { get; set; }        
-        public virtual Event  Event { get; set; }
+        public bool isCorrect { get; set; } 
         public DateTime DateCreated { get; set; }
         public bool answered { get; set; }
 
+    
         public virtual Snippet snippet { get; set; }
         public virtual ApplicationUser User { get; set; }
-                
+        public virtual Event Event { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace FinkiSnippets.Service
             db = _db;
         }
 
-        public Event GetCurrentEvent()
+        public Event GetNextEvent()
         {
             DateTime currentTime = DateHelper.GetCurrentTime();
             var result = db.Events.Where(x => x.End > currentTime).OrderBy(x => x.Start).Take(1).FirstOrDefault();
@@ -27,10 +27,12 @@ namespace FinkiSnippets.Service
             return result;
         }
 
-
-        public List<Event> GetCurrentEvents()
+        public Event GetCurrentEvent()
         {
-            return null;
+            DateTime currentTime = DateHelper.GetCurrentTime();
+            var result =  db.Events.FirstOrDefault(x => x.Start < currentTime && x.End > currentTime);
+
+            return result;
         }
     }
 }

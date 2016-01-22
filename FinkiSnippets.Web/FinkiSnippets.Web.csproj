@@ -570,6 +570,10 @@
     <Content Include="Views\Code\Test.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FinkiSnippets.Data\FinkiSnippets.Data.csproj">
+      <Project>{bce4f34e-07fa-4d28-a417-66fe9451e4ca}</Project>
+      <Name>FinkiSnippets.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FinkiSnippets.Entity\FinkiSnippets.Entity.csproj">
       <Project>{63762623-5d76-4bf3-a357-1f66d82e0a9a}</Project>
       <Name>FinkiSnippets.Entity</Name>
