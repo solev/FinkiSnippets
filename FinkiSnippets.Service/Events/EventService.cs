@@ -1,4 +1,5 @@
 ﻿using Entity;
+using System.Data.Entity;
 using FinkiSnippets.Data;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,8 @@ namespace FinkiSnippets.Service
         public Event GetNextEvent()
         {
             DateTime currentTime = DateHelper.GetCurrentTime();
-            var result = db.Events.Where(x => x.End > currentTime).OrderBy(x => x.Start).Take(1).FirstOrDefault();
+            var result = db.Events.Where(x => x.End > currentTime)
+                .OrderBy(x => x.Start).Take(1).FirstOrDefault();
 
             return result;
         }

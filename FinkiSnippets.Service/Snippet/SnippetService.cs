@@ -78,7 +78,7 @@ namespace FinkiSnippets.Service
 
         public bool CreateInitialAnswer(AnswerLog answer)
         {
-            db.Answers.Add(answer);
+            db.Answers.Add(new AnswerLog { DateCreated = answer.DateCreated,User = answer.User,snippet = answer.snippet,Event = answer.Event});
             int res = db.SaveChanges();
             return res > 0;
         }

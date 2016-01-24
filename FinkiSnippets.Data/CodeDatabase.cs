@@ -13,8 +13,9 @@ namespace FinkiSnippets.Data
     {
         public CodeDatabase() : base("name = DefaultConnection") 
         {
-            this.Configuration.LazyLoadingEnabled = false;
+            
         }
+
         public DbSet<Snippet> Snippets { get; set; }
         public DbSet<Operation> Operations { get; set; }
         public DbSet<AnswerLog> Answers { get; set; }

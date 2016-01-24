@@ -10,9 +10,7 @@ namespace Entity
 {
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
-
-        public ApplicationUserManager()
-            : base(new UserStore<ApplicationUser>(new CodeDatabase()))
+        public ApplicationUserManager(CodeDatabase db) : base(new UserStore<ApplicationUser>(db))
         {
             UserValidator = new UserValidator<ApplicationUser>(this) { AllowOnlyAlphanumericUserNames = false }; 
         }
