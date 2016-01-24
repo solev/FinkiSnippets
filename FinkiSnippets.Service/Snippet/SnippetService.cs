@@ -1,5 +1,6 @@
 ﻿using Entity;
 using FinkiSnippets.Data;
+using FinkiSnippets.Service.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ using Utilities;
 
 namespace FinkiSnippets.Service
 {
-    public class SnippetService : ISnippetService{
+    public class SnippetService : ISnippetService
+    {
 
         private CodeDatabase db;
 
@@ -81,6 +83,44 @@ namespace FinkiSnippets.Service
             db.Answers.Add(new AnswerLog { DateCreated = answer.DateCreated,User = answer.User,snippet = answer.snippet,Event = answer.Event});
             int res = db.SaveChanges();
             return res > 0;
+        }
+
+
+        public bool CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators)
+        {
+            int last;
+            if (Operators == null)
+                Operators = new List<OperatorsHelper>();
+            try
+            {
+                last = db.Snippets.Where(x => x.Group.ID == snippet.Group.ID).Max(x => x.OrderNumber);
+            }
+            catch
+            {
+                last = 0;
+            }
+
+            snippet.OrderNumber = last + 1;
+
+            var gr = db.Groups.FirstOrDefault(x => x.ID == snippet.Group.ID);
+            snippet.Group = gr;
+            db.Snippets.Add(snippet);
+            db.SaveChanges();
+
+            foreach (var op in Operators)
+            {
+                db.SnippetOperations.Add(new SnippetOperation { Frequency = op.Frequency, OperationID = op.OperationID, SnippetID = snippet.ID });
+            }
+
+            int res = db.SaveChanges();
+            return res > 0;
+        }
+
+
+        public List<Operation> GetAllOperations()
+        {
+            var result = db.Operations.ToList();
+            return result;
         }
     }
 }

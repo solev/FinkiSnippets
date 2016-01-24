@@ -1,4 +1,5 @@
 ﻿using Entity;
+using FinkiSnippets.Service.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,7 @@ namespace FinkiSnippets.Service
         Snippet GetSnippetWithOrderNumber(int OrderNumber, int GroupID);
         bool CheckIfFirstSnippetAccess(string userID, int snippetID, int EventID);
         bool CreateInitialAnswer(AnswerLog answer);
+        bool CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators);
+        List<Operation> GetAllOperations();
     }
 }

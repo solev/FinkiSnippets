@@ -1,4 +1,5 @@
 ﻿using Entity;
+using FinkiSnippets.Service.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,11 @@ namespace FinkiSnippets.Service
     {
         Event GetNextEvent();
         Event GetCurrentEvent();
+        Event GetEventById(int eventID);
+        List<EventDto> GetAllEvents();
+        List<Group> GetAllGroups();
+        bool AddOrUpdateEvent(int GroupID, Event ev);
+        List<AnswerLog> GetResultsForEvent(int eventID);
+
     }
 }

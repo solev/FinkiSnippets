@@ -1,8 +1,8 @@
-﻿@model App.Models.Event
+﻿@model App.ViewModels.EditEventViewModel
 
 @{
     ViewBag.Title = "CreateEvent";
-    string tempDate = String.Format("{0}.{1}.{2}", Model.Start.Day, Model.Start.Month, Model.Start.Year);
+    string tempDate = String.Format("{0}.{1}.{2}", Model.Event.Start.Day, Model.Event.Start.Month, Model.Event.Start.Year);
 }
 
 <h2>
@@ -25,21 +25,45 @@
             <p>Почеток - крај</p>
             <div class="row">
                 <div class="input-control text size1">
-                    <input type="text" name="hourStart" value="@Model.Start.TimeOfDay.Hours" id="hourStart" />
+                    <input type="text" name="hourStart" value="@Model.Event.Start.TimeOfDay.Hours" id="hourStart" />
                 </div>
                 <span>:</span>
                 <div class="input-control text size1">
-                    <input type="text" name="minStart" value="@Model.Start.TimeOfDay.Minutes" id="minStart" />
+                    <input type="text" name="minStart" value="@Model.Event.Start.TimeOfDay.Minutes" id="minStart" />
                 </div>
                 <span>до</span>
                 <div class="input-control text size1">
-                    <input type="text" name="hourEnd" value="@Model.End.TimeOfDay.Hours" id="hourEnd" />
+                    <input type="text" name="hourEnd" value="@Model.Event.End.TimeOfDay.Hours" id="hourEnd" />
                 </div>
                 <span>:</span>
                 <div class="input-control text size1">
-                    <input type="text" name="minEnd" value="@Model.End.TimeOfDay.Minutes" id="minEnd" />
+                    <input type="text" name="minEnd" value="@Model.Event.End.TimeOfDay.Minutes" id="minEnd" />
                 </div>
             </div>
+
+            <div class="row">
+                <div class="input-control select">
+                    <select id="groupSelect">
+                        <option value="">--Одбери група--</option>
+                        @foreach (var item in Model.Groups)
+                        {
+                            if (item.ID == Model.Event.Group.ID)
+                            {
+                                <option value="@item.ID" selected>@item.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
+
+                        }
+                    </select>
+
+
+
+                </div>
+            </div>
+
         </div>
 
         <div class="form-group">
@@ -94,8 +118,8 @@
                 var ms = $("#minStart");
                 var he = $("#hourEnd");
                 var me = $("#minEnd");
-                var modelid = '@Model.ID';
-
+                var modelid = '@Model.Event.ID';
+                var group = $("#groupSelect").val();
                 var error = false;
 
 
@@ -137,7 +161,8 @@
                         minStart: ms.val(),
                         hourEnd: he.val(),
                         minEnd: me.val(),
-                        id:modelid
+                        id:modelid,
+                        GroupID: group
                     })
                 }).done(function (data) {
 

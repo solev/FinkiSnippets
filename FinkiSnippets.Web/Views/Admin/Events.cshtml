@@ -1,4 +1,4 @@
-﻿@model List<Entity.Event>
+﻿@model List<FinkiSnippets.Service.Dto.EventDto>
 @{
     ViewBag.Title = "Events";
     var upcoming = Model.Where(x => x.End > DateTime.Now.AddHours(1)).OrderBy(x=>x.Start);

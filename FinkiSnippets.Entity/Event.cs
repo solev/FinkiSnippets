@@ -15,5 +15,6 @@ namespace Entity
                 
     
         public virtual Group Group { get; set; }
+        public virtual ICollection<AnswerLog> Answers { get; set; }
     }
 }

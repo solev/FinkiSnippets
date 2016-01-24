@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace App.ViewModels
+namespace FinkiSnippets.Service.Dto
 {
     public class OperatorsHelper
     {

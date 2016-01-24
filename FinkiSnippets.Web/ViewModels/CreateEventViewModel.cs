@@ -18,7 +18,5 @@ namespace App.ViewModels
         public int GroupID { get; set; }
 
         public List<Group> Groups{ get; set; }
-
-
     }
 }

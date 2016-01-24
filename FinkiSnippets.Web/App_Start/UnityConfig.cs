@@ -44,7 +44,8 @@ namespace App.App_Start
             container.RegisterType<ApplicationUserManager>(new PerRequestLifetimeManager());
             container.RegisterType<ISnippetService, SnippetService>(new PerRequestLifetimeManager());
             container.RegisterType<IEventService, EventService>(new PerRequestLifetimeManager());
-            
+            container.RegisterType<IExportService, ExportService>(new PerRequestLifetimeManager());
+            container.RegisterType<IUserService, UserService>(new PerRequestLifetimeManager());            
         }
     }
 }
