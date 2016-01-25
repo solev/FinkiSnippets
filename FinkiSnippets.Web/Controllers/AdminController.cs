@@ -32,7 +32,6 @@ namespace App.Controllers
         public AdminController(ApplicationUserManager userManager, IExportService exportService, IUserService userService, ISnippetService snippetService, IEventService eventService)
         {
             _userManager = userManager;
-            
             _exportService = exportService;
             _userService = userService;
             _snippetService = snippetService;
@@ -171,7 +170,6 @@ namespace App.Controllers
         [HttpPost]
         public JsonResult CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators)
         {
-
             if (ModelState.IsValid)
             {
                 bool res = _snippetService.CreateSnippet(snippet, Operators);
@@ -311,8 +309,35 @@ namespace App.Controllers
             return View(finalResult);
         }
 
+
+        public ActionResult Snippets()
+        {
+            var snippets = _snippetService.GetAllSnippets(1,1);
+            return View(snippets);
+        }
+
+        [HttpGet]
+        public JsonResult GetCodes()
+        {
+            var codes = _snippetService.GetAllCodes();
+            return Json(codes, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult EditSnippet(int id)
+        {
+            EditSnippetViewModel EditSnippetModel = new EditSnippetViewModel();
+
+            EditSnippetModel.Snippet = _snippetService.GetSnippetById(id);
+            EditSnippetModel.Operations = _snippetService.GetAllOperations();
+            EditSnippetModel.Groups = _eventService.GetAllGroups();
+            return View(EditSnippetModel);
+        }
+
+        public ActionResult DeleteSnippet(int id)
+        {
+            bool res = _snippetService.DeleteSnippet(id);
+            return RedirectToAction("Snippets");
+        }
+
     }
-
-
-
 }

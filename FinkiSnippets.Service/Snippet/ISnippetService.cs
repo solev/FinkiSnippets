@@ -18,5 +18,9 @@ namespace FinkiSnippets.Service
         bool CreateInitialAnswer(AnswerLog answer);
         bool CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators);
         List<Operation> GetAllOperations();
+        List<Snippet> GetAllSnippets(int page, int snippetsPerPage);
+        List<Snippet> GetAllCodes();
+        Snippet GetSnippetById(int snippetID);
+        bool DeleteSnippet(int snippetID);
     }
 }

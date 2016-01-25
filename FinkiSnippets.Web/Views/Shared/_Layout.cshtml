@@ -19,7 +19,7 @@
             @if(User.IsInRole("Admin"))
             {
                 <li>@Html.ActionLink("Корисници", "Users", "Admin", new { id = 1 }, null)</li>
-                <li>@Html.ActionLink("Додади Код", "CreateSnippet", "Admin")</li>
+                <li>@Html.ActionLink("Снипети", "Snippets", "Admin")</li>
                 <li>@Html.ActionLink("Натпревари", "Events", "Admin")</li>
                 <li>@Html.ActionLink("Старт", "Start", "Code")</li>
             }

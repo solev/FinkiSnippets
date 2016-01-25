@@ -1,4 +1,5 @@
 ﻿using Entity;
+using System.Data.Entity;
 using FinkiSnippets.Data;
 using FinkiSnippets.Service.Dto;
 using System;
@@ -91,21 +92,38 @@ namespace FinkiSnippets.Service
             int last;
             if (Operators == null)
                 Operators = new List<OperatorsHelper>();
-            try
-            {
-                last = db.Snippets.Where(x => x.Group.ID == snippet.Group.ID).Max(x => x.OrderNumber);
-            }
-            catch
-            {
-                last = 0;
-            }
 
-            snippet.OrderNumber = last + 1;
+            
 
             var gr = db.Groups.FirstOrDefault(x => x.ID == snippet.Group.ID);
-            snippet.Group = gr;
-            db.Snippets.Add(snippet);
-            db.SaveChanges();
+            
+            if(snippet.ID > 0)
+            {
+                var snippetToChange = db.Snippets.Find(snippet.ID);
+
+                snippetToChange.Output = snippet.Output;
+                snippetToChange.Question = snippet.Question;
+                snippetToChange.Code = snippet.Code;
+                snippetToChange.Group = gr;
+
+                var oldOperations = db.SnippetOperations.Where(x => x.SnippetID == snippet.ID);
+                db.SnippetOperations.RemoveRange(oldOperations);                
+            }
+            else
+            {
+                try
+                {
+                    last = db.Snippets.Where(x => x.Group.ID == snippet.Group.ID).Max(x => x.OrderNumber);
+                }
+                catch
+                {
+                    last = 0;
+                }
+                snippet.Group = gr;
+                snippet.OrderNumber = last + 1;
+                db.Snippets.Add(snippet);
+                db.SaveChanges();
+            }            
 
             foreach (var op in Operators)
             {
@@ -115,12 +133,48 @@ namespace FinkiSnippets.Service
             int res = db.SaveChanges();
             return res > 0;
         }
-
-
+        
         public List<Operation> GetAllOperations()
         {
             var result = db.Operations.ToList();
             return result;
+        }
+
+        public List<Snippet> GetAllSnippets(int page, int snippetsPerPage)
+        {
+            var result = db.Snippets.ToList();
+            return result;
+        }
+        
+
+        public List<Snippet> GetAllCodes()
+        {
+            var tempResult = db.Snippets.Select(x => new { x.ID, x.Code }).ToList();
+
+            var result = tempResult.Select(x => new Snippet { ID = x.ID, Code = x.Code }).ToList();
+            return result;
+        }
+
+
+        public Snippet GetSnippetById(int snippetID)
+        {
+            var snippet = db.Snippets.Where(x => x.ID == snippetID).Include(x=>x.Group).FirstOrDefault();
+            var operations = db.SnippetOperations.Where(x => x.SnippetID == snippet.ID).ToList();
+            snippet.Operations = operations;
+
+            return snippet;
+        }
+        
+        public bool DeleteSnippet(int snippetID)
+        {
+            var snippet = db.Snippets.Find(snippetID);
+            var operations = db.SnippetOperations.Where(x => x.SnippetID == snippetID);
+            var answers = db.Answers.Where(x => x.snippet.ID == snippetID);
+            db.Snippets.Remove(snippet);
+            db.SnippetOperations.RemoveRange(operations);
+            db.Answers.RemoveRange(answers);
+            int res = db.SaveChanges();
+            return res > 0;
         }
     }
 }
