@@ -176,5 +176,12 @@ namespace FinkiSnippets.Service
             int res = db.SaveChanges();
             return res > 0;
         }
+
+        public List<Snippet> GetSnippetsFromGroup(int groupID)
+        {
+            var tempResult = db.Snippets.Where(x => x.Group.ID == groupID).Select(x => new { x.ID, x.Question, x.Code }).ToList();
+            var result = tempResult.Select(x => new Snippet {ID = x.ID, Question = x.Question, Code = x.Code}).ToList();
+            return result;
+        }
     }
 }

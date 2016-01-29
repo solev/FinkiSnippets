@@ -1,0 +1,85 @@
+﻿@model FinkiSnippets.Service.Dto.SnippetsByGroupDto
+
+@{
+    ViewBag.Title = "Group";
+    int i = 0;
+}
+
+<div class="grid">
+    <div class="row">
+        <h2 class="span9">Снипети во група @Model.group.Name</h2>
+        <a class="button large" href="" onclick="return alert('NOT IMPLEMENTED')">Додади нов снипет</a>
+    </div>
+</div>
+<hr />
+<div class="listview-outlook">
+    @foreach (var item in Model.snippets)
+    {
+        <div class="grid">
+            <div class="row">
+                <div class="span9">
+                    <a href="javascript:void(0)" class="list">
+                        <div class="list-content">
+                            <span class="list-title">@item.Question</span>
+                            <div class="codeEditor" id="editor_@(i++)">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="span3">
+                    <a class="button danger" href="" onclick="return alert('NOT IMPLEMENTED')">Тргни од група</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/src-noconflict/ace.js"></script>
+    <script src="~/Scripts/metro-times.js"></script>
+    <script>
+        $(function () {
+            var snippetsData = [];
+
+            $.get('@Url.Action("GetCodesFromGroup", "Admin", new { id = @Model.group.ID })', function (data) {
+                snippetsData = data;
+                var editors = $(".codeEditor");
+
+                editors.each(function (idx) {
+
+                    var editor = ace.edit("editor_" + idx);
+                    editor.setTheme("ace/theme/eclipse");
+                    editor.getSession().setMode("ace/mode/java");
+                    editor.setOptions({
+                        readOnly: true,
+                        highlightActiveLine: false,
+                        highlightGutterLine: false
+                    });
+
+                    editor.renderer.$cursorLayer.element.style.opacity = 0;
+
+                    var heightUpdateFunction = function () {
+
+                        // http://stackoverflow.com/questions/11584061/
+                        var newHeight =
+                                  editor.getSession().getScreenLength()
+                                  * editor.renderer.lineHeight
+                                  + editor.renderer.scrollBar.getWidth();
+
+                        $('#editor_' + idx).height(newHeight.toString() + "px");
+                        $('#editor-section').height(newHeight.toString() + "px");
+
+                        // This call is required for the editor to fix all of
+                        // its inner structure for adapting to a change in size
+                        editor.resize();
+                    };
+
+                    editor.getSession().setValue(decodeURIComponent(snippetsData[idx].Code));
+                    heightUpdateFunction();
+                    editor.getSession().on('change', heightUpdateFunction);
+                });
+            });
+        });
+
+    </script>
+}

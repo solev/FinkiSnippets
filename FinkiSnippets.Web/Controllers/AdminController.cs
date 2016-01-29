@@ -236,6 +236,13 @@ namespace App.Controllers
             return Json(codes, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public JsonResult GetCodesFromGroup(int id)
+        {
+            var codes = _snippetService.GetSnippetsFromGroup(id);
+            return Json(codes, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult Snippets()
         {
             var snippets = _snippetService.GetAllSnippets(1,1);
@@ -285,11 +292,12 @@ namespace App.Controllers
             return View(groups);
         }
 
-        public ActionResult Groups(int id)
+        public ActionResult Group(int id)
         {
-            var group = _groupService.GetGroupByID(id);
-            Console.Write(id);
-            return View(group);
+            var _snippets = _snippetService.GetSnippetsFromGroup(id);
+            var _group = _groupService.GetGroupByID(id);
+            SnippetsByGroupDto result = new SnippetsByGroupDto { group = _group, snippets = _snippets };
+            return View(result);
         }
 
         //id == Event id

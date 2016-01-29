@@ -572,6 +572,7 @@
     <Content Include="Views\Admin\Snippets.cshtml" />
     <Content Include="Views\Admin\EditSnippet.cshtml" />
     <Content Include="Views\Admin\Groups.cshtml" />
+    <Content Include="Views\Admin\Group.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FinkiSnippets.Data\FinkiSnippets.Data.csproj">
