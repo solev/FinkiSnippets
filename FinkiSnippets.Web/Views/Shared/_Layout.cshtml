@@ -10,6 +10,7 @@
     <link href="~/Content/iconFont.min.css" rel="stylesheet" />
 </head>
 <body class="metro" style="padding-top:0;">
+    
     <nav class="horizontal-menu" style="border-bottom:1px solid lightgray;padding:15px 15px;margin-top:0;">
         <ul class="container">
             @if(User.Identity.IsAuthenticated)
@@ -18,9 +19,16 @@
             }
             @if(User.IsInRole("Admin"))
             {
-                <li>@Html.ActionLink("Корисници", "Users", "Admin", new { id = 1 }, null)</li>
-                <li>@Html.ActionLink("Снипети", "Snippets", "Admin")</li>
-                <li>@Html.ActionLink("Натпревари", "Events", "Admin")</li>
+                 <li>
+                    <a class="dropdown-toggle" href="#">Менаџирање</a>
+                     <ul class="dropdown-menu" data-role="dropdown" data-show="hover">
+                         <li></li>
+                         <li>@Html.ActionLink("Снипети", "Snippets", "Admin")</li>
+                         <li>@Html.ActionLink("Групи", "Groups", "Admin")</li>
+                         <li>@Html.ActionLink("Корисници", "Users", "Admin", new { id = 1 }, null)</li>
+                         <li>@Html.ActionLink("Натпревари", "Events", "Admin")</li>
+                     </ul>
+                </li>
                 <li>@Html.ActionLink("Старт", "Start", "Code")</li>
             }
             else

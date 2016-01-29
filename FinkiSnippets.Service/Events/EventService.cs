@@ -56,12 +56,6 @@ namespace FinkiSnippets.Service
             List<EventDto> result = tempResult.Select(x => new EventDto { ID = x.ID, Start = x.Start, End = x.End }).ToList();
             return result;
         }
-        
-        public List<Group> GetAllGroups()
-        {
-            var result = db.Groups.ToList();
-            return result;
-        }
 
         public bool AddOrUpdateEvent(int GroupID, Event ev)
         {

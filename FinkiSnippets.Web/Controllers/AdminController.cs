@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.IO;
-using Excel;
+//using Excel;
 using ExportToExcel;
 using DocumentFormat.OpenXml.Packaging;
 using System.Data;
@@ -17,6 +17,7 @@ using Entity;
 using FinkiSnippets.Data;
 using FinkiSnippets.Service;
 using FinkiSnippets.Service.Dto;
+using FinkiSnippets.Service.Groups;
 
 namespace App.Controllers
 {
@@ -28,14 +29,16 @@ namespace App.Controllers
         private readonly IUserService _userService;
         private readonly ISnippetService _snippetService;
         private readonly IEventService _eventService;
+        private readonly IGroupService _groupService;
 
-        public AdminController(ApplicationUserManager userManager, IExportService exportService, IUserService userService, ISnippetService snippetService, IEventService eventService)
+        public AdminController(ApplicationUserManager userManager, IExportService exportService, IUserService userService, ISnippetService snippetService, IEventService eventService, IGroupService groupService)
         {
             _userManager = userManager;
             _exportService = exportService;
             _userService = userService;
             _snippetService = snippetService;
             _eventService = eventService;
+            _groupService = groupService;
         }
 
         public void ExportResults(int id)
@@ -54,7 +57,7 @@ namespace App.Controllers
             CreateExcelFile.CreateExcelDocument(result.Table, "Zadaci.xlsx", System.Web.HttpContext.Current.Response);
         }
 
-        public ActionResult AddTestUsers()
+        /*public ActionResult AddTestUsers()
         {
             var path = @"C:\Users\solev\Desktop\Whatever\IT_Sistemi_Users.xlsx";
 
@@ -86,7 +89,7 @@ namespace App.Controllers
             //ApplicationUser testUser = new ApplicationUser { UserName = username, FirstName = fname, LastName = lname };
             //var res = userManager.Create(testUser, password);
             return RedirectToAction("Users", new { id = 1 });
-        }
+        }*/
 
         //id == page
         public ActionResult Users(int id)
@@ -104,7 +107,6 @@ namespace App.Controllers
 
         public ActionResult Edit(string id)
         {
-
             var user = _userManager.FindById(id);
             return View(new RegisterViewModel { Ime = user.FirstName, Prezime = user.LastName, email = user.Email, ID = user.Id });
         }
@@ -159,27 +161,6 @@ namespace App.Controllers
             return View(model);
         }
 
-        public ActionResult CreateSnippet()
-        {
-            CreateSnippetViewModel model = new CreateSnippetViewModel();
-            model.Operations = _snippetService.GetAllOperations();
-            model.Groups = _eventService.GetAllGroups();
-            return View(model);
-        }
-
-        [HttpPost]
-        public JsonResult CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators)
-        {
-            if (ModelState.IsValid)
-            {
-                bool res = _snippetService.CreateSnippet(snippet, Operators);
-
-                if (res)
-                    return Json("Успешно зачуван снипет!", JsonRequestBehavior.AllowGet);
-            }
-            return Json("FAIIILLL!!!!", JsonRequestBehavior.AllowGet);
-        }
-
         public ActionResult Events()
         {
             var events = _eventService.GetAllEvents();
@@ -189,7 +170,7 @@ namespace App.Controllers
         public ActionResult CreateEvent()
         {
             CreateEventViewModel model = new CreateEventViewModel();
-            model.Groups = _eventService.GetAllGroups();
+            model.Groups = _groupService.GetAllGroups();
             return View(model);
         }
 
@@ -221,7 +202,7 @@ namespace App.Controllers
             EditEventViewModel model = new EditEventViewModel();
             var ev = _eventService.GetEventById(id);
             model.Event = ev;
-            model.Groups = _eventService.GetAllGroups();
+            model.Groups = _groupService.GetAllGroups();
             string tempDate = String.Format("{0}.{1}.{2}", ev.Start.Day, ev.Start.Month, ev.Start.Year);
 
             return View(model);
@@ -230,7 +211,6 @@ namespace App.Controllers
         [HttpPost]
         public ActionResult EditEvent(CreateEventViewModel model)
         {
-
             string[] dateTime = model.date.Split('.');
             int day = Int32.Parse(dateTime[0]);
             int month = Int32.Parse(dateTime[1]);
@@ -241,14 +221,75 @@ namespace App.Controllers
             Event ev = new Event { Start = start, End = end, ID = model.id };
             bool res = _eventService.AddOrUpdateEvent(model.GroupID, ev);
 
-
             if (!res)
             {
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
 
-
             return Json("success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetCodes()
+        {
+            var codes = _snippetService.GetAllCodes();
+            return Json(codes, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Snippets()
+        {
+            var snippets = _snippetService.GetAllSnippets(1,1);
+            return View(snippets);
+        }
+
+        public ActionResult CreateSnippet()
+        {
+            CreateSnippetViewModel model = new CreateSnippetViewModel();
+            model.Operations = _snippetService.GetAllOperations();
+            model.Groups = _groupService.GetAllGroups();
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators)
+        {
+            if (ModelState.IsValid)
+            {
+                bool res = _snippetService.CreateSnippet(snippet, Operators);
+
+                if (res)
+                    return Json("Успешно зачуван снипет!", JsonRequestBehavior.AllowGet);
+            }
+            return Json("FAIIILLL!!!!", JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult EditSnippet(int id)
+        {
+            EditSnippetViewModel EditSnippetModel = new EditSnippetViewModel();
+
+            EditSnippetModel.Snippet = _snippetService.GetSnippetById(id);
+            EditSnippetModel.Operations = _snippetService.GetAllOperations();
+            EditSnippetModel.Groups = _groupService.GetAllGroups();
+            return View(EditSnippetModel);
+        }
+
+        public ActionResult DeleteSnippet(int id)
+        {
+            bool res = _snippetService.DeleteSnippet(id);
+            return RedirectToAction("Snippets");
+        }
+
+        public ActionResult Groups()
+        {
+            var groups = _groupService.GetAllGroups();
+            return View(groups);
+        }
+
+        public ActionResult Groups(int id)
+        {
+            var group = _groupService.GetGroupByID(id);
+            Console.Write(id);
+            return View(group);
         }
 
         //id == Event id
@@ -308,36 +349,5 @@ namespace App.Controllers
 
             return View(finalResult);
         }
-
-
-        public ActionResult Snippets()
-        {
-            var snippets = _snippetService.GetAllSnippets(1,1);
-            return View(snippets);
-        }
-
-        [HttpGet]
-        public JsonResult GetCodes()
-        {
-            var codes = _snippetService.GetAllCodes();
-            return Json(codes, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult EditSnippet(int id)
-        {
-            EditSnippetViewModel EditSnippetModel = new EditSnippetViewModel();
-
-            EditSnippetModel.Snippet = _snippetService.GetSnippetById(id);
-            EditSnippetModel.Operations = _snippetService.GetAllOperations();
-            EditSnippetModel.Groups = _eventService.GetAllGroups();
-            return View(EditSnippetModel);
-        }
-
-        public ActionResult DeleteSnippet(int id)
-        {
-            bool res = _snippetService.DeleteSnippet(id);
-            return RedirectToAction("Snippets");
-        }
-
     }
 }

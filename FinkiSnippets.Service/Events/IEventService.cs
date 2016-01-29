@@ -14,9 +14,7 @@ namespace FinkiSnippets.Service
         Event GetCurrentEvent();
         Event GetEventById(int eventID);
         List<EventDto> GetAllEvents();
-        List<Group> GetAllGroups();
         bool AddOrUpdateEvent(int GroupID, Event ev);
         List<AnswerLog> GetResultsForEvent(int eventID);
-
     }
 }

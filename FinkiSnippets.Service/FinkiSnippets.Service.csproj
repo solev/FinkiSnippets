@@ -66,6 +66,8 @@
     <Compile Include="Events\EventService.cs" />
     <Compile Include="Events\IEventService.cs" />
     <Compile Include="Export\IExportService.cs" />
+    <Compile Include="Groups\GroupService.cs" />
+    <Compile Include="Groups\IGroupService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Snippet\ISnippetService.cs" />
     <Compile Include="Snippet\SnippetService.cs" />

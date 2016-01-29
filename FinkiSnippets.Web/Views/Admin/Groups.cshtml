@@ -1,0 +1,33 @@
+﻿@model List<Entity.Group>
+
+@{
+    ViewBag.Title = "Groups";
+}
+
+<h2>Groups</h2>
+
+<div class="listview-outlook">
+    @foreach (var group in Model)
+    {
+        <div class="grid">
+            <div class="row">
+                <div class="span8">
+                    <a href="javascript:void(0)" class="list">
+                        <div class="list-content">
+                            <span class="list-title">@group.Name</span>           
+                        </div>
+                    </a>
+                </div>
+                <div class="span6">
+                    <a class="button success" href="@Url.Action("Groups", "Admin", new { id = group.ID })">Преглед на снипети</a>
+                    <a class="button warning" href="">Измени</a>
+                    <a class="button danger" href="" onclick="return confirm('Дали сте сигурни?')">Избриши</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/metro-times.js"></script>
+}

@@ -3,6 +3,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using Entity;
 using FinkiSnippets.Service;
+using FinkiSnippets.Service.Groups;
 
 namespace App.App_Start
 {
@@ -45,7 +46,8 @@ namespace App.App_Start
             container.RegisterType<ISnippetService, SnippetService>(new PerRequestLifetimeManager());
             container.RegisterType<IEventService, EventService>(new PerRequestLifetimeManager());
             container.RegisterType<IExportService, ExportService>(new PerRequestLifetimeManager());
-            container.RegisterType<IUserService, UserService>(new PerRequestLifetimeManager());            
+            container.RegisterType<IUserService, UserService>(new PerRequestLifetimeManager());
+            container.RegisterType<IGroupService, GroupService>(new PerRequestLifetimeManager());
         }
     }
 }
