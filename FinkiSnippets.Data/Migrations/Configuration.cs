@@ -10,6 +10,7 @@ namespace FinkiSnippets.Data.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            ContextKey = "App.Migrations.Configuration";
         }
 
         protected override void Seed(CodeDatabase context)

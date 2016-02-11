@@ -15,7 +15,8 @@ namespace Entity
         public int OrderNumber { get; set; }
         public string Question { get; set; }
 
-        public virtual Group Group { get; set; }
+        public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<SnippetOperation> Operations { get; set; }
+        public virtual ICollection<Event> Events{ get; set; }
     }
 }
