@@ -11,6 +11,28 @@
         <h2 class="span9">Снипети</h2>
         <a class="button large" href="@Url.Action("CreateSnippet","Admin")">Додади нов снипет</a>
     </div>    
+    <div class="row">
+        <div class="span9">
+            <div class="example">
+                <form>
+                    <fieldset>
+                        <legend>Филтер</legend>
+                        <label>Групи</label>                    
+
+                        <div class="input-control select" >
+                            <select id="groupSelect" multiple style="width:100%;">
+                                <option value="1">Value 1</option>
+                                <option value="2">Value 2</option>
+                                <option value="3">Value 3</option>
+                            </select>
+                        </div>
+
+                        <input type="submit" value="Submit">
+                    </fieldset>
+                </form>
+            </div>          
+        </div>
+    </div>
 </div>
 <hr/>
 <div class="listview-outlook">
@@ -43,6 +65,12 @@
 
     <script>
         $(function () {
+
+            $("#groupSelect").select2({
+                placeholder: "Селектирај нула или една или повеќе групи",
+                allowClear: true
+            });
+
             var snippetsData = [];
 
             $.get('@Url.Action("GetCodes","Admin")', function (data) {

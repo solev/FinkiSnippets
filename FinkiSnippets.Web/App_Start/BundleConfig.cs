@@ -21,6 +21,8 @@ namespace App
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/metro-bootstrap.min.css",
                       "~/Content/metro-bootstrap-responsive.min.css",
+                      "~/Scripts/Select2/css/select2.min.css",
+                      "~/Scripts/Select2/css/select2-bootstrap.min.css",
                       "~/Content/site.css"));
         }
     }

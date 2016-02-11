@@ -243,9 +243,14 @@ namespace App.Controllers
             return Json(codes, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Snippets()
+        public ActionResult Snippets(int page = 1)
         {
-            var snippets = _snippetService.GetAllSnippets(1,1);
+
+            if (page < 1)
+                    page = 1;
+
+            var snippets = _snippetService.GetAllSnippets(page, Utilities.Constants.stuffPerPage);
+
             return View(snippets);
         }
 

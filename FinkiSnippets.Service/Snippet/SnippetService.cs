@@ -148,7 +148,7 @@ namespace FinkiSnippets.Service
 
         public List<Snippet> GetAllSnippets(int page, int snippetsPerPage)
         {
-            var result = db.Snippets.ToList();
+            var result = db.Snippets.OrderByDescending(x=>x.ID).Skip((page-1)*snippetsPerPage).Take(snippetsPerPage).ToList();
             return result;
         }
         
