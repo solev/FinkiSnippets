@@ -39,42 +39,42 @@ namespace App.Controllers
         //id == orderNumber
         public ActionResult Game()
         {
-            DateTime t = DateTime.Now.AddHours(1);
+            //DateTime t = DateTime.Now.AddHours(1);
             
-            // I DONT NEED ALL EVENT DATA
-            var ev = _eventService.GetCurrentEvent();
+            //// I DONT NEED ALL EVENT DATA
+            //var ev = _eventService.GetCurrentEvent();
 
-            //no event at current time
-            if (ev == null)
-                return RedirectToAction("Start");
+            ////no event at current time
+            //if (ev == null)
+            //    return RedirectToAction("Start");
 
 
-            int lastAnsweredOrderNumber = _snippetService.GetLastAnsweredSnippetOrderNumber(User.Identity.GetUserId(), ev.ID, ev.Group.ID);
+            //int lastAnsweredOrderNumber = _snippetService.GetLastAnsweredSnippetOrderNumber(User.Identity.GetUserId(), ev.ID, 1);
 
-            int orderNumber = lastAnsweredOrderNumber + 1;
+            //int orderNumber = lastAnsweredOrderNumber + 1;
 
-            Snippet snippet;
+            //Snippet snippet;
 
-            int lastOrderNumber = _snippetService.GetLastSnippetOrderNumber(ev.Group.ID);
+            //int lastOrderNumber = _snippetService.GetLastSnippetOrderNumber(ev.Group.ID);
 
-            if (orderNumber > lastOrderNumber)
-            {
+            //if (orderNumber > lastOrderNumber)
+            //{
 
-                return RedirectToAction("Result", new { status = "YzK12QQu" });
-            }
+            //    return RedirectToAction("Result", new { status = "YzK12QQu" });
+            //}
 
-            snippet = _snippetService.GetSnippetWithOrderNumber(orderNumber, ev.Group.ID);
+            //snippet = _snippetService.GetSnippetWithOrderNumber(orderNumber, ev.Group.ID);
 
-            bool check = _snippetService.CheckIfFirstSnippetAccess(User.Identity.GetUserId(),snippet.ID,ev.ID);
+            //bool check = _snippetService.CheckIfFirstSnippetAccess(User.Identity.GetUserId(),snippet.ID,ev.ID);
 
-            if (!check)
-            {
-                ApplicationUser user = _userManager.FindById(User.Identity.GetUserId());
-                bool res = _snippetService.CreateInitialAnswer(new AnswerLog { DateCreated = DateHelper.GetCurrentTime(), User = user, snippet = snippet, Event = ev });                
-            }
+            //if (!check)
+            //{
+            //    ApplicationUser user = _userManager.FindById(User.Identity.GetUserId());
+            //    bool res = _snippetService.CreateInitialAnswer(new AnswerLog { DateCreated = DateHelper.GetCurrentTime(), User = user, snippet = snippet, Event = ev });                
+            //}
 
-            ViewBag.lastOrderNumber = lastOrderNumber;
-            return View(snippet);
+            //ViewBag.lastOrderNumber = lastOrderNumber;
+            return View();
         }
 
         [HttpPost]

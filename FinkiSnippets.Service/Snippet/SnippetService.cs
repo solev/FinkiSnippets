@@ -52,24 +52,30 @@ namespace FinkiSnippets.Service
             return false;
         }
 
+        //TO DO: Create new logic
         public int GetLastAnsweredSnippetOrderNumber(string userID, int EventID, int GroupID)
         {
-            var result = db.Answers.Where(x => x.User.Id == userID && x.Event.ID == EventID && x.answered && x.snippet.Group.ID == GroupID).OrderByDescending(x => x.snippet.OrderNumber).Select(x => x.snippet.OrderNumber).Take(1).FirstOrDefault();
+            //var result = db.Answers.Where(x => x.User.Id == userID && x.Event.ID == EventID && x.answered && x.snippet.Group.ID == GroupID).OrderByDescending(x => x.snippet.OrderNumber).Select(x => x.snippet.OrderNumber).Take(1).FirstOrDefault();
 
-            return result;
+            //return result;
+
+            return -1;
         }
 
+        //TO DO: Create new Logic
         public int GetLastSnippetOrderNumber(int GroupID)
         {
-            var result = db.Snippets.Where(x => x.Group.ID == GroupID).OrderByDescending(x => x.ID).Select(x => x.OrderNumber).Take(1).FirstOrDefault();
+            //var result = db.Snippets.Where(x => x.Group.ID == GroupID).OrderByDescending(x => x.ID).Select(x => x.OrderNumber).Take(1).FirstOrDefault();
 
-            return result;
+            //return result;
+            return -1;
         }
 
         public Snippet GetSnippetWithOrderNumber(int OrderNumber, int GroupID)
         {
-            var result = db.Snippets.FirstOrDefault(x => x.OrderNumber == OrderNumber && x.Group.ID == GroupID);
-            return result;
+            //var result = db.Snippets.FirstOrDefault(x => x.OrderNumber == OrderNumber && x.Group.ID == GroupID);
+            //return result;
+            return null;
         }
 
         public bool CheckIfFirstSnippetAccess(string userID, int snippetID, int EventID)
@@ -86,16 +92,16 @@ namespace FinkiSnippets.Service
             return res > 0;
         }
 
-
+        //TO DO: Snippet can be in multiple groups
         public bool CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators)
         {
-            int last;
+            int last = 0;
             if (Operators == null)
                 Operators = new List<OperatorsHelper>();
 
             
 
-            var gr = db.Groups.FirstOrDefault(x => x.ID == snippet.Group.ID);
+            //var gr = db.Groups.FirstOrDefault(x => x.ID == snippet.Group.ID);
             
             if(snippet.ID > 0)
             {
@@ -104,7 +110,7 @@ namespace FinkiSnippets.Service
                 snippetToChange.Output = snippet.Output;
                 snippetToChange.Question = snippet.Question;
                 snippetToChange.Code = snippet.Code;
-                snippetToChange.Group = gr;
+                //snippetToChange.Group = gr;
 
                 var oldOperations = db.SnippetOperations.Where(x => x.SnippetID == snippet.ID);
                 db.SnippetOperations.RemoveRange(oldOperations);                
@@ -113,13 +119,13 @@ namespace FinkiSnippets.Service
             {
                 try
                 {
-                    last = db.Snippets.Where(x => x.Group.ID == snippet.Group.ID).Max(x => x.OrderNumber);
+                    //last = db.Snippets.Where(x => x.Group.ID == snippet.Group.ID).Max(x => x.OrderNumber);
                 }
                 catch
                 {
                     last = 0;
                 }
-                snippet.Group = gr;
+               // snippet.Group = gr;
                 snippet.OrderNumber = last + 1;
                 db.Snippets.Add(snippet);
                 db.SaveChanges();
@@ -158,7 +164,7 @@ namespace FinkiSnippets.Service
 
         public Snippet GetSnippetById(int snippetID)
         {
-            var snippet = db.Snippets.Where(x => x.ID == snippetID).Include(x=>x.Group).FirstOrDefault();
+            var snippet = db.Snippets.Where(x => x.ID == snippetID).FirstOrDefault();
             var operations = db.SnippetOperations.Where(x => x.SnippetID == snippet.ID).ToList();
             snippet.Operations = operations;
 
@@ -179,9 +185,10 @@ namespace FinkiSnippets.Service
 
         public List<Snippet> GetSnippetsFromGroup(int groupID)
         {
-            var tempResult = db.Snippets.Where(x => x.Group.ID == groupID).Select(x => new { x.ID, x.Question, x.Code }).ToList();
+            var tempResult = db.Groups.Where(x => x.ID == groupID).Include(x => x.Snippets).SelectMany(x => x.Snippets).Select(x=> new { x.ID,x.Question,x.Code}).ToList();
             var result = tempResult.Select(x => new Snippet {ID = x.ID, Question = x.Question, Code = x.Code}).ToList();
             return result;
         }
+
     }
 }
