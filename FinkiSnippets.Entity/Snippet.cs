@@ -12,7 +12,6 @@ namespace Entity
         public int ID { get; set; }                
         public string Code { get; set; }
         public string Output { get; set; }
-        public int OrderNumber { get; set; }
         public string Question { get; set; }
 
         public virtual ICollection<Group> Groups { get; set; }

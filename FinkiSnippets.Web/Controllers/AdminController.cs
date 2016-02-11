@@ -258,11 +258,11 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public JsonResult CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators)
+        public JsonResult CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Int32> Groups)
         {
             if (ModelState.IsValid)
             {
-                bool res = _snippetService.CreateSnippet(snippet, Operators);
+                bool res = _snippetService.CreateSnippet(snippet, Operators, Groups);
 
                 if (res)
                     return Json("Успешно зачуван снипет!", JsonRequestBehavior.AllowGet);
