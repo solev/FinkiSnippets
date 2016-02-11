@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <table class="table hovered">
+            <table id="operatorTable" class="table hovered">
                 <thead>
                     <tr>
                         <th class="text-left">Оператор</th>
@@ -44,17 +44,31 @@
                 <tbody></tbody>
             </table>
             
+            <h2>Постоечки групи:</h2>
             <div class="row">
-                <div class="input-control select">
+                <div class="span3 input-control select">
                     <select id="groupSelect">
-                        <option value="">--Одбери група--</option>
                         @foreach (var item in Model.Groups)
                         {
-                            <option value="@item.ID">@item.Name</option>
+                            <option value="@item.ID"> @item.Name </option>
                         }
                     </select>
                 </div>
+
+                <div class="span1">
+                    <button class="large" id="btnAddGroup">Додади</button>
+                </div>
             </div>
+
+            <table id ="groupTable"class="table hovered">
+                <thead>
+                    <tr>
+                        <th class="text-left">Групи</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
 
                 
             <div class="row">
@@ -82,6 +96,9 @@
     <script src="~/Scripts/src-noconflict/ace.js"></script>
     <script>
         $(document).ready(function () {
+
+            var addedOperators = [];
+            var addedGroups = [];
 
             var editor = ace.edit("editor");
             editor.setTheme("ace/theme/eclipse");
@@ -143,12 +160,10 @@
                     contentType: 'application/json',
                     data: JSON.stringify({
                         Code: encodeURIComponent(code),
-                        Group: {
-                            ID:group
-                        },
                         Output: outputData,
                         Question:ques,
-                        Operators: addedOperators
+                        Operators: addedOperators,
+                        Groups: addedGroups
                     })
                 }).done(function (data) {
                     var not = $.Notify({
@@ -161,6 +176,7 @@
             })
 
             $("#btnAddOperator").click(function () {
+                console.log("AAAAAAAAAAAAAA");
                 var oper = $("#operatorSelect").find(":selected").text();
                 var operId = $("#operatorSelect").val();
                 var freq = $("#operatorFrequency").val();
@@ -173,7 +189,7 @@
                     return;
 
                 var result = "<tr><td>" + oper + "</td><td>" + freq + "</td><td style='width:60px;'><a href='#' data-operid='" + operId + "' class='text-alert deleteBtn' hidden>Delete</a></td></tr>";
-                $(".table > tbody").append(result);
+                $("#operatorTable > tbody").append(result);
 
 
                 var operator = {
@@ -182,7 +198,25 @@
                 }
 
                 addedOperators.push(operator);
+                console.log(addedOperators);
+            });
 
+            $("#btnAddGroup").click(function(){
+                var group = $("#groupSelect").find(":selected").text();
+                var groupID = $("#groupSelect").val();
+
+                var t = addedGroups.filter(function (el) {
+                    return el == groupID;
+                });
+
+                if (t.length > 0)
+                    return;
+         
+                var result = "<tr><td>" + group + "</td><td style='width:60px;'><a href='#' data-groupid='" + groupID + "' class='text-alert deleteBtn' hidden>Delete</a></td></tr>";;
+                $("#groupTable > tbody").append(result);
+
+                addedGroups.push(groupID);
+                console.log(addedGroups);
             });
 
             $(".table").on("mouseenter", "tr", function () {
@@ -195,7 +229,7 @@
                 $(this).find(".deleteBtn").hide();
             });
 
-            $(".table").on("click", ".deleteBtn", function () {
+            $("#operatorTable").on("click", ".deleteBtn", function () {
 
                 var tmpOperId = $(this).attr("data-operid");
 
@@ -207,8 +241,18 @@
                 console.log(addedOperators);
             });
 
-            var addedOperators = [];
+            $("#groupTable").on("click", ".deleteBtn", function () {
 
+                var tmpGroupID = $(this).attr("data-groupid");
+                console.log(tmpGroupID);
+
+                addedGroups = addedGroups.filter(function (el) {
+                    return el !== tmpGroupID;
+                });
+
+                $(this).parent().parent().remove();
+                console.log(addedGroups);
+            });
         });
     </script>
 }

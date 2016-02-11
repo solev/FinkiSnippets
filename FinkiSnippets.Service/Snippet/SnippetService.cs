@@ -93,15 +93,12 @@ namespace FinkiSnippets.Service
         }
 
         //TO DO: Snippet can be in multiple groups
-        public bool CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators)
+        public bool CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Int32> Groups)
         {
-            int last = 0;
             if (Operators == null)
                 Operators = new List<OperatorsHelper>();
 
-            
-
-            //var gr = db.Groups.FirstOrDefault(x => x.ID == snippet.Group.ID);
+            var gr = db.Groups.Where(x=>Groups.Contains(x.ID));
             
             if(snippet.ID > 0)
             {
@@ -117,16 +114,7 @@ namespace FinkiSnippets.Service
             }
             else
             {
-                try
-                {
-                    //last = db.Snippets.Where(x => x.Group.ID == snippet.Group.ID).Max(x => x.OrderNumber);
-                }
-                catch
-                {
-                    last = 0;
-                }
-               // snippet.Group = gr;
-                snippet.OrderNumber = last + 1;
+                
                 db.Snippets.Add(snippet);
                 db.SaveChanges();
             }            
