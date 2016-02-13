@@ -137,17 +137,15 @@
                 var code = editor.getSession().getValue();
                 var outputData = $("#outputData").val();
                 var ques = $("#Question").val();
-                var group = $("#groupSelect").val();
 
                 var dataModel = {
                     snippet: {
                         Code: encodeURIComponent(code),
                         Output: outputData,
-                        Group: {
-                            ID:group
-                        }
+                        Question: ques
                     },
-                    Operators: addedOperators
+                    Operators: addedOperators,
+                    SnippetGroups: addedGroups
                 }
 
                 console.log(dataModel);
@@ -161,9 +159,9 @@
                     data: JSON.stringify({
                         Code: encodeURIComponent(code),
                         Output: outputData,
-                        Question:ques,
+                        Question: ques,
                         Operators: addedOperators,
-                        Groups: addedGroups
+                        SnippetGroups: addedGroups
                     })
                 }).done(function (data) {
                     var not = $.Notify({
@@ -206,7 +204,7 @@
                 var groupID = $("#groupSelect").val();
 
                 var t = addedGroups.filter(function (el) {
-                    return el == groupID;
+                    return el.ID == groupID;
                 });
 
                 if (t.length > 0)
@@ -215,7 +213,12 @@
                 var result = "<tr><td>" + group + "</td><td style='width:60px;'><a href='#' data-groupid='" + groupID + "' class='text-alert deleteBtn' hidden>Delete</a></td></tr>";;
                 $("#groupTable > tbody").append(result);
 
-                addedGroups.push(groupID);
+                var group = {
+                    ID: groupID,
+                    Name: group
+                }
+
+                addedGroups.push(group);
                 console.log(addedGroups);
             });
 
@@ -234,7 +237,7 @@
                 var tmpOperId = $(this).attr("data-operid");
 
                 addedOperators = addedOperators.filter(function (el) {
-                    return el.OperationID !== tmpOperId;
+                    return el.OperationID != tmpOperId;
                 });
 
                 $(this).parent().parent().remove();
@@ -247,7 +250,7 @@
                 console.log(tmpGroupID);
 
                 addedGroups = addedGroups.filter(function (el) {
-                    return el !== tmpGroupID;
+                    return el.ID != tmpGroupID;
                 });
 
                 $(this).parent().parent().remove();

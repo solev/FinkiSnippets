@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "EditSnippet";
     var operatorList = Model.Snippet.Operations.Select(x => new { x.OperationID, x.Frequency }).ToList();
+    var groupsList = Model.Snippet.Groups.Select(x => new { x.ID, x.Name });
 }
 
 <h2>EditSnippet</h2>
@@ -29,13 +30,11 @@
                 <div class="input-control number span2" style="padding-left:15px">
                     <input type="number" value="1" id="operatorFrequency" />
                 </div>
-
                 <div class="span1">
                     <button class="large" id="btnAddOperator">Додади</button>
                 </div>
             </div>
-
-            <table class="table hovered">
+            <table id="operatorTable" class="table hovered">
                 <thead>
                     <tr>
                         <th class="text-left">Оператор</th>
@@ -54,40 +53,45 @@
                         </tr>
                     }
                 </tbody>
+            </table>
 
+            <h2>Постоечки групи:</h2>
+            <div class="row">
+                <div class="span3 input-control select">
+                    <select id="groupSelect">
+                        @foreach (var item in Model.Groups)
+                        {
+                            <option value="@item.ID"> @item.Name </option>
+                        }
+                    </select>
+                </div>
+                <div class="span1">
+                    <button class="large" id="btnAddGroup">Додади</button>
+                </div>
+            </div>
+            <table id="groupTable" class="table hovered">
+                <thead>
+                    <tr>
+                        <th class="text-left">Групи</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var group in Model.Snippet.Groups)
+                    {
+                        <tr>
+                            <td>@group.Name</td>
+                            <td style='width:60px;'><a href='javascript:void(0)' data-groupid='@group.ID' class='text-alert deleteBtn' hidden>Delete</a></td>
+                        </tr>
+                    }
+                </tbody>
             </table>
 
             <div class="row">
-                <div class="input-control select">
-                    <select id="groupSelect">
-                        <option value="">--Одбери група--</option>
-                        @foreach (var item in Model.Groups)
-                        {
-                            if (item.ID == Model.Snippet.Group.ID)
-                            {
-                                <option value="@item.ID" selected>@item.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@item.ID">@item.Name</option>
-                            }
-                            
-                        }
-                    </select>
-
-
-
-                </div>
-            </div>
-
-
-            <div class="row">
-
                 <label>Прашање:</label>
                 <div class="input-control text">
-                    <input type="text" id="Question" value= "@Model.Snippet.Question" />
+                    <input type="text" id="Question" value="@Model.Snippet.Question"/>
                 </div>
-
                 <label>Излез:</label>
                 <div class="input-control text">
                     <input type="text" id="outputData" value="@Model.Snippet.Output"/>
@@ -99,13 +103,21 @@
             </div>
 
         </div>
+
     </div>
 </div>
 
 @section Scripts{
     <script src="~/Scripts/src-noconflict/ace.js"></script>
+
     <script>
         $(document).ready(function () {
+
+            var addedOperators = @Html.Raw(Json.Encode(operatorList));
+            var addedGroups = @Html.Raw(Json.Encode(groupsList));
+
+            console.log(addedOperators);
+            console.log(addedGroups);
 
             var editor = ace.edit("editor");
             editor.setTheme("ace/theme/eclipse");
@@ -133,7 +145,6 @@
                 editor.resize();
             };
 
-            editor.getSession().setValue(decodeURIComponent('@Model.Snippet.Code'));
             // Set initial size to match initial content
             heightUpdateFunction();
 
@@ -141,21 +152,22 @@
             // the size again
             editor.getSession().on('change', heightUpdateFunction);
 
+            editor.getSession().setValue(decodeURIComponent("@Model.Snippet.Code"));
+
             $("#btnAdd").click(function (event) {
                 var code = editor.getSession().getValue();
                 var outputData = $("#outputData").val();
                 var ques = $("#Question").val();
-                var group = $("#groupSelect").val();
 
                 var dataModel = {
                     snippet: {
+                        ID: '@Model.Snippet.ID',
                         Code: encodeURIComponent(code),
                         Output: outputData,
-                        Group: {
-                            ID:group
-                        }
+                        Question: ques
                     },
-                    Operators: addedOperators
+                    Operators: addedOperators,
+                    SnippetGroups: addedGroups
                 }
 
                 console.log(dataModel);
@@ -167,14 +179,12 @@
                     dataType: "json",
                     contentType: 'application/json',
                     data: JSON.stringify({
+                        ID: @Model.Snippet.ID,
                         Code: encodeURIComponent(code),
-                        Group: {
-                            ID:group
-                        },
                         Output: outputData,
-                        Question:ques,
+                        Question: ques,
                         Operators: addedOperators,
-                        ID: @Model.Snippet.ID
+                        SnippetGroups: addedGroups
                     })
                 }).done(function (data) {
                     var not = $.Notify({
@@ -182,7 +192,7 @@
                         content: data,
                         timeout: 10000, // 10 seconds
                         style: { background: "#60a917",color:"#fff" }
-                });
+                    });
                 });
             })
 
@@ -199,7 +209,7 @@
                     return;
 
                 var result = "<tr><td>" + oper + "</td><td>" + freq + "</td><td style='width:60px;'><a href='#' data-operid='" + operId + "' class='text-alert deleteBtn' hidden>Delete</a></td></tr>";
-                $(".table > tbody").append(result);
+                $("#operatorTable > tbody").append(result);
 
 
                 var operator = {
@@ -208,7 +218,30 @@
                 }
 
                 addedOperators.push(operator);
+                console.log(addedOperators);
+            });
 
+            $("#btnAddGroup").click(function(){
+                var group = $("#groupSelect").find(":selected").text();
+                var groupID = $("#groupSelect").val();
+
+                var t = addedGroups.filter(function (el) {
+                    return el.ID == groupID;
+                });
+
+                if (t.length > 0)
+                    return;
+         
+                var result = "<tr><td>" + group + "</td><td style='width:60px;'><a href='#' data-groupid='" + groupID + "' class='text-alert deleteBtn' hidden>Delete</a></td></tr>";;
+                $("#groupTable > tbody").append(result);
+
+                var group = {
+                    ID: groupID,
+                    Name: group
+                }
+
+                addedGroups.push(group);
+                console.log(addedGroups);
             });
 
             $(".table").on("mouseenter", "tr", function () {
@@ -221,19 +254,38 @@
                 $(this).find(".deleteBtn").hide();
             });
 
-            $(".table").on("click", ".deleteBtn", function () {
+            $("#operatorTable").on("click", ".deleteBtn", function () {
 
+                console.log("delete operator started");
+                
                 var tmpOperId = $(this).attr("data-operid");
+                console.log("id to be deleted: " + tmpOperId);
                 
                 addedOperators = addedOperators.filter(function (el) {
                     return el.OperationID != tmpOperId;
                 });
 
-                $(this).parent().parent().remove();
+                console.log("New operator list: ");
                 console.log(addedOperators);
+
+                $(this).parent().parent().remove();
             });
 
-            var addedOperators = @Html.Raw(Json.Encode(operatorList));            
+            $("#groupTable").on("click", ".deleteBtn", function () {
+
+                console.log("Delete group started");
+
+                var tmpGroupID = $(this).attr("data-groupid");
+                console.log("id to be deleted: " + tmpGroupID);
+
+                addedGroups = addedGroups.filter(function (el) {
+                    return el.ID != tmpGroupID;
+                });
+
+                console.log("New group list: ");
+                console.log(addedGroups);
+                $(this).parent().parent().remove();
+            });
         });
     </script>
 }

@@ -75,6 +75,9 @@
 
             $.get('@Url.Action("GetCodes","Admin")', function (data) {
                 snippetsData = data;
+                snippetsData.reverse();
+                console.log(snippetsData);
+
                 var editors = $(".codeEditor");
 
                 editors.each(function (idx) {

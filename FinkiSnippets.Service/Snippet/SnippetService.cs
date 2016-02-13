@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
+using System.Data.Entity;
 
 namespace FinkiSnippets.Service
 {
@@ -93,38 +94,69 @@ namespace FinkiSnippets.Service
         }
 
         //TO DO: Snippet can be in multiple groups
-        public bool CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Int32> Groups)
+        public bool CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Group> Groups)
         {
+            int res;
+            List<Group> newGroups = new List<Group>();
+
             if (Operators == null)
                 Operators = new List<OperatorsHelper>();
 
-            var gr = db.Groups.Where(x=>Groups.Contains(x.ID));
+            if (Groups == null)
+                Groups = new List<Group>();
+            else
+            {
+                List<int> groupIDs = new List<Int32>();
+
+                foreach (Group g in Groups)
+                {
+                    groupIDs.Add(g.ID);
+                }
+
+                newGroups = db.Groups.Where(x => groupIDs.Contains(x.ID)).ToList();
+            }
+           
             
             if(snippet.ID > 0)
             {
-                var snippetToChange = db.Snippets.Find(snippet.ID);
+                var snippetToChange = db.Snippets.Where(x => x.ID == snippet.ID).Include(x => x.Groups).FirstOrDefault();
 
                 snippetToChange.Output = snippet.Output;
                 snippetToChange.Question = snippet.Question;
                 snippetToChange.Code = snippet.Code;
-                //snippetToChange.Group = gr;
+                snippetToChange.Groups.Clear();
+                res = db.SaveChanges();
 
-                var oldOperations = db.SnippetOperations.Where(x => x.SnippetID == snippet.ID);
-                db.SnippetOperations.RemoveRange(oldOperations);                
+                if (newGroups.Count > 0)
+                {
+                    snippetToChange.Groups = newGroups;
+                    res = db.SaveChanges();
+                }
+
+                var oldOperations = db.SnippetOperations.Where(x => x.SnippetID == snippet.ID).ToList();
+                if (oldOperations.Count > 0)
+                {
+                    db.SnippetOperations.RemoveRange(oldOperations);
+                    res = db.SaveChanges();
+                }
             }
             else
             {
-                
+                snippet.Groups = newGroups;
                 db.Snippets.Add(snippet);
-                db.SaveChanges();
-            }            
-
-            foreach (var op in Operators)
-            {
-                db.SnippetOperations.Add(new SnippetOperation { Frequency = op.Frequency, OperationID = op.OperationID, SnippetID = snippet.ID });
+                res = db.SaveChanges();
             }
 
-            int res = db.SaveChanges();
+            if (Operators.Count > 0)
+            {
+                foreach (var op in Operators)
+                {
+                    db.SnippetOperations.Add(new SnippetOperation { Frequency = op.Frequency, OperationID = op.OperationID, SnippetID = snippet.ID });
+                }
+
+                res = db.SaveChanges();
+            }
+
             return res > 0;
         }
         
@@ -137,6 +169,7 @@ namespace FinkiSnippets.Service
         public List<Snippet> GetAllSnippets(int page, int snippetsPerPage)
         {
             var result = db.Snippets.OrderByDescending(x=>x.ID).Skip((page-1)*snippetsPerPage).Take(snippetsPerPage).ToList();
+            //var result = db.Snippets.OrderByDescending(x => x.ID).ToList();
             return result;
         }
         
@@ -152,7 +185,7 @@ namespace FinkiSnippets.Service
 
         public Snippet GetSnippetById(int snippetID)
         {
-            var snippet = db.Snippets.Where(x => x.ID == snippetID).FirstOrDefault();
+            var snippet = db.Snippets.Where(x => x.ID == snippetID).Include(x => x.Groups).FirstOrDefault();
             var operations = db.SnippetOperations.Where(x => x.SnippetID == snippet.ID).ToList();
             snippet.Operations = operations;
 
