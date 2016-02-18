@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="span3 input-control select">
                     <select id="operatorSelect">
-                        @foreach(var item in Model.Operations)
+                        @foreach (var item in Model.Operations)
                         {
                             <option value="@item.ID">@item.Name  ( @item.Operator )</option>
                         }
@@ -43,7 +43,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            
+
             <h2>Постоечки групи:</h2>
             <div class="row">
                 <div class="span3 input-control select">
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <table id ="groupTable"class="table hovered">
+            <table id="groupTable" class="table hovered">
                 <thead>
                     <tr>
                         <th class="text-left">Групи</th>
@@ -70,24 +70,24 @@
                 <tbody></tbody>
             </table>
 
-                
+
             <div class="row">
 
                 <label>Прашање:</label>
-                <div class="input-control text" >
-                    <input type="text" id="Question"  />
+                <div class="input-control text">
+                    <input type="text" id="Question" />
                 </div>
 
                 <label>Излез:</label>
                 <div class="input-control text">
-                    <input type="text" id="outputData" />                    
+                    <input type="text" id="outputData" />
                 </div>
-                
+
                 <div>
                     <button id="btnAdd" class="success large" style="width:150px;height:50px;margin-top:11px">Зачувај код</button>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -168,8 +168,8 @@
                         caption: "Статус",
                         content: data,
                         timeout: 10000, // 10 seconds
-                        style: { background: "#60a917",color:"#fff" }
-                });
+                        style: { background: "#60a917", color: "#fff" }
+                    });
                 });
             })
 
@@ -199,7 +199,7 @@
                 console.log(addedOperators);
             });
 
-            $("#btnAddGroup").click(function(){
+            $("#btnAddGroup").click(function () {
                 var group = $("#groupSelect").find(":selected").text();
                 var groupID = $("#groupSelect").val();
 
@@ -209,7 +209,7 @@
 
                 if (t.length > 0)
                     return;
-         
+
                 var result = "<tr><td>" + group + "</td><td style='width:60px;'><a href='#' data-groupid='" + groupID + "' class='text-alert deleteBtn' hidden>Delete</a></td></tr>";;
                 $("#groupTable > tbody").append(result);
 

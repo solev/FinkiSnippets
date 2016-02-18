@@ -170,7 +170,6 @@ namespace App.Controllers
         public ActionResult CreateEvent()
         {
             CreateEventViewModel model = new CreateEventViewModel();
-            model.Groups = _groupService.GetAllGroups();
             return View(model);
         }
 
@@ -187,7 +186,11 @@ namespace App.Controllers
             DateTime end = new DateTime(year, month, day, model.hourEnd, model.minEnd, 0);
             Event ev = new Event { Start = start, End = end };
 
-            bool res = _eventService.AddOrUpdateEvent(model.GroupID, ev);
+            List<Snippet> snippets = _snippetService.GetAllSnippetsByID(model.snippets);
+
+            ev.Snippets = snippets;
+
+            bool res = _eventService.AddOrUpdateEvent(ev);
 
             if (!res)
             {
@@ -218,8 +221,11 @@ namespace App.Controllers
 
             DateTime start = new DateTime(year, month, day, model.hourStart, model.minStart, 0);
             DateTime end = new DateTime(year, month, day, model.hourEnd, model.minEnd, 0);
-            Event ev = new Event { Start = start, End = end, ID = model.id };
-            bool res = _eventService.AddOrUpdateEvent(model.GroupID, ev);
+
+            List<Snippet> snippets = _snippetService.GetAllSnippetsByID(model.snippets);
+            Event ev = new Event { Start = start, End = end, ID = model.id, Snippets = snippets };
+
+            bool res = _eventService.AddOrUpdateEvent(ev);
 
             if (!res)
             {
@@ -247,7 +253,7 @@ namespace App.Controllers
         {
 
             if (page < 1)
-                    page = 1;
+                page = 1;
 
             var snippets = _snippetService.GetAllSnippets(page, Utilities.Constants.stuffPerPage);
 
@@ -267,7 +273,7 @@ namespace App.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool res = _snippetService.CreateSnippet(snippet, Operators, SnippetGroups);
+                bool res = _snippetService.AddOrUpdateSnippet(snippet, Operators, SnippetGroups);
 
                 if (res)
                     return Json("Успешно зачуван снипет!", JsonRequestBehavior.AllowGet);
@@ -301,8 +307,16 @@ namespace App.Controllers
         {
             var _snippets = _snippetService.GetSnippetsFromGroup(id);
             var _group = _groupService.GetGroupByID(id);
-            SnippetsByGroupDto result = new SnippetsByGroupDto { group = _group, snippets = _snippets };
+            SnippetsByGroupViewModel result = new SnippetsByGroupViewModel { group = _group, snippets = _snippets };
             return View(result);
+        }
+
+        [HttpPost]
+        public JsonResult RemoveSnippetFromGroup(int SnippetID, int GroupID)
+        {
+            int res = _groupService.RemoveSnippetFromGroup(SnippetID, GroupID);
+
+            return Json(res);
         }
 
         //id == Event id
