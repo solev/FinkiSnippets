@@ -84,7 +84,6 @@ namespace FinkiSnippets.Service
             return result;
         }
 
-
         public bool CreateInitialAnswer(AnswerLog answer)
         {
             db.Answers.Add(new AnswerLog { DateCreated = answer.DateCreated,User = answer.User,snippet = answer.snippet,Event = answer.Event});
@@ -170,8 +169,7 @@ namespace FinkiSnippets.Service
             var result = db.Snippets.OrderByDescending(x=>x.ID).Skip((page-1)*snippetsPerPage).Take(snippetsPerPage).ToList();
             //var result = db.Snippets.OrderByDescending(x => x.ID).ToList();
             return result;
-        }
-        
+        }        
 
         public List<Snippet> GetAllCodes()
         {
@@ -180,7 +178,6 @@ namespace FinkiSnippets.Service
             var result = tempResult.Select(x => new Snippet { ID = x.ID, Code = x.Code }).ToList();
             return result;
         }
-
 
         public Snippet GetSnippetById(int snippetID)
         {
@@ -217,10 +214,32 @@ namespace FinkiSnippets.Service
             return snippets;
         }
 
-
         public List<Snippet> FilterSnippets(FilterSnippetsInput input)
         {
-            return null;
+            var query = db.Snippets.AsQueryable();
+
+            if (input.SelectedGroups.Any())
+                query = query.Where(x => x.Groups.All(y => input.SelectedGroups.Contains(y.ID)));
+
+            if (input.SelectedOperations.Any())
+                query = query.Where(x => x.Operations.All(y => input.SelectedOperations.Contains(y.OperationID)));
+
+            var result = query.Select(x => new
+            {
+                x.Question,
+                x.Code,
+                x.ID
+            }).ToList();
+
+            List<Snippet> filteredSnippets = result.Select(x => new Snippet
+            {
+                Question = x.Question,
+                Code = x.Code,
+                ID = x.ID
+            }).ToList();
+
+            return filteredSnippets;
         }
+
     }
 }
