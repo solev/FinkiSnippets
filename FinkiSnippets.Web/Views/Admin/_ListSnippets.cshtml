@@ -4,24 +4,22 @@
     int i = 0;
 }
 <div class="listview-outlook">
-    @foreach (var item in Model)
+    @foreach (var snippet in Model)
     {
         <div class="grid">
             <div class="row">
                 <div class="span9">
                     <a href="javascript:void(0)" class="list">
                         <div class="list-content">
-                            <span class="list-title">@item.Question</span>
-                            <div class="codeEditor" id="editor_@(i++)">
-
-                            </div>
+                            <span class="list-title">@snippet.Question</span>
+                            <div class="codeEditor" id="editor_@(i++)">@HttpUtility.UrlDecode(snippet.Code)</div>
                         </div>
                     </a>
                 </div>
-                <div class="span3">
-                    <a class="button warning" href="@Url.Action("EditSnippet", "Admin", new { id = item.ID})">Измени</a>
-                    <a class="button danger" href="@Url.Action("DeleteSnippet", "Admin", new { id = item.ID})" onclick="return confirm('Дали сте сигурни?')">Избриши</a>
-                </div>
+                @*<div class="span3">
+                    <a class="button warning" href="@Url.Action("EditSnippet", "Admin", new { id = snippet.ID})">Измени</a>
+                    <a class="button danger" href="@Url.Action("DeleteSnippet", "Admin", new { id = snippet.ID})" onclick="return confirm('Дали сте сигурни?')">Избриши</a>
+                </div>*@
             </div>
         </div>
     }

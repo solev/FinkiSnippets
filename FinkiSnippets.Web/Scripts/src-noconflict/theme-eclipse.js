@@ -12,7 +12,7 @@ width: 1px;\
 background: #ebebeb;\
 }\
 .ace-eclipse {\
-background-color: #000;\
+background-color: #fff;\
 color: black;\
 }\
 .ace-eclipse .ace_fold {\

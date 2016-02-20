@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "CreateEvent";
+    int i = 0;
 }
 
 <h2>
@@ -14,56 +15,53 @@
 {
     @Html.AntiForgeryToken()
     <fieldset>
-        <div class="span3">
-            <label>Датум на натпреварот</label>
-            <div class="input-control text" data-role="datepicker" data-weekstart="1">
-                <input type="text" name="date" id="datepicker">
-                <button class="btn-date"></button>
-            </div>
-        </div>
-
         <div class="grid">
-            <p>Почеток - крај</p>
+           
             <div class="row">
-                <div class="input-control text size1">
-                    <input type="text" name="hourStart" id="hourStart" />
+
+                <div class="span3">
+                    <label>Датум на натпреварот</label>
+                    <div class="input-control text" data-role="datepicker" data-weekstart="1">
+                        <input type="text" name="date" id="datepicker">
+                        <button class="btn-date"></button>
+                    </div>
                 </div>
-                <span>:</span>
-                <div class="input-control text size1">
-                    <input type="text" name="minStart" id="minStart" />
+
+                <div class="span5">
+                    <label>&nbsp;</label>
+                    <span>од</span>
+                    <div class="input-control text size1">
+                        <input type="text" name="hourStart" id="hourStart" />
+                    </div>
+                    <span>:</span>
+                    <div class="input-control text size1">
+                        <input type="text" name="minStart" id="minStart" />
+                    </div>
+                    <span>до</span>
+                    <div class="input-control text size1">
+                        <input type="text" name="hourEnd" id="hourEnd" />
+                    </div>
+                    <span>:</span>
+                    <div class="input-control text size1">
+                        <input type="text" name="minEnd" id="minEnd" />
+                    </div>
                 </div>
-                <span>до</span>
-                <div class="input-control text size1">
-                    <input type="text" name="hourEnd" id="hourEnd" />
-                </div>
-                <span>:</span>
-                <div class="input-control text size1">
-                    <input type="text" name="minEnd" id="minEnd" />
+
+                <div class="form-group span3">
+                    <label>&nbsp;</label>
+                    <input type="submit" value="Креирај Натпревар" class="btn success" style="height:34px;"/> <span id="error-message"></span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="input-control select">
-                    <select id="groupSelect">
-                        <option value="">--Одбери група--</option>
-                        @foreach (var item in Model.Groups)
-                        {
-                            <option value="@item.ID">@item.Name</option>
-                        }
-                    </select>
+                <div class="grid span6">
+                    @{Html.RenderPartial("_ListSnippets", Model.AllSnippets);}
                 </div>
+                <div class="span6">giberish</div>
             </div>
-
-
         </div>
 
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Додади" class="btn btn-default" /> <span id="error-message"></span>
-            </div>
-        </div>
+       
     </fieldset>
 }
 
@@ -74,9 +72,13 @@
 @section Scripts{
     <script src="~/Scripts/metro-calendar.js"></script>
     <script src="~/Scripts/metro-datepicker.js"></script>
+    <script src="~/Scripts/src-noconflict/ace.js"></script>
 
     <script>
         $(function () {
+            
+            var snippets = [];
+
             $("#hourStart,#hourEnd").focusin(function () {
                 $(this).attr("data-state", "");
             });
@@ -170,6 +172,41 @@
 
             });
 
+            var editors = $(".codeEditor");
+
+            editors.each(function (idx) {
+
+                var editor = ace.edit("editor_" + idx);
+                editor.setTheme("ace/theme/eclipse");
+                editor.getSession().setMode("ace/mode/java");
+                editor.setOptions({
+                    readOnly: true,
+                    highlightActiveLine: false,
+                    highlightGutterLine: false
+                });
+
+                editor.renderer.$cursorLayer.element.style.opacity = 0;
+
+                var heightUpdateFunction = function () {
+
+                    // http://stackoverflow.com/questions/11584061/
+                    var newHeight =
+                              editor.getSession().getScreenLength()
+                              * editor.renderer.lineHeight
+                              + editor.renderer.scrollBar.getWidth();
+
+                    $('#editor_' + idx).height(newHeight.toString() + "px");
+                    $('#editor-section').height(newHeight.toString() + "px");
+
+                    // This call is required for the editor to fix all of
+                    // its inner structure for adapting to a change in size
+                    editor.resize();
+                };
+
+                //editor.getSession().setValue(decodeURIComponent(snippetsData[idx].Code));
+                heightUpdateFunction();
+                editor.getSession().on('change', heightUpdateFunction);
+            });
         });
     </script>
 
