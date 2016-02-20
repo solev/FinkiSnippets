@@ -12,10 +12,10 @@ background: #555651\
 }\
 .ace-mono-industrial {\
 background-color: #222C28;\
-color: #FFFFFF\
+color: #000\
 }\
 .ace-mono-industrial .ace_cursor {\
-color: #FFFFFF\
+color: #000\
 }\
 .ace-mono-industrial .ace_marker-layer .ace_selection {\
 background: rgba(145, 153, 148, 0.40)\
@@ -45,7 +45,7 @@ color: rgba(102, 108, 104, 0.50)\
 }\
 .ace-mono-industrial .ace_string {\
 background-color: #151C19;\
-color: #FFFFFF\
+color: #000\
 }\
 .ace-mono-industrial .ace_keyword,\
 .ace-mono-industrial .ace_meta {\
@@ -64,7 +64,7 @@ color: #E98800\
 color: #A8B3AB\
 }\
 .ace-mono-industrial .ace_invalid {\
-color: #FFFFFF;\
+color: #000;\
 background-color: rgba(153, 0, 0, 0.68)\
 }\
 .ace-mono-industrial .ace_support.ace_constant {\
@@ -72,7 +72,7 @@ color: #C87500\
 }\
 .ace-mono-industrial .ace_fold {\
 background-color: #A8B3AB;\
-border-color: #FFFFFF\
+border-color: #000\
 }\
 .ace-mono-industrial .ace_support.ace_function {\
 color: #588E60\

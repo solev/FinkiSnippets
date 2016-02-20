@@ -11,7 +11,7 @@ width: 1px;\
 background: #e8e8e8\
 }\
 .ace-clouds {\
-background-color: #FFFFFF;\
+background-color: #000;\
 color: #000000\
 }\
 .ace-clouds .ace_cursor {\
@@ -21,7 +21,7 @@ color: #000000\
 background: #BDD5FC\
 }\
 .ace-clouds.ace_multiselect .ace_selection.ace_start {\
-box-shadow: 0 0 3px 0px #FFFFFF;\
+box-shadow: 0 0 3px 0px #000;\
 border-radius: 2px\
 }\
 .ace-clouds .ace_marker-layer .ace_step {\

@@ -18,6 +18,7 @@ using FinkiSnippets.Data;
 using FinkiSnippets.Service;
 using FinkiSnippets.Service.Dto;
 using FinkiSnippets.Service.Groups;
+using System.Threading;
 
 namespace App.Controllers
 {
@@ -174,7 +175,6 @@ namespace App.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         public ActionResult CreateEvent(CreateEventViewModel model)
         {
@@ -245,13 +245,21 @@ namespace App.Controllers
 
         public ActionResult Snippets(int page = 1)
         {
-
             if (page < 1)
                     page = 1;
 
-            var snippets = _snippetService.GetAllSnippets(page, Utilities.Constants.stuffPerPage);
+            FilterSnippetsViewModel model = new FilterSnippetsViewModel();
+            model.Groups = _groupService.GetAllGroups();
+            model.Operations = _snippetService.GetAllOperations();
+            model.Snippets = _snippetService.GetAllSnippets(page, Utilities.Constants.stuffPerPage);
+                        
+            return View(model);
+        }
 
-            return View(snippets);
+        public ActionResult FilterSnippets(FilterSnippetsInput filterData)
+        {
+            var snippets = _snippetService.FilterSnippets(filterData);
+            return Json(true,JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult CreateSnippet()

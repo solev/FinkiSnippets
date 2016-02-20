@@ -64,7 +64,7 @@ color: #46A609\
 color: #A165AC\
 }\
 .ace-clouds-midnight .ace_invalid {\
-color: #FFFFFF;\
+color: #000;\
 background-color: #E92E2E\
 }\
 .ace-clouds-midnight .ace_fold {\

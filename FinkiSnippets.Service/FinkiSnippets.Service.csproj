@@ -59,6 +59,7 @@
     <Compile Include="Dto\Event\EventDto.cs" />
     <Compile Include="Dto\Export\ExportOperationsDto.cs" />
     <Compile Include="Dto\Export\ExportResultsDto.cs" />
+    <Compile Include="Dto\Snippet\FilterSnippetsInput.cs" />
     <Compile Include="Dto\Snippet\OperatorsHelper.cs" />
     <Compile Include="Dto\Snippet\SnippetsByGroupDto.cs" />
     <Compile Include="Dto\User\ListUsersDto.cs" />

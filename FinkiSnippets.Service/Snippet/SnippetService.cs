@@ -168,8 +168,7 @@ namespace FinkiSnippets.Service
 
         public List<Snippet> GetAllSnippets(int page, int snippetsPerPage)
         {
-            var result = db.Snippets.OrderByDescending(x=>x.ID).Skip((page-1)*snippetsPerPage).Take(snippetsPerPage).ToList();
-            //var result = db.Snippets.OrderByDescending(x => x.ID).ToList();
+            var result = db.Snippets.OrderByDescending(x=>x.ID).Skip((page-1)*snippetsPerPage).Take(snippetsPerPage).ToList();            
             return result;
         }
         
@@ -210,6 +209,11 @@ namespace FinkiSnippets.Service
             var result = tempResult.Select(x => new Snippet {ID = x.ID, Question = x.Question, Code = x.Code}).ToList();
             return result;
         }
-
+        
+        public List<Snippet> FilterSnippets(FilterSnippetsInput input)
+        {
+            
+            return null;
+        }
     }
 }

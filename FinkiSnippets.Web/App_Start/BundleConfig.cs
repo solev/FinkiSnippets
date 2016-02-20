@@ -10,6 +10,7 @@ namespace App
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery.unobtrusive-ajax.min.js",
                         "~/Scripts/jquery.widget.min.js"
                         ));
 
@@ -23,7 +24,7 @@ namespace App
                       "~/Content/metro-bootstrap-responsive.min.css",
                       "~/Scripts/Select2/css/select2.min.css",
                       "~/Scripts/Select2/css/select2-bootstrap.min.css",
-                      "~/Content/site.css"));
+                      "~/Content/Site.css"));
         }
     }
 }
