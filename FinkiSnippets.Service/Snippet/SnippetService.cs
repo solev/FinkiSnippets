@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
-using System.Data.Entity;
 
 namespace FinkiSnippets.Service
 {
@@ -94,7 +93,7 @@ namespace FinkiSnippets.Service
         }
 
         //TO DO: Snippet can be in multiple groups
-        public bool CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Group> Groups)
+        public bool AddOrUpdateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Group> Groups)
         {
             int res;
             List<Group> newGroups = new List<Group>();
@@ -206,10 +205,18 @@ namespace FinkiSnippets.Service
 
         public List<Snippet> GetSnippetsFromGroup(int groupID)
         {
-            var tempResult = db.Groups.Where(x => x.ID == groupID).Include(x => x.Snippets).SelectMany(x => x.Snippets).Select(x=> new { x.ID,x.Question,x.Code}).ToList();
+            var tempResult = db.Groups.Where(x => x.ID == groupID).Include(x => x.Snippets).SelectMany(x => x.Snippets).Select(x=> new { x.ID,x.Question,x.Code}).OrderByDescending(x => x.ID).ToList();
             var result = tempResult.Select(x => new Snippet {ID = x.ID, Question = x.Question, Code = x.Code}).ToList();
             return result;
         }
 
+
+
+        public List<Snippet> GetAllSnippetsByID(List<int> IDs)
+        {
+            List<Snippet> snippets = db.Snippets.Where(x => IDs.Contains(x.ID)).ToList();
+
+            return snippets;
+        }
     }
 }

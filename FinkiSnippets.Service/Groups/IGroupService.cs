@@ -11,5 +11,6 @@ namespace FinkiSnippets.Service.Groups
     {
         List<Group> GetAllGroups();
         Group GetGroupByID(int groupID);
+        int RemoveSnippetFromGroup(int SnippetID, int GroupID);
     }
 }

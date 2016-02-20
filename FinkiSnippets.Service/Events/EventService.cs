@@ -23,7 +23,7 @@ namespace FinkiSnippets.Service
 
         public Event GetEventById(int eventID)
         {
-            return db.Events.FirstOrDefault(x=>x.ID == eventID);
+            return db.Events.FirstOrDefault(x => x.ID == eventID);
         }
 
         public Event GetNextEvent()
@@ -38,11 +38,11 @@ namespace FinkiSnippets.Service
         public Event GetCurrentEvent()
         {
             DateTime currentTime = DateHelper.GetCurrentTime();
-            var result =  db.Events.FirstOrDefault(x => x.Start < currentTime && x.End > currentTime);
+            var result = db.Events.FirstOrDefault(x => x.Start < currentTime && x.End > currentTime);
 
             return result;
         }
-        
+
         public List<EventDto> GetAllEvents()
         {
             var tempResult = db.Events.OrderByDescending(x => x.Start).Select(x => new
@@ -57,35 +57,32 @@ namespace FinkiSnippets.Service
             return result;
         }
 
-        public bool AddOrUpdateEvent(int GroupID, Event ev)
+        public bool AddOrUpdateEvent(Event ev)
         {
-            bool evs = db.Events.Any(x => x.Start < ev.Start && x.End > ev.Start);
+            int res;
 
-            if (evs)
-                return false;
-
-            
             if(ev.ID > 0)
             {
-                Event eventToUpdate = db.Events.Find(ev.ID);
+                Event eventToUpdate = db.Events.Where(x => x.ID == ev.ID).Include(x=> x.Snippets).FirstOrDefault();
+                eventToUpdate.Snippets.Clear();
+                res = db.SaveChanges();
                 eventToUpdate.Start = ev.Start;
                 eventToUpdate.End = ev.End;
-                
-                //HAndle Snippets             
+                eventToUpdate.Snippets = ev.Snippets;
+                res = db.SaveChanges();
             }
             else
             {
-                db.Events.Add(ev);                
+                db.Events.Add(ev);
+                res = db.SaveChanges();
             }
-
-            int res = db.SaveChanges();
             
             return res > 0;
         }
 
         public List<AnswerLog> GetResultsForEvent(int eventID)
         {
-            var result = db.Answers.Where(x => x.Event.ID == eventID).Include(x=>x.User).ToList();
+            var result = db.Answers.Where(x => x.Event.ID == eventID).Include(x => x.User).ToList();
             return result;
         }
     }

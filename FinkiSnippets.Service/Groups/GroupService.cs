@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace FinkiSnippets.Service.Groups
 {
@@ -27,6 +28,16 @@ namespace FinkiSnippets.Service.Groups
         {
             var result = db.Groups.Find(groupID);
             return result;
+        }
+
+        public int RemoveSnippetFromGroup(int SnippetID, int GroupID)
+        {
+            Group group = db.Groups.Where(x => x.ID == GroupID).Include(x => x.Snippets).FirstOrDefault();
+            Snippet snippetFromGroup = group.Snippets.FirstOrDefault(x => x.ID == SnippetID);
+            group.Snippets.Remove(snippetFromGroup);
+            int res = db.SaveChanges();
+
+            return res;
         }
     }
 }

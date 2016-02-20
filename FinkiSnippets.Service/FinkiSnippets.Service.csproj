@@ -60,7 +60,6 @@
     <Compile Include="Dto\Export\ExportOperationsDto.cs" />
     <Compile Include="Dto\Export\ExportResultsDto.cs" />
     <Compile Include="Dto\Snippet\OperatorsHelper.cs" />
-    <Compile Include="Dto\Snippet\SnippetsByGroupDto.cs" />
     <Compile Include="Dto\User\ListUsersDto.cs" />
     <Compile Include="Dto\User\UserDto.cs" />
     <Compile Include="Export\ExportService.cs" />

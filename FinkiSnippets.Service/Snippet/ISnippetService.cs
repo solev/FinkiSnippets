@@ -16,12 +16,14 @@ namespace FinkiSnippets.Service
         Snippet GetSnippetWithOrderNumber(int OrderNumber, int GroupID);
         bool CheckIfFirstSnippetAccess(string userID, int snippetID, int EventID);
         bool CreateInitialAnswer(AnswerLog answer);
-        bool CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Group> GroupsString);
+        bool AddOrUpdateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Group> GroupsString);
         List<Operation> GetAllOperations();
         List<Snippet> GetAllSnippets(int page, int snippetsPerPage);
         List<Snippet> GetSnippetsFromGroup(int groupID);
         List<Snippet> GetAllCodes();
         Snippet GetSnippetById(int snippetID);
+
+        List<Snippet> GetAllSnippetsByID(List<Int32> IDs);
         bool DeleteSnippet(int snippetID);
     }
 }
