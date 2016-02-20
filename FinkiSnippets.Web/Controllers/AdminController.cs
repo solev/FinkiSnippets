@@ -254,7 +254,7 @@ namespace App.Controllers
         public ActionResult FilterSnippets(FilterSnippetsInput filterData)
         {
             var snippets = _snippetService.FilterSnippets(filterData);
-            return Json(true,JsonRequestBehavior.AllowGet);
+            return PartialView("_ListSnippets", snippets);
         }
 
         public ActionResult CreateSnippet()
