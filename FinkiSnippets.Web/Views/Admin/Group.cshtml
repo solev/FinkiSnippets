@@ -11,7 +11,7 @@
     </div>
 </div>
 <hr />
-@{Html.RenderPartial("_ListSnippets", Model.snippets);}
+<div class="span9">@{Html.RenderPartial("_ListSnippets", Model.snippets);}</div>
 
 @section Scripts{
     <script src="~/Scripts/src-noconflict/ace.js"></script>
@@ -40,7 +40,6 @@
                         button.parent().parent().remove();
                         msg = "Успешно избришан Snippet од група!";
                     }
-
 
                     $.Notify({
                         caption: "Статус",

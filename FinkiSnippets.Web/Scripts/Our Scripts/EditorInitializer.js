@@ -1,5 +1,7 @@
 ﻿$(function () {
     var editors = $(".codeEditor");
+    
+    var oneEditor;
 
     editors.each(function (idx) {
 
@@ -13,6 +15,12 @@
         });
 
         editor.renderer.$cursorLayer.element.style.opacity = 0;
+
+        if ($(this).attr("data-editable") == "true") {
+            editor.setOption("readOnly", false);
+            editor.renderer.$cursorLayer.element.style.opacity = 1;
+            oneEditor = editor;
+        }
 
         var heightUpdateFunction = function () {
 
@@ -32,6 +40,5 @@
 
         heightUpdateFunction();
         editor.getSession().on('change', heightUpdateFunction);
-
     });
 });
