@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "CreateEvent";
-    int i = 0;
 }
 
 <h2>
@@ -54,7 +53,7 @@
             </div>
 
             <div class="row">
-                <div class="grid span6">
+                <div class="span6">
                     @{Html.RenderPartial("_ListSnippets", Model.AllSnippets);}
                 </div>
                 <div class="span6">giberish</div>
@@ -73,7 +72,7 @@
     <script src="~/Scripts/metro-calendar.js"></script>
     <script src="~/Scripts/metro-datepicker.js"></script>
     <script src="~/Scripts/src-noconflict/ace.js"></script>
-
+    <script src="~/Scripts/Our Scripts/EditorInitializer.js"></script>
     <script>
         $(function () {
             
@@ -170,42 +169,6 @@
                     }
                 });
 
-            });
-
-            var editors = $(".codeEditor");
-
-            editors.each(function (idx) {
-
-                var editor = ace.edit("editor_" + idx);
-                editor.setTheme("ace/theme/eclipse");
-                editor.getSession().setMode("ace/mode/java");
-                editor.setOptions({
-                    readOnly: true,
-                    highlightActiveLine: false,
-                    highlightGutterLine: false
-                });
-
-                editor.renderer.$cursorLayer.element.style.opacity = 0;
-
-                var heightUpdateFunction = function () {
-
-                    // http://stackoverflow.com/questions/11584061/
-                    var newHeight =
-                              editor.getSession().getScreenLength()
-                              * editor.renderer.lineHeight
-                              + editor.renderer.scrollBar.getWidth();
-
-                    $('#editor_' + idx).height(newHeight.toString() + "px");
-                    $('#editor-section').height(newHeight.toString() + "px");
-
-                    // This call is required for the editor to fix all of
-                    // its inner structure for adapting to a change in size
-                    editor.resize();
-                };
-
-                //editor.getSession().setValue(decodeURIComponent(snippetsData[idx].Code));
-                heightUpdateFunction();
-                editor.getSession().on('change', heightUpdateFunction);
             });
         });
     </script>

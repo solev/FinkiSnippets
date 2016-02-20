@@ -21,7 +21,6 @@ namespace FinkiSnippets.Service
         List<Snippet> GetAllSnippets(int page, int snippetsPerPage);
         List<Snippet> FilterSnippets(FilterSnippetsInput input);
         List<Snippet> GetSnippetsFromGroup(int groupID);
-        List<Snippet> GetAllCodes();
         Snippet GetSnippetById(int snippetID);
 
         List<Snippet> GetAllSnippetsByID(List<Int32> IDs);

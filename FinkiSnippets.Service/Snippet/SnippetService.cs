@@ -171,16 +171,6 @@ namespace FinkiSnippets.Service
             //var result = db.Snippets.OrderByDescending(x => x.ID).ToList();
             return result;
         }
-        
-
-        public List<Snippet> GetAllCodes()
-        {
-            var tempResult = db.Snippets.Select(x => new { x.ID, x.Code }).ToList();
-
-            var result = tempResult.Select(x => new Snippet { ID = x.ID, Code = x.Code }).ToList();
-            return result;
-        }
-
 
         public Snippet GetSnippetById(int snippetID)
         {

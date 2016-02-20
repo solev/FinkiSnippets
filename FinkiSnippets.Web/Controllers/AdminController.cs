@@ -238,20 +238,6 @@ namespace App.Controllers
             return Json("success", JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public JsonResult GetCodes()
-        {
-            var codes = _snippetService.GetAllCodes();
-            return Json(codes, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult GetCodesFromGroup(int id)
-        {
-            var codes = _snippetService.GetSnippetsFromGroup(id);
-            return Json(codes, JsonRequestBehavior.AllowGet);
-        }
-
         public ActionResult Snippets(int page = 1)
         {
             if (page < 1)

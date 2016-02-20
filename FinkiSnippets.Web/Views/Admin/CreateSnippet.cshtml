@@ -174,7 +174,6 @@
             })
 
             $("#btnAddOperator").click(function () {
-                console.log("AAAAAAAAAAAAAA");
                 var oper = $("#operatorSelect").find(":selected").text();
                 var operId = $("#operatorSelect").val();
                 var freq = $("#operatorFrequency").val();
@@ -196,7 +195,6 @@
                 }
 
                 addedOperators.push(operator);
-                console.log(addedOperators);
             });
 
             $("#btnAddGroup").click(function () {
@@ -219,7 +217,6 @@
                 }
 
                 addedGroups.push(group);
-                console.log(addedGroups);
             });
 
             $(".table").on("mouseenter", "tr", function () {
@@ -241,20 +238,17 @@
                 });
 
                 $(this).parent().parent().remove();
-                console.log(addedOperators);
             });
 
             $("#groupTable").on("click", ".deleteBtn", function () {
 
                 var tmpGroupID = $(this).attr("data-groupid");
-                console.log(tmpGroupID);
 
                 addedGroups = addedGroups.filter(function (el) {
                     return el.ID != tmpGroupID;
                 });
 
                 $(this).parent().parent().remove();
-                console.log(addedGroups);
             });
         });
     </script>
