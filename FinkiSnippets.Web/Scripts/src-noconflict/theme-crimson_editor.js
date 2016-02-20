@@ -14,7 +14,7 @@ width: 1px;\
 background: #e8e8e8;\
 }\
 .ace-crimson-editor {\
-background-color: #FFFFFF;\
+background-color: #000;\
 color: rgb(64, 64, 64);\
 }\
 .ace-crimson-editor .ace_cursor {\

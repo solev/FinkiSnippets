@@ -32,11 +32,11 @@ background-color: #161616;\
 color: #E6E1DC;\
 }\
 .ace-chaos .ace_cursor {\
-border-left: 2px solid #FFFFFF;\
+border-left: 2px solid #000;\
 }\
 .ace-chaos .ace_cursor.ace_overwrite {\
 border-left: 0px;\
-border-bottom: 1px solid #FFFFFF;\
+border-bottom: 1px solid #000;\
 }\
 .ace-chaos .ace_marker-layer .ace_selection {\
 background: #494836;\
@@ -76,11 +76,11 @@ color:#8DFF0A;\
 color:#58C554;\
 }\
 .ace-chaos .ace_invalid {\
-color:#FFFFFF;\
+color:#000;\
 background-color:#990000;\
 }\
 .ace-chaos .ace_invalid.ace_deprecated {\
-color:#FFFFFF;\
+color:#000;\
 background-color:#990000;\
 }\
 .ace-chaos .ace_support {\

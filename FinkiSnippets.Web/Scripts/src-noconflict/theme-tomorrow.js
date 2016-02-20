@@ -11,7 +11,7 @@ width: 1px;\
 background: #f6f6f6\
 }\
 .ace-tomorrow {\
-background-color: #FFFFFF;\
+background-color: #000;\
 color: #4D4D4C\
 }\
 .ace-tomorrow .ace_cursor {\
@@ -21,7 +21,7 @@ color: #AEAFAD\
 background: #D6D6D6\
 }\
 .ace-tomorrow.ace_multiselect .ace_selection.ace_start {\
-box-shadow: 0 0 3px 0px #FFFFFF;\
+box-shadow: 0 0 3px 0px #000;\
 border-radius: 2px\
 }\
 .ace-tomorrow .ace_marker-layer .ace_step {\
@@ -65,11 +65,11 @@ color: #F5871F\
 color: #666969\
 }\
 .ace-tomorrow .ace_invalid {\
-color: #FFFFFF;\
+color: #000;\
 background-color: #C82829\
 }\
 .ace-tomorrow .ace_invalid.ace_deprecated {\
-color: #FFFFFF;\
+color: #000;\
 background-color: #8959A8\
 }\
 .ace-tomorrow .ace_fold {\

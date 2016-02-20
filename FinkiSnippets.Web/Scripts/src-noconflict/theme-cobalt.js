@@ -12,10 +12,10 @@ background: #011e3a\
 }\
 .ace-cobalt {\
 background-color: #002240;\
-color: #FFFFFF\
+color: #000\
 }\
 .ace-cobalt .ace_cursor {\
-color: #FFFFFF\
+color: #000\
 }\
 .ace-cobalt .ace_marker-layer .ace_selection {\
 background: rgba(179, 101, 57, 0.75)\
@@ -65,7 +65,7 @@ color: #EB939A\
 }\
 .ace-cobalt .ace_fold {\
 background-color: #FF9D00;\
-border-color: #FFFFFF\
+border-color: #000\
 }\
 .ace-cobalt .ace_support.ace_function {\
 color: #FFB054\

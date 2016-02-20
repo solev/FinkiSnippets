@@ -19,6 +19,7 @@ namespace FinkiSnippets.Service
         bool AddOrUpdateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Group> GroupsString);
         List<Operation> GetAllOperations();
         List<Snippet> GetAllSnippets(int page, int snippetsPerPage);
+        List<Snippet> FilterSnippets(FilterSnippetsInput input);
         List<Snippet> GetSnippetsFromGroup(int groupID);
         List<Snippet> GetAllCodes();
         Snippet GetSnippetById(int snippetID);

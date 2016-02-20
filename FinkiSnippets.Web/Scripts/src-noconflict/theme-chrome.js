@@ -12,7 +12,7 @@ width: 1px;\
 background: #e8e8e8;\
 }\
 .ace-chrome {\
-background-color: #FFFFFF;\
+background-color: #000;\
 color: black;\
 }\
 .ace-chrome .ace_cursor {\

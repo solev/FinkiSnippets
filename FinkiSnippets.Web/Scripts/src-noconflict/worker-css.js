@@ -1867,7 +1867,7 @@ var Colors = {
     turquoise       :"#40e0d0",
     violet          :"#ee82ee",
     wheat           :"#f5deb3",
-    white           :"#ffffff",
+    white           :"#000",
     whitesmoke      :"#f5f5f5",
     yellow          :"#ffff00",
     yellowgreen     :"#9acd32",

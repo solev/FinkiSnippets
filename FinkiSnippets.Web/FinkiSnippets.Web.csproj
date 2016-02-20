@@ -198,6 +198,7 @@
     <Compile Include="ViewModels\CreateSnippetViewModel.cs" />
     <Compile Include="ViewModels\EditEventViewModel.cs" />
     <Compile Include="ViewModels\EditSnippetViewModel.cs" />
+    <Compile Include="ViewModels\FilterSnippetsViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\SnippetsByGroupViewModel.cs" />
@@ -222,6 +223,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.widget.min.js" />
     <Content Include="Scripts\metro-calendar.js" />
     <Content Include="Scripts\metro-countdown.js" />
@@ -627,6 +630,7 @@
     <Content Include="Views\Admin\EditSnippet.cshtml" />
     <Content Include="Views\Admin\Groups.cshtml" />
     <Content Include="Views\Admin\Group.cshtml" />
+    <Content Include="Views\Admin\_ListSnippets.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FinkiSnippets.Data\FinkiSnippets.Data.csproj">

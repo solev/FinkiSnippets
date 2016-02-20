@@ -1,8 +1,8 @@
-﻿@model List<Entity.Snippet>
+﻿@model App.ViewModels.FilterSnippetsViewModel
 
 @{
     ViewBag.Title = "Snippets";
-    int i = 0;
+    
 }
 
 <div class="grid">
@@ -10,54 +10,50 @@
 
         <h2 class="span9">Снипети</h2>
         <a class="button large" href="@Url.Action("CreateSnippet","Admin")">Додади нов снипет</a>
-    </div>    
-    <div class="row">
-        <div class="span9">
-            <div class="example">
-                <form>
-                    <fieldset>
-                        <legend>Филтер</legend>
-                        <label>Групи</label>                    
-
-                        <div class="input-control select" >
-                            <select id="groupSelect" multiple style="width:100%;">
-                                <option value="1">Value 1</option>
-                                <option value="2">Value 2</option>
-                                <option value="3">Value 3</option>
-                            </select>
-                        </div>
-
-                        <input type="submit" value="Submit">
-                    </fieldset>
-                </form>
-            </div>          
-        </div>
     </div>
-</div>
-<hr/>
-<div class="listview-outlook">
-    @foreach (var item in Model)
-    {
-        <div class="grid">
-            <div class="row">
-                <div class="span9">
-                    <a href="javascript:void(0)" class="list">
-                        <div class="list-content">
-                            <span class="list-title">@item.Question</span>
-                            <div class="codeEditor" id="editor_@(i++)">
 
+    @using (Ajax.BeginForm("FilterSnippets", new AjaxOptions { HttpMethod = "GET", LoadingElementId = "loader", }))
+    {
+        <div class="row">
+            <div class="span9">
+                <div class="example">
+                    <form>
+                        <fieldset>
+                            <legend>Филтер</legend>
+                            <label>Групи</label>
+                                                        
+                            <div class="input-control select">
+                                <select id="groupSelect" name="SelectedGroups" multiple style="width:100%;">
+                                    @foreach (var item in Model.Groups)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                </select>
                             </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="span3">
-                    <a class="button warning" href="@Url.Action("EditSnippet", "Admin", new { id = item.ID})">Измени</a>
-                    <a class="button danger" href="@Url.Action("DeleteSnippet", "Admin", new { id = item.ID})" onclick="return confirm('Дали сте сигурни?')">Избриши</a>
+
+                            <label>Операции</label>
+
+                            <div class="input-control select">
+                                <select id="operationSelect" name="SelectedOperations" multiple style="width:100%;">
+                                    @foreach (var item in Model.Operations)
+                                    {
+                                        <option value="@item.ID">@item.Name (@item.Operator)</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <input type="submit" value="Филтрирај">
+                        </fieldset>
+                    </form>
                 </div>
             </div>
         </div>
     }
 </div>
+
+<hr />
+
+@{Html.RenderPartial("_ListSnippets", Model.Snippets);}
 
 @section Scripts{
     <script src="~/Scripts/src-noconflict/ace.js"></script>
@@ -67,7 +63,12 @@
         $(function () {
 
             $("#groupSelect").select2({
-                placeholder: "Селектирај нула или една или повеќе групи",
+                placeholder: "Селектирај групи",
+                allowClear: true
+            });
+
+            $("#operationSelect").select2({
+                placeholder: "Селектирај операции",
                 allowClear: true
             });
 
@@ -115,6 +116,6 @@
                 });
             });
         });
-                
+
     </script>
 }

@@ -12,7 +12,7 @@ background: #3b3b3b\
 }\
 .ace-idle-fingers {\
 background-color: #323232;\
-color: #FFFFFF\
+color: #000\
 }\
 .ace-idle-fingers .ace_cursor {\
 color: #91FF00\
@@ -55,12 +55,12 @@ color: #CC7833\
 color: #6C99BB\
 }\
 .ace-idle-fingers .ace_invalid {\
-color: #FFFFFF;\
+color: #000;\
 background-color: #FF0000\
 }\
 .ace-idle-fingers .ace_fold {\
 background-color: #CC7833;\
-border-color: #FFFFFF\
+border-color: #000\
 }\
 .ace-idle-fingers .ace_support.ace_function {\
 color: #B83426\

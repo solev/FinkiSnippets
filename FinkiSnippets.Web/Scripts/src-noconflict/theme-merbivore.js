@@ -15,7 +15,7 @@ background-color: #161616;\
 color: #E6E1DC\
 }\
 .ace-merbivore .ace_cursor {\
-color: #FFFFFF\
+color: #000\
 }\
 .ace-merbivore .ace_marker-layer .ace_selection {\
 background: #454545\
@@ -73,7 +73,7 @@ color: #8DFF0A\
 color: #58C554\
 }\
 .ace-merbivore .ace_invalid {\
-color: #FFFFFF;\
+color: #000;\
 background-color: #990000\
 }\
 .ace-merbivore .ace_fold {\

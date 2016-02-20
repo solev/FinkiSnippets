@@ -12,11 +12,11 @@ background: #00204b\
 }\
 .ace-tomorrow-night-blue {\
 background-color: #002451;\
-color: #FFFFFF\
+color: #000\
 }\
 .ace-tomorrow-night-blue .ace_constant.ace_other,\
 .ace-tomorrow-night-blue .ace_cursor {\
-color: #FFFFFF\
+color: #000\
 }\
 .ace-tomorrow-night-blue .ace_marker-layer .ace_selection {\
 background: #003F8E\
@@ -63,16 +63,16 @@ color: #99FFFF\
 color: #FFC58F\
 }\
 .ace-tomorrow-night-blue .ace_invalid {\
-color: #FFFFFF;\
+color: #000;\
 background-color: #F99DA5\
 }\
 .ace-tomorrow-night-blue .ace_invalid.ace_deprecated {\
-color: #FFFFFF;\
+color: #000;\
 background-color: #EBBBFF\
 }\
 .ace-tomorrow-night-blue .ace_fold {\
 background-color: #BBDAFF;\
-border-color: #FFFFFF\
+border-color: #000\
 }\
 .ace-tomorrow-night-blue .ace_entity.ace_name.ace_function,\
 .ace-tomorrow-night-blue .ace_support.ace_function,\

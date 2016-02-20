@@ -12,10 +12,10 @@ background: #1a1a1a\
 }\
 .ace-vibrant-ink {\
 background-color: #0F0F0F;\
-color: #FFFFFF\
+color: #000\
 }\
 .ace-vibrant-ink .ace_cursor {\
-color: #FFFFFF\
+color: #000\
 }\
 .ace-vibrant-ink .ace_marker-layer .ace_selection {\
 background: #6699CC\
@@ -63,7 +63,7 @@ background-color: #000000\
 }\
 .ace-vibrant-ink .ace_fold {\
 background-color: #FFCC00;\
-border-color: #FFFFFF\
+border-color: #000\
 }\
 .ace-vibrant-ink .ace_entity.ace_name.ace_function,\
 .ace-vibrant-ink .ace_support.ace_function,\
