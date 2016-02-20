@@ -171,6 +171,9 @@ namespace App.Controllers
         public ActionResult CreateEvent()
         {
             CreateEventViewModel model = new CreateEventViewModel();
+            model.AllGroups = _groupService.GetAllGroups();
+            model.AllSnippets = _snippetService.GetAllSnippets(1, 20);
+            model.AllOperations = _snippetService.GetAllOperations();
             return View(model);
         }
 
