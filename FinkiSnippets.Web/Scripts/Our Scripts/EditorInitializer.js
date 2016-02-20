@@ -16,10 +16,12 @@
 
         editor.renderer.$cursorLayer.element.style.opacity = 0;
 
+
+        //TODO: To think of a better way
         if ($(this).attr("data-editable") == "true") {
             editor.setOption("readOnly", false);
             editor.renderer.$cursorLayer.element.style.opacity = 1;
-            oneEditor = editor;
+            Variables.OneEditor = editor;
         }
 
         var heightUpdateFunction = function () {
