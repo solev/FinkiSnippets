@@ -210,13 +210,17 @@ namespace FinkiSnippets.Service
             return result;
         }
 
-
-
         public List<Snippet> GetAllSnippetsByID(List<int> IDs)
         {
             List<Snippet> snippets = db.Snippets.Where(x => IDs.Contains(x.ID)).ToList();
 
             return snippets;
+        }
+
+
+        public List<Snippet> FilterSnippets(FilterSnippetsInput input)
+        {
+            return null;
         }
     }
 }

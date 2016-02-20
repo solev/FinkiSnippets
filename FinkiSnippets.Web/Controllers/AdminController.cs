@@ -323,7 +323,6 @@ namespace App.Controllers
         public JsonResult RemoveSnippetFromGroup(int SnippetID, int GroupID)
         {
             int res = _groupService.RemoveSnippetFromGroup(SnippetID, GroupID);
-
             return Json(res);
         }
 
