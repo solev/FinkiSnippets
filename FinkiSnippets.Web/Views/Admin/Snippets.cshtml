@@ -52,7 +52,9 @@
 
 <hr />
 
-@{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Snippets, EditRemoveButtons = true, SpanSizeSnippets = "span9" });}
+<div class="grid">
+    @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Snippets, SnippetsButtons = true, GroupButtons = false, SpanSizeSnippets = "span9", SpanSizeArea = "span12" });}
+</div>
 
 @section Scripts{
     <script src="~/Scripts/src-noconflict/ace.js"></script>

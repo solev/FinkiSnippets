@@ -12,7 +12,9 @@
 </div>
 <hr />
 
-@{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel{ Snippets = Model.Snippets, EditRemoveButtons = false, SpanSizeSnippets = "span9"});}
+<div class="grid">
+    @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Snippets, SnippetsButtons = false, GroupButtons = true, SpanSizeSnippets = "span9", SpanSizeArea = "span12" });}
+</div>
 
 @section Scripts{
     <script src="~/Scripts/src-noconflict/ace.js"></script>
@@ -32,6 +34,8 @@
                 var groupID = '@Model.Group.ID';
                 var button = $(this);
 
+                console.log(snippetID);
+                console.log(groupID);
 
                 $.post('@Url.Action("RemoveSnippetFromGroup", "Admin")', { SnippetID: snippetID, GroupID: groupID }, function (data) {
 

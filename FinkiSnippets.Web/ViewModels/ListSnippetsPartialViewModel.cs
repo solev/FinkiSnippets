@@ -10,8 +10,12 @@ namespace App.ViewModels
     {
         public List<Snippet> Snippets { get; set; }
 
-        public bool EditRemoveButtons { get; set; }
+        public bool SnippetsButtons { get; set; }
+
+        public bool GroupButtons { get; set; }
 
         public string SpanSizeSnippets {get; set; }
+
+        public string SpanSizeArea { get; set; }
     }
 }
