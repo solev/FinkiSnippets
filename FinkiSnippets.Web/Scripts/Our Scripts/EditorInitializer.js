@@ -1,8 +1,6 @@
 ﻿$(function () {
     var editors = $(".codeEditor");
     
-    var oneEditor;
-
     editors.each(function (idx) {
 
         var editor = ace.edit("editor_" + idx);
@@ -15,14 +13,6 @@
         });
 
         editor.renderer.$cursorLayer.element.style.opacity = 0;
-
-
-        //TODO: To think of a better way
-        if ($(this).attr("data-editable") == "true") {
-            editor.setOption("readOnly", false);
-            editor.renderer.$cursorLayer.element.style.opacity = 1;
-            Variables.OneEditor = editor;
-        }
 
         var heightUpdateFunction = function () {
 
@@ -42,5 +32,7 @@
 
         heightUpdateFunction();
         editor.getSession().on('change', heightUpdateFunction);
+
+        Variables.initEditors[idx] = editor;
     });
 });

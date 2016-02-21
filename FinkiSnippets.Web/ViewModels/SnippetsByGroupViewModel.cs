@@ -8,7 +8,7 @@ namespace App.ViewModels
 {
     public class SnippetsByGroupViewModel
     {
-        public Group group { get; set; }
-        public List<Snippet> snippets { get; set; }
+        public Group Group { get; set; }
+        public List<Snippet> Snippets { get; set; }
     }
 }

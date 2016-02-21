@@ -101,8 +101,13 @@
             var addedOperators = [];
             var addedGroups = [];
 
+            var editor = Variables.initEditors[0];
+
+            editor.setOption("readOnly", false);
+            editor.renderer.$cursorLayer.element.style.opacity = 1;
+
             $("#btnAdd").click(function (event) {
-                var code = Variables.OneEditor.getSession().getValue();
+                var code = editor.getSession().getValue();
                 var outputData = $("#outputData").val();
                 var ques = $("#Question").val();
 

@@ -6,12 +6,13 @@
 
 <div class="grid">
     <div class="row">
-        <h2 class="span9">Снипети во група @Model.group.Name</h2>
+        <h2 class="span9">Снипети во група @Model.Group.Name</h2>
         <a class="button large" href="javascript:void(0)" onclick="return alert('NOT IMPLEMENTED')">Додади нов снипет</a>
     </div>
 </div>
 <hr />
-<div class="span9">@{Html.RenderPartial("_ListSnippets", Model.snippets);}</div>
+
+@{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel{ Snippets = Model.Snippets, EditRemoveButtons = false, SpanSizeSnippets = "span9"});}
 
 @section Scripts{
     <script src="~/Scripts/src-noconflict/ace.js"></script>
@@ -28,7 +29,7 @@
                     return;
 
                 var snippetID = $(this).attr("id");
-                var groupID = '@Model.group.ID';
+                var groupID = '@Model.Group.ID';
                 var button = $(this);
 
 

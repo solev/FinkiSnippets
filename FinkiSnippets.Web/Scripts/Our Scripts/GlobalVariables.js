@@ -1,4 +1,4 @@
 ﻿
 var Variables = {
-    OneEditor: null
+    initEditors: []
 };

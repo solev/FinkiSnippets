@@ -1,23 +1,28 @@
-﻿@model List<Entity.Snippet>
+﻿@model App.ViewModels.ListSnippetsPartialViewModel
 
 @{
     int i = 0;
 }
 <div class="listview-outlook">
-    @foreach (var snippet in Model)
+    @foreach (var snippet in Model.Snippets)
     {
         <div class="grid">
             <div class="row">
-                <a href="javascript:void(0)" class="list" data-editable="false">
-                    <div class="list-content">
-                        <span class="list-title">@snippet.Question</span>
-                        <div class="codeEditor" id="editor_@(i++)">@HttpUtility.UrlDecode(snippet.Code)</div>
-                    </div>
-                </a>
-                @*<div class="span3">
+                <div class="@Model.SpanSizeSnippets">
+                    <a href="javascript:void(0)" class="list" data-editable="false">
+                        <div class="list-content">
+                            <span class="list-title">@snippet.Question</span>
+                            <div class="codeEditor" id="editor_@(i++)">@HttpUtility.UrlDecode(snippet.Code)</div>
+                        </div>
+                    </a>
+                </div>
+                @if(Model.EditRemoveButtons)
+                {
+                    <div class="span3">
                         <a class="button warning" href="@Url.Action("EditSnippet", "Admin", new { id = snippet.ID})">Измени</a>
                         <a class="button danger" href="@Url.Action("DeleteSnippet", "Admin", new { id = snippet.ID})" onclick="return confirm('Дали сте сигурни?')">Избриши</a>
-                    </div>*@
+                    </div>
+                }
             </div>
         </div>
     }

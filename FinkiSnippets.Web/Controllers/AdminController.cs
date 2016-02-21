@@ -304,7 +304,7 @@ namespace App.Controllers
         {
             var _snippets = _snippetService.GetSnippetsFromGroup(id);
             var _group = _groupService.GetGroupByID(id);
-            SnippetsByGroupViewModel result = new SnippetsByGroupViewModel { group = _group, snippets = _snippets };
+            SnippetsByGroupViewModel result = new SnippetsByGroupViewModel { Group = _group, Snippets = _snippets };
             return View(result);
         }
 

@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Snippets";
-
 }
 
 <div class="grid">
@@ -53,7 +52,7 @@
 
 <hr />
 
-@{Html.RenderPartial("_ListSnippets", Model.Snippets);}
+@{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Snippets, EditRemoveButtons = true, SpanSizeSnippets = "span9" });}
 
 @section Scripts{
     <script src="~/Scripts/src-noconflict/ace.js"></script>
