@@ -53,7 +53,7 @@
 <hr />
 
 <div class="grid">
-    @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Snippets, SnippetsButtons = true, GroupButtons = false, SpanSizeSnippets = "span9", SpanSizeArea = "span12" });}
+    @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Snippets, SnippetsButtons = true, SpanSizeSnippets = "span9", SpanSizeArea = "span12" });}
 </div>
 
 @section Scripts{
