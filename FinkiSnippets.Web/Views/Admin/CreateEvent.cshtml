@@ -53,17 +53,13 @@
             </div>
         
             <div class="row">
+                <hr />
                 
                 @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, SpanSizeSnippets = "span6", SpanSizeArea = "span6"});}
                 
-                <div class="span3">giberish</div>
+                <div class="span6 listview-outlook addedSnippets"></div>
             </div>
-        </div>
-
-        @*@{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, EditRemoveButtons = false, SpanSizeSnippets = "span6" });}
-
-        <div class="span3">giberish</div>*@
-       
+        </div>   
     </fieldset>
 }
 
@@ -78,9 +74,25 @@
     <script src="~/Scripts/Our Scripts/EditorInitializer.js"></script>
     <script>
         $(function () {
-            
-            var snippets = [];
 
+            var addedSnippets = [];
+
+            $(".list").click(function () {
+
+                var id = $(this).attr("id");
+
+                var t = addedSnippets.filter(function (el) {
+                    return el == id;
+                });
+
+                if (t.length > 0)
+                    return;
+
+                addedSnippets.push(id);
+                $(".addedSnippets").append('<div class="row">' + $(this).parent().parent().html() + '</div>');
+                $(this).parent().parent().remove();
+            });
+            
             $("#hourStart,#hourEnd").focusin(function () {
                 $(this).attr("data-state", "");
             });
