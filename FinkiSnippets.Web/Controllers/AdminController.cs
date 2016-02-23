@@ -251,10 +251,22 @@ namespace App.Controllers
             return View(model);
         }
 
-        public ActionResult FilterSnippets(FilterSnippetsInput filterData)
+        public ActionResult FilterSnippets(FilterSnippetsInput filterData, string view)
         {
             var snippets = _snippetService.FilterSnippets(filterData);
-            return PartialView("_ListSnippets", snippets);
+            ListSnippetsPartialViewModel vm = new ListSnippetsPartialViewModel
+            {
+                Snippets = snippets
+            };
+
+            if(view == "snippets")
+            {
+                vm.SnippetsButtons = true;
+                vm.SpanSizeSnippets = "span9";
+                vm.SpanSizeArea = "span12";
+            }
+
+            return PartialView("_ListSnippets", vm);
         }
 
         public ActionResult CreateSnippet()
