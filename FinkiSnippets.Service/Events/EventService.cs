@@ -73,6 +73,7 @@ namespace FinkiSnippets.Service
             }
             else
             {
+                ev.Name = "TEST EVENT";
                 db.Events.Add(ev);
                 res = db.SaveChanges();
             }

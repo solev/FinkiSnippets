@@ -189,7 +189,7 @@ namespace App.Controllers
             DateTime end = new DateTime(year, month, day, model.hourEnd, model.minEnd, 0);
             Event ev = new Event { Start = start, End = end };
 
-            List<Snippet> snippets = _snippetService.GetAllSnippetsByID(model.snippets);
+            List<Snippet> snippets = _snippetService.GetAllSnippetsByID(model.Snippets);
 
             ev.Snippets = snippets;
 
@@ -225,7 +225,7 @@ namespace App.Controllers
             DateTime start = new DateTime(year, month, day, model.hourStart, model.minStart, 0);
             DateTime end = new DateTime(year, month, day, model.hourEnd, model.minEnd, 0);
 
-            List<Snippet> snippets = _snippetService.GetAllSnippetsByID(model.snippets);
+            List<Snippet> snippets = _snippetService.GetAllSnippetsByID(model.Snippets);
             Event ev = new Event { Start = start, End = end, ID = model.id, Snippets = snippets };
 
             bool res = _eventService.AddOrUpdateEvent(ev);

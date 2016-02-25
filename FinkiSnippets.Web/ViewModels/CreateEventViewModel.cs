@@ -15,7 +15,7 @@ namespace App.ViewModels
         public int hourEnd { get; set; }
         public int minEnd { get; set; }
 
-        public virtual List<Int32> snippets{ get; set; }
+        public virtual List<Int32> Snippets{ get; set; }
         public virtual List<Snippet> AllSnippets { get; set; }
         public virtual List<Group> AllGroups { get; set; }
         public virtual List<Operation> AllOperations { get; set; }

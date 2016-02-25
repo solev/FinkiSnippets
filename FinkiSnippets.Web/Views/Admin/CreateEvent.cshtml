@@ -51,10 +51,17 @@
                     <input type="submit" value="Креирај Натпревар" class="btn success" style="height:34px;"/> <span id="error-message"></span>
                 </div>
             </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="span6" style="text-align:center">Сите снипети</div>
+                <div class="span6" style="text-align:center">Снипети во евент</div> 
+            </div>
         
             <div class="row">
-                <hr />
                 
+
                 @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, SpanSizeSnippets = "span6", SpanSizeArea = "span6"});}
                 
                 <div class="span6 listview-outlook addedSnippets"></div>
@@ -77,7 +84,7 @@
 
             var addedSnippets = [];
 
-            $(".list").click(function () {
+            $(".snippets").on("click", ".list", function () {
 
                 var id = $(this).attr("id");
 
@@ -89,7 +96,25 @@
                     return;
 
                 addedSnippets.push(id);
-                $(".addedSnippets").append('<div class="row">' + $(this).parent().parent().html() + '</div>');
+                console.log(addedSnippets);
+
+                $(".addedSnippets").append('<div class="row eventSnippet">' + $(this).parent().parent().html() + '</div>');
+                $(this).parent().parent().remove();
+            });
+
+            $(".addedSnippets").on("click", ".list", function () {
+                
+                var id = $(this).attr("id");
+
+                console.log(id);
+
+                addedSnippets = addedSnippets.filter(function (el) {
+                    return el != id;
+                });
+
+                console.log(addedSnippets);
+
+                $(".snippets").append('<div class="row eventSnippet">' + $(this).parent().parent().html() + '</div>');
                 $(this).parent().parent().remove();
             });
             
@@ -170,7 +195,7 @@
                         minStart: ms.val(),
                         hourEnd: he.val(),
                         minEnd: me.val(),
-                        GroupID: group
+                        Snippets: addedSnippets
                     })
                 }).done(function (data) {
 
