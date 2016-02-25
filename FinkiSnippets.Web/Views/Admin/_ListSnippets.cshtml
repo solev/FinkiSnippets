@@ -1,10 +1,10 @@
 ﻿@model App.ViewModels.ListSnippetsPartialViewModel
 
 @{
-    int i = 0;
+    int i = Model.StartCounter;
 }
 
-<div class="listview-outlook @Model.SpanSizeArea snippets">
+<div class="listview-outlook @Model.SpanSizeArea @Model.DivName">
     @foreach (var snippet in Model.Snippets)
     {
         <div class="row">
@@ -24,6 +24,7 @@
                     <a class="button danger" href="@Url.Action("DeleteSnippet", "Admin", new { id = snippet.ID})" onclick="return confirm('Дали сте сигурни?')">Избриши</a>
                 </div>
             }
+            
             @if (Model.GroupButtons)
             {
                 <div class="span3">

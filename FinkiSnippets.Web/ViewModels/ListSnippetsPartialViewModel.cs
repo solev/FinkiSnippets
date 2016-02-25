@@ -8,6 +8,10 @@ namespace App.ViewModels
 {
     public class ListSnippetsPartialViewModel
     {
+        public int StartCounter { get; set; }
+
+        public string DivName { get; set; }
+
         public List<Snippet> Snippets { get; set; }
 
         public bool SnippetsButtons { get; set; }

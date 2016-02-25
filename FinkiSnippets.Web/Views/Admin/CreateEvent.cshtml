@@ -7,7 +7,6 @@
 <h2>
     Нов натпревар
 </h2>
-
 <hr />
 
 @using(Html.BeginForm())
@@ -15,9 +14,7 @@
     @Html.AntiForgeryToken()
     <fieldset>
         <div class="grid">
-           
             <div class="row">
-
                 <div class="span3">
                     <label>Датум на натпреварот</label>
                     <div class="input-control text" data-role="datepicker" data-weekstart="1">
@@ -60,8 +57,6 @@
             </div>
         
             <div class="row">
-                
-
                 @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, SpanSizeSnippets = "span6", SpanSizeArea = "span6"});}
                 
                 <div class="span6 listview-outlook addedSnippets"></div>
@@ -69,10 +64,6 @@
         </div>   
     </fieldset>
 }
-
-<div id="backBtn">
-    @Html.ActionLink("Назад", "Events")
-</div>
 
 @section Scripts{
     <script src="~/Scripts/metro-calendar.js"></script>

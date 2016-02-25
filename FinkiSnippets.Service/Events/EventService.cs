@@ -23,7 +23,7 @@ namespace FinkiSnippets.Service
 
         public Event GetEventById(int eventID)
         {
-            return db.Events.FirstOrDefault(x => x.ID == eventID);
+            return db.Events.Where(x => x.ID == eventID).Include(x => x.Snippets).FirstOrDefault();
         }
 
         public Event GetNextEvent()
@@ -57,9 +57,11 @@ namespace FinkiSnippets.Service
             return result;
         }
 
-        public bool AddOrUpdateEvent(Event ev)
+        public bool AddOrUpdateEvent(Event ev, List<Int32> IDs)
         {
             int res;
+
+            ev.Snippets = db.Snippets.Where(x => IDs.Contains(x.ID)).ToList();
 
             if(ev.ID > 0)
             {
@@ -73,7 +75,7 @@ namespace FinkiSnippets.Service
             }
             else
             {
-                ev.Name = "TEST EVENT";
+                //ev.Name = "TEST EVENT";
                 db.Events.Add(ev);
                 res = db.SaveChanges();
             }

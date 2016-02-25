@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "CreateEvent";
     string tempDate = String.Format("{0}.{1}.{2}", Model.Event.Start.Day, Model.Event.Start.Month, Model.Event.Start.Year);
+    Model.AllSnippets = Model.AllSnippets.Where(x => !Model.Event.Snippets.Select(y => y.ID).Contains(x.ID)).ToList();
+    var addedSnippets = Model.Event.Snippets.Select(x => x.ID).ToList();
 }
 
 <h2>
@@ -11,79 +13,106 @@
 <hr />
 @using(Html.BeginForm())
 {
-    
     @Html.AntiForgeryToken()
     <fieldset>
-        <div class="span3">
-            <label>Датум на натпреварот</label>
-            <div class="input-control text" data-role="datepicker" data-weekstart="1">                
-                <input type="text" name="date" value="@tempDate" id="datepicker">
-                <button class="btn-date"></button>
-            </div>
-        </div>
         <div class="grid">
-            <p>Почеток - крај</p>
             <div class="row">
-                <div class="input-control text size1">
-                    <input type="text" name="hourStart" value="@Model.Event.Start.TimeOfDay.Hours" id="hourStart" />
+                <div class="span3">
+                    <label>Датум на натпреварот</label>
+                    <div class="input-control text" data-role="datepicker" data-weekstart="1">
+                        <input type="text" name="date" value="@tempDate"id="datepicker">
+                        <button class="btn-date"></button>
+                    </div>
                 </div>
-                <span>:</span>
-                <div class="input-control text size1">
-                    <input type="text" name="minStart" value="@Model.Event.Start.TimeOfDay.Minutes" id="minStart" />
+
+                <div class="span5">
+                    <label>&nbsp;</label>
+                    <span>од</span>
+                    <div class="input-control text size1">
+                        <input type="text" name="hourStart" value="@Model.Event.Start.TimeOfDay.Hours" id="hourStart" />
+                    </div>
+                    <span>:</span>
+                    <div class="input-control text size1">
+                        <input type="text" name="minStart" value="@Model.Event.Start.TimeOfDay.Minutes" id="minStart" />
+                    </div>
+                    <span>до</span>
+                    <div class="input-control text size1">
+                        <input type="text" name="hourEnd" value="@Model.Event.End.TimeOfDay.Hours" id="hourEnd" />
+                    </div>
+                    <span>:</span>
+                    <div class="input-control text size1">
+                        <input type="text" name="minEnd" value="@Model.Event.End.TimeOfDay.Minutes" id="minEnd" />
+                    </div>
                 </div>
-                <span>до</span>
-                <div class="input-control text size1">
-                    <input type="text" name="hourEnd" value="@Model.Event.End.TimeOfDay.Hours" id="hourEnd" />
-                </div>
-                <span>:</span>
-                <div class="input-control text size1">
-                    <input type="text" name="minEnd" value="@Model.Event.End.TimeOfDay.Minutes" id="minEnd" />
+
+                <div class="form-group span4">
+                    <label>&nbsp;</label>
+                    <input type="submit" value="Измени Натпревар" class="btn success" style="height:34px;" /> <span id="error-message"></span>
                 </div>
             </div>
 
+            <hr />
+
             <div class="row">
-                <div class="input-control select">
-                    <select id="groupSelect">
-                        <option value="">--Одбери група--</option>
-                        @foreach (var item in Model.Groups)
-                        {
-                            if (item.ID == Model.Event.Group.ID)
-                            {
-                                <option value="@item.ID" selected>@item.Name</option>
-                            }
-                            else
-                            {
-                                <option value="@item.ID">@item.Name</option>
-                            }
-
-                        }
-                    </select>
-
-
-
-                </div>
+                <div class="span6" style="text-align:center">Сите снипети</div>
+                <div class="span6" style="text-align:center">Снипети во евент</div>
             </div>
 
-        </div>
+            <div class="row">
+                @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, DivName = "snippets", SpanSizeSnippets = "span6", SpanSizeArea = "span6" });}
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Зачувај" class="btn btn-default" /> <span id="error-message"></span>
+                @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Event.Snippets.ToList(), DivName ="addedSnippets", StartCounter = Model.AllSnippets.Count, SpanSizeSnippets = "span6", SpanSizeArea = "span6" });}
             </div>
         </div>
     </fieldset>
 }
 
-<div id="backBtn">
-    @Html.ActionLink("Назад", "Events")
-</div>
-
 @section Scripts{
     <script src="~/Scripts/metro-calendar.js"></script>
     <script src="~/Scripts/metro-datepicker.js"></script>
-
+    <script src="~/Scripts/src-noconflict/ace.js"></script>
+    <script src="~/Scripts/Our Scripts/EditorInitializer.js"></script>
     <script>
         $(function () {
+
+            var addedSnippets = @Html.Raw(Json.Encode(addedSnippets));
+
+            console.log(addedSnippets);
+
+            $(".snippets").on("click", ".list", function () {
+
+                var id = $(this).attr("id");
+
+                var t = addedSnippets.filter(function (el) {
+                    return el == id;
+                });
+
+                if (t.length > 0)
+                    return;
+
+                addedSnippets.push(id);
+                console.log(addedSnippets);
+
+                $(".addedSnippets").append('<div class="row eventSnippet">' + $(this).parent().parent().html() + '</div>');
+                $(this).parent().parent().remove();
+            });
+
+            $(".addedSnippets").on("click", ".list", function () {
+
+                var id = $(this).attr("id");
+
+                console.log(id);
+
+                addedSnippets = addedSnippets.filter(function (el) {
+                    return el != id;
+                });
+
+                console.log(addedSnippets);
+
+                $(".snippets").append('<div class="row eventSnippet">' + $(this).parent().parent().html() + '</div>');
+                $(this).parent().parent().remove();
+            });
+
             $("#hourStart,#hourEnd").focusin(function () {
                 $(this).attr("data-state", "");
             });
@@ -118,8 +147,8 @@
                 var ms = $("#minStart");
                 var he = $("#hourEnd");
                 var me = $("#minEnd");
-                var modelid = '@Model.Event.ID';
                 var group = $("#groupSelect").val();
+
                 var error = false;
 
 
@@ -156,13 +185,13 @@
                     type: "POST",
                     contentType: 'application/json',
                     data: JSON.stringify({
+                        id: '@Model.Event.ID',
                         date: dateTemp,
                         hourStart: hs.val(),
                         minStart: ms.val(),
                         hourEnd: he.val(),
                         minEnd: me.val(),
-                        id:modelid,
-                        GroupID: group
+                        Snippets: addedSnippets
                     })
                 }).done(function (data) {
 
@@ -177,7 +206,6 @@
                 });
 
             });
-
         });
     </script>
 
