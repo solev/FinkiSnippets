@@ -6,12 +6,11 @@
 
 <div class="grid">
     <div class="row">
-
         <h2 class="span9">Снипети</h2>
         <a class="button large" href="@Url.Action("CreateSnippet","Admin")">Додади нов снипет</a>
     </div>
 
-    @using (Ajax.BeginForm("FilterSnippets", new AjaxOptions { HttpMethod = "GET", LoadingElementId = "loader", }))
+    @using (Ajax.BeginForm("FilterSnippets", new AjaxOptions { HttpMethod = "GET", LoadingElementId = "loader", UpdateTargetId = "snippetContainer", InsertionMode = InsertionMode.Replace, OnSuccess = "InitializeEditors()" }))
     {
         <div class="row">
             <div class="span9">
@@ -31,7 +30,6 @@
                             </div>
 
                             <label>Операции</label>
-
                             <div class="input-control select">
                                 <select id="operationSelect" name="SelectedOperations" multiple style="width:100%;">
                                     @foreach (var item in Model.Operations)
@@ -41,6 +39,7 @@
                                 </select>
                             </div>
 
+                            <input type="text" value="snippets" hidden name="view"/>
                             <input type="submit" value="Филтрирај">
                         </fieldset>
                     </form>
@@ -49,10 +48,9 @@
         </div>
     }
 </div>
-
 <hr />
 
-<div class="grid">
+<div class="grid" id="snippetContainer">
     @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Snippets, SnippetsButtons = true, SpanSizeSnippets = "span9", SpanSizeArea = "span12" });}
 </div>
 

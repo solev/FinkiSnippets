@@ -187,13 +187,12 @@ namespace App.Controllers
 
             DateTime start = new DateTime(year, month, day, model.hourStart, model.minStart, 0);
             DateTime end = new DateTime(year, month, day, model.hourEnd, model.minEnd, 0);
-            Event ev = new Event { Start = start, End = end };
 
-            List<Snippet> snippets = _snippetService.GetAllSnippetsByID(model.snippets);
+            //List<Snippet> snippets = _snippetService.GetAllSnippetsByID(model.Snippets);
 
-            ev.Snippets = snippets;
+            Event ev = new Event { Start = start, End = end/*, Snippets = snippets*/ };
 
-            bool res = _eventService.AddOrUpdateEvent(ev);
+            bool res = _eventService.AddOrUpdateEvent(ev, model.Snippets);
 
             if (!res)
             {
@@ -206,10 +205,11 @@ namespace App.Controllers
         public ActionResult EditEvent(int id)
         {
             EditEventViewModel model = new EditEventViewModel();
-            var ev = _eventService.GetEventById(id);
-            model.Event = ev;
-            model.Groups = _groupService.GetAllGroups();
-            string tempDate = String.Format("{0}.{1}.{2}", ev.Start.Day, ev.Start.Month, ev.Start.Year);
+            
+            model.AllGroups = _groupService.GetAllGroups();
+            model.AllSnippets = _snippetService.GetAllSnippets(1, 20);
+            model.AllOperations = _snippetService.GetAllOperations();
+            model.Event = _eventService.GetEventById(id);
 
             return View(model);
         }
@@ -225,10 +225,10 @@ namespace App.Controllers
             DateTime start = new DateTime(year, month, day, model.hourStart, model.minStart, 0);
             DateTime end = new DateTime(year, month, day, model.hourEnd, model.minEnd, 0);
 
-            List<Snippet> snippets = _snippetService.GetAllSnippetsByID(model.snippets);
-            Event ev = new Event { Start = start, End = end, ID = model.id, Snippets = snippets };
+            //List<Snippet> snippets = _snippetService.GetAllSnippetsByID(model.Snippets);
+            Event ev = new Event { Start = start, End = end, ID = model.id/*, Snippets = snippets*/ };
 
-            bool res = _eventService.AddOrUpdateEvent(ev);
+            bool res = _eventService.AddOrUpdateEvent(ev, model.Snippets);
 
             if (!res)
             {
@@ -251,10 +251,22 @@ namespace App.Controllers
             return View(model);
         }
 
-        public ActionResult FilterSnippets(FilterSnippetsInput filterData)
+        public ActionResult FilterSnippets(FilterSnippetsInput filterData, string view)
         {
             var snippets = _snippetService.FilterSnippets(filterData);
-            return PartialView("_ListSnippets", snippets);
+            ListSnippetsPartialViewModel vm = new ListSnippetsPartialViewModel
+            {
+                Snippets = snippets
+            };
+
+            if(view == "snippets")
+            {
+                vm.SnippetsButtons = true;
+                vm.SpanSizeSnippets = "span9";
+                vm.SpanSizeArea = "span12";
+            }
+
+            return PartialView("_ListSnippets", vm);
         }
 
         public ActionResult CreateSnippet()

@@ -208,13 +208,13 @@ namespace FinkiSnippets.Service
 
         public List<Snippet> FilterSnippets(FilterSnippetsInput input)
         {
-            var query = db.Snippets.Include(x=>x.Groups).AsQueryable();
+            var query = db.Snippets.AsQueryable();
 
-            if (input.SelectedGroups != null && input.SelectedGroups.Any())
-                query = query.Where(x => x.Groups.All(y => input.SelectedGroups.Any(z => y.ID == z)));
+            if (input.SelectedGroups!=null && input.SelectedGroups.Any())
+                query = query.Where(x => x.Groups.Any(y => input.SelectedGroups.Contains(y.ID)));
 
-            if (input.SelectedOperations != null && input.SelectedOperations.Any())
-                query = query.Where(x => x.Operations.All(y => input.SelectedOperations.Contains(y.OperationID)));
+            if (input.SelectedOperations!=null && input.SelectedOperations.Any())
+                query = query.Where(x => x.Operations.Any(y => input.SelectedOperations.Contains(y.OperationID)));
 
             var result = query.Select(x => new
             {
@@ -232,6 +232,5 @@ namespace FinkiSnippets.Service
 
             return filteredSnippets;
         }
-
     }
 }

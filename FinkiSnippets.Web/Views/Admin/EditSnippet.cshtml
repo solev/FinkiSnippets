@@ -1,4 +1,5 @@
 ﻿@model App.ViewModels.EditSnippetViewModel
+
 @{
     ViewBag.Title = "EditSnippet";
     var operatorList = Model.Snippet.Operations.Select(x => new { x.OperationID, x.Frequency }).ToList();
