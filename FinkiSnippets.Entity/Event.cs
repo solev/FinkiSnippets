@@ -12,9 +12,13 @@ namespace Entity
         public string Name { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+        
 
-        public virtual ICollection<Snippet> Snippets { get; set; }
+        public virtual ICollection<SnippetEvents> SnippetEvents { get; set; }
         public virtual ICollection<AnswerLog> Answers { get; set; }
         public virtual ICollection<UserEvents> UserEvents { get; set; }
+
+        [NotMapped]
+        public List<Snippet> Snippets { get; set; }
     }
 }

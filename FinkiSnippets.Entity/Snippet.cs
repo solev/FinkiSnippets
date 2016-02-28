@@ -16,6 +16,6 @@ namespace Entity
 
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<SnippetOperation> Operations { get; set; }
-        public virtual ICollection<Event> Events{ get; set; }
+        public virtual ICollection<SnippetEvents> SnippetEvents { get; set; }
     }
 }
