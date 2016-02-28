@@ -14,7 +14,7 @@ namespace Entity
         public DateTime End { get; set; }
         
 
-        public virtual ICollection<SnippetEvents> SnippetEvents { get; set; }
+        public virtual ICollection<EventSnippets> EventSnippets { get; set; }
         public virtual ICollection<AnswerLog> Answers { get; set; }
         public virtual ICollection<UserEvents> UserEvents { get; set; }
 

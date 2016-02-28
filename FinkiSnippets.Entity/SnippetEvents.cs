@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Entity
 {
-    public class SnippetEvents
+    public class EventSnippets
     {
+        public int ID { get; set; }
+
         public int SnippetID { get; set; }
         [ForeignKey("SnippetID")]
         public virtual Snippet Snippet { get; set; }

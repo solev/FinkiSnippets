@@ -12,10 +12,10 @@ namespace Entity
         public int ID { get; set; }                
         public string Code { get; set; }
         public string Output { get; set; }
-        public string Question { get; set; }
+        public string Question { get; set; }        
 
         public virtual ICollection<Group> Groups { get; set; }
         public virtual ICollection<SnippetOperation> Operations { get; set; }
-        public virtual ICollection<SnippetEvents> SnippetEvents { get; set; }
+        public virtual ICollection<EventSnippets> EventSnippets { get; set; }
     }
 }

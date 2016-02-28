@@ -23,7 +23,7 @@ namespace FinkiSnippets.Service
 
         public Event GetEventById(int eventID)
         {
-            return db.Events.Where(x => x.ID == eventID).Include(x => x.SnippetEvents).FirstOrDefault();
+            return db.Events.Where(x => x.ID == eventID).Include(x => x.EventSnippets.Select(y=>y.Snippet)).FirstOrDefault();
         }
 
         public List<Event> GetNextEvents()
@@ -56,22 +56,34 @@ namespace FinkiSnippets.Service
         {
             int res;
 
-            ev.Snippets = db.Snippets.Where(x => IDs.Contains(x.ID)).ToList();
+            List<EventSnippets> snippetEvents = new List<EventSnippets>();
+            for(int i=0;i<IDs.Count;i++)
+            {
+                EventSnippets snippetEvent = new EventSnippets
+                {
+                    SnippetID = IDs[i],
+                    OrderNumber = i+1
+                };
+                snippetEvents.Add(snippetEvent);
+            }
+                        
 
             if(ev.ID > 0)
             {
-                Event eventToUpdate = db.Events.Where(x => x.ID == ev.ID).Include(x=> x.SnippetEvents).FirstOrDefault();
-                eventToUpdate.SnippetEvents.Clear();
+                Event eventToUpdate = db.Events.Where(x => x.ID == ev.ID).Include(x=> x.EventSnippets).FirstOrDefault();
+                db.EventSnippets.RemoveRange(eventToUpdate.EventSnippets);
                 res = db.SaveChanges();
                 eventToUpdate.Name = ev.Name;
                 eventToUpdate.Start = ev.Start;
                 eventToUpdate.End = ev.End;
-                eventToUpdate.SnippetEvents = ev.SnippetEvents;
+                snippetEvents.ForEach(x => x.EventID = ev.ID);
+                eventToUpdate.EventSnippets = snippetEvents;
                 res = db.SaveChanges();
             }
             else
             {
-                db.Events.Add(ev);
+                ev.EventSnippets = snippetEvents;
+                db.Events.Add(ev);                
                 res = db.SaveChanges();
             }
             

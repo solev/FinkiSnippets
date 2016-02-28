@@ -209,6 +209,7 @@ namespace App.Controllers
             model.AllSnippets = _snippetService.GetAllSnippets(1, 20);
             model.AllOperations = _snippetService.GetAllOperations();
             model.Event = _eventService.GetEventById(id);
+            model.Event.Snippets = model.Event.EventSnippets.Select(x => x.Snippet).ToList();
 
             return View(model);
         }
