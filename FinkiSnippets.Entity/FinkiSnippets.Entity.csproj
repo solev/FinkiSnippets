@@ -63,6 +63,7 @@
     <Compile Include="Operation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Snippet.cs" />
+    <Compile Include="SnippetEvents.cs" />
     <Compile Include="SnippetOperation.cs" />
     <Compile Include="UserEvents.cs" />
   </ItemGroup>
