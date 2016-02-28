@@ -2,15 +2,16 @@
 
 @{
     ViewBag.Title = "Snippets";
-
 }
 
 <div class="grid">
     <div class="row">
+
         <h2 class="span9">Снипети</h2>
         <a class="button large" href="@Url.Action("CreateSnippet","Admin")">Додади нов снипет</a>
     </div>
-    @using (Ajax.BeginForm("FilterSnippets", new AjaxOptions { HttpMethod = "GET", LoadingElementId = "loader", InsertionMode = InsertionMode.Replace, UpdateTargetId = "snippetHolder" }))
+
+    @using (Ajax.BeginForm("FilterSnippets", new AjaxOptions { HttpMethod = "GET", LoadingElementId = "loader", }))
     {
         <div class="row">
             <div class="span9">
@@ -51,11 +52,10 @@
 
 <hr />
 
-<div id="snippetHolder">
-
-    @{Html.RenderPartial("_ListSnippets", Model.Snippets);}
-
+<div class="grid">
+    @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Snippets, SnippetsButtons = true, SpanSizeSnippets = "span9", SpanSizeArea = "span12" });}
 </div>
+
 @section Scripts{
     <script src="~/Scripts/src-noconflict/ace.js"></script>
     <script src="~/Scripts/metro-times.js"></script>

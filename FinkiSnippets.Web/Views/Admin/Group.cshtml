@@ -6,12 +6,15 @@
 
 <div class="grid">
     <div class="row">
-        <h2 class="span9">Снипети во група @Model.group.Name</h2>
+        <h2 class="span9">Снипети во група @Model.Group.Name</h2>
         <a class="button large" href="javascript:void(0)" onclick="return alert('NOT IMPLEMENTED')">Додади нов снипет</a>
     </div>
 </div>
 <hr />
-@{Html.RenderPartial("_ListSnippets", Model.snippets);}
+
+<div class="grid">
+    @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Snippets, GroupButtons = true, SpanSizeSnippets = "span9", SpanSizeArea = "span12" });}
+</div>
 
 @section Scripts{
     <script src="~/Scripts/src-noconflict/ace.js"></script>
@@ -28,9 +31,11 @@
                     return;
 
                 var snippetID = $(this).attr("id");
-                var groupID = '@Model.group.ID';
+                var groupID = '@Model.Group.ID';
                 var button = $(this);
 
+                console.log(snippetID);
+                console.log(groupID);
 
                 $.post('@Url.Action("RemoveSnippetFromGroup", "Admin")', { SnippetID: snippetID, GroupID: groupID }, function (data) {
 
@@ -40,7 +45,6 @@
                         button.parent().parent().remove();
                         msg = "Успешно избришан Snippet од група!";
                     }
-
 
                     $.Notify({
                         caption: "Статус",

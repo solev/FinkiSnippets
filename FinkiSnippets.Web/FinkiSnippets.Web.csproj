@@ -202,6 +202,7 @@
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\SnippetsByGroupViewModel.cs" />
+    <Compile Include="ViewModels\ListSnippetsPartialViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\iconFont.min.css" />
@@ -233,6 +234,7 @@
     <Content Include="Scripts\metro.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\Our Scripts\EditorInitializer.js" />
+    <Content Include="Scripts\Our Scripts\GlobalVariables.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Select2\css\select2-bootstrap.min.css" />

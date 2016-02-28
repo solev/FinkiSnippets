@@ -1,24 +1,34 @@
-﻿@model List<Entity.Snippet>
+﻿@model App.ViewModels.ListSnippetsPartialViewModel
 
 @{
     int i = 0;
 }
-<div class="listview-outlook">
-    @foreach (var snippet in Model)
+
+<div class="listview-outlook @Model.SpanSizeArea">
+    @foreach (var snippet in Model.Snippets)
     {
-        <div class="grid">
-            <div class="row">
+        <div class="row">
+            <div class="@Model.SpanSizeSnippets">
                 <a href="javascript:void(0)" class="list">
                     <div class="list-content">
                         <span class="list-title">@snippet.Question</span>
                         <div class="codeEditor" id="editor_@(i++)">@HttpUtility.UrlDecode(snippet.Code)</div>
                     </div>
                 </a>
-                @*<div class="span3">
-                        <a class="button warning" href="@Url.Action("EditSnippet", "Admin", new { id = snippet.ID})">Измени</a>
-                        <a class="button danger" href="@Url.Action("DeleteSnippet", "Admin", new { id = snippet.ID})" onclick="return confirm('Дали сте сигурни?')">Избриши</a>
-                    </div>*@
             </div>
+            @if (Model.SnippetsButtons)
+            {
+                <div class="span3">
+                    <a class="button warning" href="@Url.Action("EditSnippet", "Admin", new { id = snippet.ID})">Измени</a>
+                    <a class="button danger" href="@Url.Action("DeleteSnippet", "Admin", new { id = snippet.ID})" onclick="return confirm('Дали сте сигурни?')">Избриши</a>
+                </div>
+            }
+            @if (Model.GroupButtons)
+            {
+                <div class="span3">
+                    <a id='@snippet.ID' class="button danger removeFromGroup" href="javascript:void(0)">Тргни од група</a>
+                </div>
+            }
         </div>
     }
 </div>

@@ -1,6 +1,6 @@
 ﻿$(function () {
     var editors = $(".codeEditor");
-
+    
     editors.each(function (idx) {
 
         var editor = ace.edit("editor_" + idx);
@@ -33,5 +33,6 @@
         heightUpdateFunction();
         editor.getSession().on('change', heightUpdateFunction);
 
+        Variables.initEditors[idx] = editor;
     });
 });
