@@ -15,6 +15,15 @@
     <fieldset>
         <div class="grid">
             <div class="row">
+                <div class="span9">
+                    <label>Име на натпреварот</label>
+                    <div class="input-control text">
+                        <input type="text" id="name" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="span3">
                     <label>Датум на натпреварот</label>
                     <div class="input-control text" data-role="datepicker" data-weekstart="1">
@@ -43,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="form-group span4">
+                <div class="form-group span1">
                     <label>&nbsp;</label>
                     <input type="submit" value="Креирај Натпревар" class="btn success" style="height:34px;"/> <span id="error-message"></span>
                 </div>
@@ -144,6 +153,7 @@
                 var he = $("#hourEnd");
                 var me = $("#minEnd");
                 var group = $("#groupSelect").val();
+                var name = $("#name").val();
                 
                 var error = false;
 
@@ -181,6 +191,7 @@
                     type: "POST",
                     contentType: 'application/json',
                     data: JSON.stringify({
+                        name: name,
                         date: dateTemp,
                         hourStart: hs.val(),
                         minStart: ms.val(),

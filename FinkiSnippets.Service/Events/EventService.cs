@@ -26,21 +26,16 @@ namespace FinkiSnippets.Service
             return db.Events.Where(x => x.ID == eventID).Include(x => x.Snippets).FirstOrDefault();
         }
 
-        public Event GetNextEvent()
+        public List<Event> GetNextEvents()
         {
-            DateTime currentTime = DateHelper.GetCurrentTime();
-            var result = db.Events.Where(x => x.End > currentTime)
-                .OrderBy(x => x.Start).Take(1).FirstOrDefault();
-
-            return result;
+            DateTime CurrentTime = DateHelper.GetCurrentTime();
+            return db.Events.Where(x => x.Start > CurrentTime).ToList();
         }
 
-        public Event GetCurrentEvent()
+        public List<Event> GetActiveEvents()
         {
-            DateTime currentTime = DateHelper.GetCurrentTime();
-            var result = db.Events.FirstOrDefault(x => x.Start < currentTime && x.End > currentTime);
-
-            return result;
+            DateTime CurrentTime = DateHelper.GetCurrentTime();
+            return db.Events.Where(x => x.Start < CurrentTime && x.End > CurrentTime).ToList();
         }
 
         public List<EventDto> GetAllEvents()
@@ -48,12 +43,12 @@ namespace FinkiSnippets.Service
             var tempResult = db.Events.OrderByDescending(x => x.Start).Select(x => new
             {
                 x.ID,
+                x.Name,
                 x.Start,
                 x.End
             }).ToList();
 
-
-            List<EventDto> result = tempResult.Select(x => new EventDto { ID = x.ID, Start = x.Start, End = x.End }).ToList();
+            List<EventDto> result = tempResult.Select(x => new EventDto { ID = x.ID, Name = x.Name, Start = x.Start, End = x.End }).ToList();
             return result;
         }
 
@@ -68,6 +63,7 @@ namespace FinkiSnippets.Service
                 Event eventToUpdate = db.Events.Where(x => x.ID == ev.ID).Include(x=> x.Snippets).FirstOrDefault();
                 eventToUpdate.Snippets.Clear();
                 res = db.SaveChanges();
+                eventToUpdate.Name = ev.Name;
                 eventToUpdate.Start = ev.Start;
                 eventToUpdate.End = ev.End;
                 eventToUpdate.Snippets = ev.Snippets;
@@ -75,7 +71,6 @@ namespace FinkiSnippets.Service
             }
             else
             {
-                //ev.Name = "TEST EVENT";
                 db.Events.Add(ev);
                 res = db.SaveChanges();
             }

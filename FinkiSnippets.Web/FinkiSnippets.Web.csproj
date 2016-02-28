@@ -203,6 +203,7 @@
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\SnippetsByGroupViewModel.cs" />
     <Compile Include="ViewModels\ListSnippetsPartialViewModel.cs" />
+    <Compile Include="ViewModels\StartViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\iconFont.min.css" />
