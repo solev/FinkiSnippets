@@ -21,6 +21,7 @@ namespace FinkiSnippets.Data
         public DbSet<AnswerLog> Answers { get; set; }
         public DbSet<SnippetOperation> SnippetOperations { get; set; }
         public DbSet<Event> Events { get; set; }
-        public DbSet<Group> Groups{ get; set; }   
+        public DbSet<Group> Groups{ get; set; }
+        public DbSet<UserEvents> UserEvents { get; set; }
     }
 }

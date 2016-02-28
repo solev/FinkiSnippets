@@ -57,7 +57,7 @@
             </div>
         
             <div class="row">
-                @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, SpanSizeSnippets = "span6", SpanSizeArea = "span6"});}
+                @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, SpanSizeSnippets = "span6", SpanSizeArea = "span6", DivName="snippets"});}
                 
                 <div class="span6 listview-outlook addedSnippets"></div>
             </div>

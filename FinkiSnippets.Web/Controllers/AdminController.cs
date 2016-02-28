@@ -54,7 +54,6 @@ namespace App.Controllers
         {
             //Create table for results        
             var result = _exportService.ExportOperationsForEvent(id);
-
             CreateExcelFile.CreateExcelDocument(result.Table, "Zadaci.xlsx", System.Web.HttpContext.Current.Response);
         }
 

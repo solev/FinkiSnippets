@@ -1,9 +1,9 @@
 ﻿@model List<FinkiSnippets.Service.Dto.EventDto>
 @{
     ViewBag.Title = "Events";
-    var upcoming = Model.Where(x => x.End > DateTime.Now.AddHours(1)).OrderBy(x=>x.Start);
-    var active = Model.FirstOrDefault(x => x.Start < DateTime.Now.AddHours(1) && x.End > DateTime.Now.AddHours(1));
-    Model.Remove(active);
+    var upcoming = Model.Where(x => x.Start > DateTime.Now.AddHours(1)).OrderBy(x=>x.Start);
+    var active = Model.Where(x => x.Start < DateTime.Now.AddHours(1) && x.End > DateTime.Now.AddHours(1)).ToList();
+    active.ForEach(x => Model.Remove(x));
 }
 
 @Html.ActionLink("Ново натпреварување", "CreateEvent", "Admin", new { @class = "button large" })
@@ -21,14 +21,18 @@
         </tr>
     </thead>
     <tbody>
-        @if(active != null) { 
-        <tr class="success">
-            <td>@String.Format("{0} / {1} / {2}", active.Start.Day, active.Start.Month, active.Start.Year)</td>
-            <td>@active.Start.TimeOfDay</td>
-            <td>@active.End.TimeOfDay</td>  
-            <td >@Html.ActionLink("Види резултати", "Results", "Admin", new { id = active.ID }, new { @style = "color:black!important;" })</td>          
-            <td style="width:40px;"><a href="@Url.Action("EditEvent", "Admin", new { id=active.ID })" class="button danger small">Измени</a></td>
-        </tr>
+        @if (active != null && active.Any())
+        {
+            foreach (var item in active)
+            {
+                <tr class="success">
+                    <td>@String.Format("{0} / {1} / {2}", item.Start.Day, item.Start.Month, item.Start.Year)</td>
+                    <td>@item.Start.TimeOfDay</td>
+                    <td>@item.End.TimeOfDay</td>
+                    <td>@Html.ActionLink("Види резултати", "Results", "Admin", new { id = item.ID }, new { @style = "color:black!important;" })</td>
+                    <td style="width:40px;"><a href="@Url.Action("EditEvent", "Admin", new { id=item.ID })" class="button danger small">Измени</a></td>
+                </tr>
+            }
         }
     </tbody>
 </table>
