@@ -43,9 +43,9 @@ namespace App.Controllers
         {
             string userID = User.Identity.GetUserId();
 
-            Event currentEvent = _userService.GetCurrentEvent(userID);
-
+            Event userActiveEvent = _userService.UserActiveEvent(userID);
             var validateEvent = _eventService.GetEventById(id);
+
             //Event doesnt exist
             if (validateEvent == null)
             {                
@@ -53,17 +53,21 @@ namespace App.Controllers
             }
 
             //Has no active events start a new one
-            if (currentEvent == null)
+            if (userActiveEvent == null)
             {   
                 _userService.BeginEvent(User.Identity.GetUserId(), validateEvent.ID);
-                currentEvent = validateEvent;
+                userActiveEvent = validateEvent;
+
+                //return view with first snippet
             }
             
             //Has active event but wants to start another one
-            if(currentEvent.ID != validateEvent.ID)
+            if(userActiveEvent.ID != validateEvent.ID)
             {
+                // should redirect to lobby of the event
                 return RedirectToAction("Start");
             }            
+
 
 
             return View();

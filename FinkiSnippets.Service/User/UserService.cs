@@ -19,7 +19,7 @@ namespace FinkiSnippets.Service
             db = _db;
         }
 
-        public bool BeginEvent(string UserID, int EventID)
+        public Snippet BeginEvent(string UserID, int EventID)
         {
             UserEvents userEvent = new UserEvents
             {
@@ -29,7 +29,8 @@ namespace FinkiSnippets.Service
             };
             db.UserEvents.Add(userEvent);
             int res = db.SaveChanges();
-            return res > 0;
+            
+            return null;
         }
 
         public ListUsersDto GetAllUsers(int page, int usersPerPage)
@@ -60,7 +61,7 @@ namespace FinkiSnippets.Service
             return result;
         }
                
-        public Event GetCurrentEvent(string UserID)
+        public Event UserActiveEvent(string UserID)
         {
             Event result = db.UserEvents.Where(x => x.UserID == UserID && !x.Finished).Select(x => x.Event).FirstOrDefault();
             return result;
