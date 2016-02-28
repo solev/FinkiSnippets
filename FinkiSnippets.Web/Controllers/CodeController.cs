@@ -16,12 +16,15 @@ namespace App.Controllers
     public class CodeController : Controller
     {
         private ApplicationUserManager _userManager;
+        private readonly IUserService _userService;
         private readonly IEventService _eventService;
         private readonly ISnippetService _snippetService;
-        public CodeController(IEventService eventService, ISnippetService snippetService, ApplicationUserManager userManager)
+
+        public CodeController(IEventService eventService, ISnippetService snippetService, ApplicationUserManager userManager, IUserService userService)
         {
             _eventService = eventService;
             _snippetService = snippetService;
+            _userService = userService;
             _userManager = userManager;
         }
 
@@ -37,43 +40,33 @@ namespace App.Controllers
         }
 
         //id == orderNumber
-        public ActionResult Game()
+        public ActionResult Game(int id)
         {
-            //DateTime t = DateTime.Now.AddHours(1);
+            string userID = User.Identity.GetUserId();
+
+            Event currentEvent = _userService.GetCurrentEvent(userID);
+
+            var validateEvent = _eventService.GetEventById(id);
+            //Event doesnt exist
+            if (validateEvent == null)
+            {                
+                return RedirectToAction("Start");
+            }
+
+            //Has no active events start a new one
+            if (currentEvent == null)
+            {   
+                _userService.BeginEvent(User.Identity.GetUserId(), validateEvent.ID);
+                currentEvent = validateEvent;
+            }
             
-            //// I DONT NEED ALL EVENT DATA
-            //var ev = _eventService.GetCurrentEvent();
+            //Has active event but wants to start another one
+            if(currentEvent.ID != validateEvent.ID)
+            {
+                return RedirectToAction("Start");
+            }            
 
-            ////no event at current time
-            //if (ev == null)
-            //    return RedirectToAction("Start");
 
-
-            //int lastAnsweredOrderNumber = _snippetService.GetLastAnsweredSnippetOrderNumber(User.Identity.GetUserId(), ev.ID, 1);
-
-            //int orderNumber = lastAnsweredOrderNumber + 1;
-
-            //Snippet snippet;
-
-            //int lastOrderNumber = _snippetService.GetLastSnippetOrderNumber(ev.Group.ID);
-
-            //if (orderNumber > lastOrderNumber)
-            //{
-
-            //    return RedirectToAction("Result", new { status = "YzK12QQu" });
-            //}
-
-            //snippet = _snippetService.GetSnippetWithOrderNumber(orderNumber, ev.Group.ID);
-
-            //bool check = _snippetService.CheckIfFirstSnippetAccess(User.Identity.GetUserId(),snippet.ID,ev.ID);
-
-            //if (!check)
-            //{
-            //    ApplicationUser user = _userManager.FindById(User.Identity.GetUserId());
-            //    bool res = _snippetService.CreateInitialAnswer(new AnswerLog { DateCreated = DateHelper.GetCurrentTime(), User = user, snippet = snippet, Event = ev });                
-            //}
-
-            //ViewBag.lastOrderNumber = lastOrderNumber;
             return View();
         }
 

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entity;
+using System.Data.Entity;
 
 namespace FinkiSnippets.Service
 {
@@ -16,7 +18,20 @@ namespace FinkiSnippets.Service
         {
             db = _db;
         }
-        
+
+        public bool BeginEvent(string UserID, int EventID)
+        {
+            UserEvents userEvent = new UserEvents
+            {
+                UserID = UserID,
+                EventID = EventID,
+                Finished = false
+            };
+            db.UserEvents.Add(userEvent);
+            int res = db.SaveChanges();
+            return res > 0;
+        }
+
         public ListUsersDto GetAllUsers(int page, int usersPerPage)
         {
 
@@ -44,5 +59,12 @@ namespace FinkiSnippets.Service
 
             return result;
         }
+               
+        public Event GetCurrentEvent(string UserID)
+        {
+            Event result = db.UserEvents.Where(x => x.UserID == UserID && !x.Finished).Select(x => x.Event).FirstOrDefault();
+            return result;
+        }
+
     }
 }

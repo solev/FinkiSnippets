@@ -90,8 +90,7 @@ namespace FinkiSnippets.Service
             int res = db.SaveChanges();
             return res > 0;
         }
-
-        //TO DO: Snippet can be in multiple groups
+                
         public bool AddOrUpdateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Group> Groups)
         {
             int res;
