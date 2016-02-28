@@ -1,9 +1,9 @@
 ﻿@model List<FinkiSnippets.Service.Dto.EventDto>
 @{
     ViewBag.Title = "Events";
-    var upcoming = Model.Where(x => x.Start > DateTime.Now.AddHours(1)).OrderBy(x=>x.Start);
-    var active = Model.Where(x => x.Start < DateTime.Now.AddHours(1) && x.End > DateTime.Now.AddHours(1)).ToList();
-    active.ForEach(x => Model.Remove(x));
+    var NextEvents = Model.Where(x => x.Start > DateTime.Now.AddHours(1)).OrderBy(x=>x.Start);
+    var ActiveEvents = Model.Where(x => x.Start < DateTime.Now.AddHours(1) && x.End > DateTime.Now.AddHours(1)).ToList();
+    ActiveEvents.ForEach(x => Model.Remove(x));
 }
 
 @Html.ActionLink("Ново натпреварување", "CreateEvent", "Admin", new { @class = "button large" })
@@ -13,6 +13,7 @@
 <table class="table bordered">
     <thead>
         <tr>
+            <th class="text-left">Име</th>
             <th class="text-left">Датум</th>
             <th class="text-left">Почеток</th>
             <th class="text-left">Крај</th>   
@@ -21,16 +22,17 @@
         </tr>
     </thead>
     <tbody>
-        @if (active != null && active.Any())
+        @if (ActiveEvents != null && ActiveEvents.Any())
         {
-            foreach (var item in active)
+            foreach (var ev in ActiveEvents)
             {
                 <tr class="success">
-                    <td>@String.Format("{0} / {1} / {2}", item.Start.Day, item.Start.Month, item.Start.Year)</td>
-                    <td>@item.Start.TimeOfDay</td>
-                    <td>@item.End.TimeOfDay</td>
-                    <td>@Html.ActionLink("Види резултати", "Results", "Admin", new { id = item.ID }, new { @style = "color:black!important;" })</td>
-                    <td style="width:40px;"><a href="@Url.Action("EditEvent", "Admin", new { id=item.ID })" class="button danger small">Измени</a></td>
+                    <td>@ev.Name</td>
+                    <td>@String.Format("{0} / {1} / {2}", ev.Start.Day, ev.Start.Month, ev.Start.Year)</td>
+                    <td>@ev.Start.TimeOfDay</td>
+                    <td>@ev.End.TimeOfDay</td>
+                    <td>@Html.ActionLink("Види резултати", "Results", "Admin", new { id = ev.ID }, new { @style = "color:black!important;" })</td>
+                    <td style="width:40px;"><a href="@Url.Action("EditEvent", "Admin", new { id=ev.ID })" class="button danger small">Измени</a></td>
                 </tr>
             }
         }
@@ -42,6 +44,7 @@
 <table class="table bordered">
     <thead>
         <tr>
+            <th class="text-left">Име</th>
             <th class="text-left">Датум</th>
             <th class="text-left">Почеток</th>
             <th class="text-left">Крај</th>
@@ -49,13 +52,14 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in upcoming)
+        @foreach(var ev in NextEvents)
         {
             <tr class="selected">
-                <td>@String.Format("{0} / {1} / {2}", item.Start.Day, item.Start.Month, item.Start.Year)</td>
-                <td>@item.Start.TimeOfDay</td>
-                <td>@item.End.TimeOfDay</td>
-                <td style="width:40px;"><a href="@Url.Action("EditEvent", "Admin", new { id=item.ID })" class="button danger small">Измени</a></td>
+                <td>@ev.Name</td>
+                <td>@String.Format("{0} / {1} / {2}", ev.Start.Day, ev.Start.Month, ev.Start.Year)</td>
+                <td>@ev.Start.TimeOfDay</td>
+                <td>@ev.End.TimeOfDay</td>
+                <td style="width:40px;"><a href="@Url.Action("EditEvent", "Admin", new { id=ev.ID })" class="button danger small">Измени</a></td>
             </tr>
         }
     </tbody>
@@ -66,6 +70,7 @@
 <table class="table bordered">
     <thead>
         <tr>
+            <th class="text-left">Име</th>
             <th class="text-left">Датум</th>
             <th class="text-left">Почеток</th>
             <th class="text-left">Крај</th>
@@ -74,18 +79,19 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in Model)
+        @foreach(var ev in Model)
         {
-            if(upcoming.Contains(item))
+            if(NextEvents.Contains(ev))
             {
                 continue;
             }
             <tr>
-                <td>@String.Format("{0} / {1} / {2}", item.Start.Day, item.Start.Month, item.Start.Year)</td>
-                <td>@item.Start.TimeOfDay</td>
-                <td>@item.End.TimeOfDay</td>
-                <td>@Html.ActionLink("Види резултати", "Results", "Admin", new { id = item.ID }, null)</td>
-                <td>@Html.ActionLink("Операции", "ExportOperations", "Admin", new { id = item.ID }, null) | @Html.ActionLink("Резултати", "ExportResults", "Admin", new { id = item.ID }, null)</td>
+                <td>@ev.Name</td>
+                <td>@String.Format("{0} / {1} / {2}", ev.Start.Day, ev.Start.Month, ev.Start.Year)</td>
+                <td>@ev.Start.TimeOfDay</td>
+                <td>@ev.End.TimeOfDay</td>
+                <td>@Html.ActionLink("Види резултати", "Results", "Admin", new { id = ev.ID }, null)</td>
+                <td>@Html.ActionLink("Операции", "ExportOperations", "Admin", new { id = ev.ID }, null) | @Html.ActionLink("Резултати", "ExportResults", "Admin", new { id = ev.ID }, null)</td>
             </tr>
         }
     </tbody>

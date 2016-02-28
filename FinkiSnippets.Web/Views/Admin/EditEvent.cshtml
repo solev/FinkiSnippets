@@ -11,16 +11,26 @@
     Нов натпревар
 </h2>
 <hr />
+
 @using(Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     <fieldset>
         <div class="grid">
             <div class="row">
+                <div class="span9">
+                    <label>Име на натпреварот</label>
+                    <div class="input-control text">
+                        <input type="text" value="@Model.Event.Name" id="name" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="span3">
                     <label>Датум на натпреварот</label>
                     <div class="input-control text" data-role="datepicker" data-weekstart="1">
-                        <input type="text" name="date" value="@tempDate"id="datepicker">
+                        <input type="text" name="date" value="@tempDate" id="datepicker">
                         <button class="btn-date"></button>
                     </div>
                 </div>
@@ -61,7 +71,7 @@
             <div class="row">
                 @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, DivName = "snippets", SpanSizeSnippets = "span6", SpanSizeArea = "span6" });}
 
-                @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Event.Snippets.ToList(), DivName ="addedSnippets", StartCounter = Model.AllSnippets.Count, SpanSizeSnippets = "span6", SpanSizeArea = "span6" });}
+                @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Event.Snippets.ToList(), DivName = "addedSnippets", StartCounter = Model.AllSnippets.Count, SpanSizeSnippets = "span6", SpanSizeArea = "span6" });}
             </div>
         </div>
     </fieldset>
@@ -148,6 +158,7 @@
                 var he = $("#hourEnd");
                 var me = $("#minEnd");
                 var group = $("#groupSelect").val();
+                var name = $("#name").val();
 
                 var error = false;
 
@@ -186,6 +197,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify({
                         id: '@Model.Event.ID',
+                        name: name,
                         date: dateTemp,
                         hourStart: hs.val(),
                         minStart: ms.val(),

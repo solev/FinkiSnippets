@@ -1,46 +1,71 @@
-﻿@model Entity.Event
+﻿@model App.ViewModels.StartViewModel
 
 @{
     ViewBag.Title = "Start";
 }
 
 
+<h2>Активни Натпревари</h2>
 
-@if(Model == null)
-{
-    <h2 style="text-align:center">Нема закажани натпреварувања... :(</h2>
-}
-else
-{
-    <h2>Правила и информации за натпреварот:</h2>
-    <ul>
-        <li><p class="subheader-secondary">Тестот содржи вкупно 18 прашања</p></li>
-        <li><p class="subheader-secondary">Прашањата се одговараат редоследно (нема скокање од едно на друго прашање)</p></li>
-        <li><p class="subheader-secondary">Откога ќе одговорите на прашање неможете да се вратите на истото</p></li>
-        <li><p class="subheader-secondary">Ако го оставите празно полето за одговор, прашањето ќе ви се смета како неточно</p></li>
-    </ul>
+<div id="active">
+    <table class="table bordered">
+        <thead>
+            <tr>
+                <th class="text-left">Име</th>
+                <th class="text-left">Датум</th>
+                <th class="text-left">Почеток</th>
+                <th class="text-left">Крај</th>
+                <th class="text-left"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.ActiveEvents != null && Model.ActiveEvents.Any())
+            {
+                foreach (var ev in Model.ActiveEvents)
+                {
+                    <tr class="">
+                        <td>@ev.Name</td>
+                        <td>@String.Format("{0} / {1} / {2}", ev.Start.Day, ev.Start.Month, ev.Start.Year)</td>
+                        <td>@ev.Start.TimeOfDay</td>
+                        <td>@ev.End.TimeOfDay</td>
+                        <td style="width:40px;"><a href="@Url.Action("Game", "Code", new { id=ev.ID })" class="button default small">Започни</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
 
+<h2>Следни Натпревари</h2>
 
-    if(Model != null && DateTime.Now.AddHours(1) > Model.Start && DateTime.Now.AddHours(1) < Model.End)
-    {
-        
-        @Html.ActionLink("Започни", "Game", null, new { @class = "button large default", @id = "start" })
-    }
-    else
-    {
+<div id="next">
 
-        if(Model != null)
-        {
+    <table class="table bordered">
+        <thead>
+            <tr>
+                <th class="text-left">Име</th>
+                <th class="text-left">Датум</th>
+                <th class="text-left">Почеток</th>
+                <th class="text-left">Крај</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.NextEvents != null && Model.NextEvents.Any())
+            {
+                foreach (var ev in Model.NextEvents)
+                {
+                    <tr class="selected">
+                        <td>@ev.Name</td>
+                        <td>@String.Format("{0} / {1} / {2}", ev.Start.Day, ev.Start.Month, ev.Start.Year)</td>
+                        <td>@ev.Start.TimeOfDay</td>
+                        <td>@ev.End.TimeOfDay</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
 
-            <h2 style="text-align:center;margin-top:30px;">Следно натпреварување почнува за </h2>
-            <div class="countdown" data-role="countdown" data-blink="false" data-days="1" data-stoptimer="@Model.Start" style="font-size: 20px;margin-top:15px;"></div>
-        }
-        else
-        {
-            <h2 style="text-align:center">Нема закажани натпреварувања... :(</h2>
-        }
-    }
-}
 
 @section Scripts{
     <script src="~/Scripts/metro-countdown.js"></script>

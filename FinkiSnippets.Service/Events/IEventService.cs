@@ -10,8 +10,8 @@ namespace FinkiSnippets.Service
 {
     public interface IEventService
     {
-        Event GetNextEvent();
-        Event GetCurrentEvent();
+        List<Event> GetNextEvents();
+        List<Event> GetActiveEvents();
         Event GetEventById(int eventID);
         List<EventDto> GetAllEvents();
         bool AddOrUpdateEvent(Event ev, List<Int32> IDs);

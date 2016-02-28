@@ -31,12 +31,11 @@ namespace App.Controllers
         
         public ActionResult Start()
         {
-            Event ev = _eventService.GetNextEvent();
+            List<Event> NextEvents = _eventService.GetNextEvents();
+            List<Event> ActiveEvents = _eventService.GetActiveEvents();
 
-            if (ev != null)
-                return View(ev);
-
-            return View();
+            StartViewModel model = new StartViewModel { ActiveEvents = ActiveEvents, NextEvents = NextEvents };
+            return View(model);
         }
 
         //id == orderNumber

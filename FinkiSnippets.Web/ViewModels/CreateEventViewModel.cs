@@ -9,6 +9,7 @@ namespace App.ViewModels
     public class CreateEventViewModel
     {
         public int id { get; set; }
+        public string name { get; set; }
         public string date { get; set; }
         public int hourStart { get; set; }
         public int minStart { get; set; }
