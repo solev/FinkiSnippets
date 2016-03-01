@@ -1,7 +1,7 @@
 ﻿@model App.ViewModels.EditEventViewModel
 
 @{
-    ViewBag.Title = "CreateEvent";
+    ViewBag.Title = "EditEvent";
     string tempDate = String.Format("{0}.{1}.{2}", Model.Event.Start.Day, Model.Event.Start.Month, Model.Event.Start.Year);
     Model.AllSnippets = Model.AllSnippets.Where(x => !Model.Event.Snippets.Select(y => y.ID).Contains(x.ID)).ToList();
     var addedSnippets = Model.Event.Snippets.Select(x => x.ID).ToList();
@@ -136,7 +136,7 @@
                             </span><span class="ql-format-group"><span title="Link" class="ql-format-button ql-link"></span><span class="ql-format-separator"></span><span title="Image" class="ql-format-button ql-image"></span><span class="ql-format-separator"></span><span title="List" class="ql-format-button ql-list"></span></span>
                         </div>
                         <div class="editor-container" style="max-height: 350px;">
-                            @Html.Raw(Model.Event.Description);
+                            @Html.Raw(Model.Event.Description)
                         </div>
                     </div>
                 </div>
@@ -166,7 +166,7 @@
 
                     <div class="form-group row">
                         <label>&nbsp;</label>
-                        <input type="submit" value="Креирај Натпревар" class="btn success" style="height:34px;" /> <span id="error-message"></span>
+                        <input type="submit" value="Измени Натпревар" class="btn success" style="height:34px;" />
                     </div>
                 </div>
             </div>
@@ -325,13 +325,25 @@
                     })
                 }).done(function (data) {
 
-                    var label = $("#error-message");
+                    var color;
 
-                    if (data == "error") {
-                        label.addClass("text-alert").html("Во посакуваното време има активен натпревар!");
-                    } else {
-                        label.removeClass("text-alert").addClass("text-success").html("Натпреварот е додаден! За 3 секунди ќе бидете пренасочени...");
-                        setTimeout(function () { window.location.replace('@Url.Action("Events","Admin")'); }, 3000);
+                    if(data == "error")
+                        color = "#9a1616";
+                    else
+                        color = "#60a917";
+
+                    var not = $.Notify({
+                        caption: "Статус",
+                        content: data,
+                        timeout: 3000,
+                        style: { background: color, color: "#fff" }
+                    });
+
+                    if(data != "error"){
+                        setTimeout(function(){
+                            window.location.replace('@Url.Action("Events", "Admin")');
+                        },
+                        3000);
                     }
                 });
 

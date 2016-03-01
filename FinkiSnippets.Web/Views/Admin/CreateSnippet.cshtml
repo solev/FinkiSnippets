@@ -96,35 +96,35 @@
     <script src="~/Scripts/Our Scripts/EditorInitializer.js"></script>
     <script>
 
-        $(document).ready(function () {
+    $(document).ready(function () {
 
-            var addedOperators = [];
-            var addedGroups = [];
+        var addedOperators = [];
+        var addedGroups = [];
 
-            var editor = Variables.initEditors[0];
+        var editor = Variables.initEditors[0];
 
-            editor.setOption("readOnly", false);
-            editor.renderer.$cursorLayer.element.style.opacity = 1;
+        editor.setOption("readOnly", false);
+        editor.renderer.$cursorLayer.element.style.opacity = 1;
 
-            $("#btnAdd").click(function (event) {
-                var code = editor.getSession().getValue();
-                var outputData = $("#outputData").val();
-                var ques = $("#Question").val();
+        $("#btnAdd").click(function (event) {
+            var code = editor.getSession().getValue();
+            var outputData = $("#outputData").val();
+            var ques = $("#Question").val();
 
-                var dataModel = {
-                    snippet: {
-                        Code: encodeURIComponent(code),
-                        Output: outputData,
-                        Question: ques
-                    },
-                    Operators: addedOperators,
-                    SnippetGroups: addedGroups
-                }
+            var dataModel = {
+                snippet: {
+                    Code: encodeURIComponent(code),
+                    Output: outputData,
+                    Question: ques
+                },
+                Operators: addedOperators,
+                SnippetGroups: addedGroups
+            }
 
-                console.log(dataModel);
+            console.log(dataModel);
 
-                $.ajax({
-                    url: '@Url.Action("CreateSnippet","Admin")',
+            $.ajax({
+                url: '@Url.Action("CreateSnippet","Admin")',
                     type: "POST",
                     traditional: true,
                     dataType: "json",
@@ -136,13 +136,28 @@
                         Operators: addedOperators,
                         SnippetGroups: addedGroups
                     })
-                }).done(function (data) {
+            }).done(function (data) {
+
+                    var color;
+
+                    if (data == "error")
+                        color = "#9a1616";
+                    else
+                        color = "#60a917";
+
                     var not = $.Notify({
                         caption: "Статус",
                         content: data,
-                        timeout: 10000, // 10 seconds
-                        style: { background: "#60a917", color: "#fff" }
+                        timeout: 3000,
+                        style: { background: color, color: "#fff" }
                     });
+
+                    if (data != "error") {
+                        setTimeout(function () {
+                            window.location.replace('@Url.Action("Events", "Admin")');
+                        },
+                        3000);
+                    }
                 });
             })
 
