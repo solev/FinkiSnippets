@@ -16,5 +16,6 @@ namespace FinkiSnippets.Service
         List<EventDto> GetAllEvents();
         bool AddOrUpdateEvent(Event ev, List<Int32> IDs);
         List<AnswerLog> GetResultsForEvent(int eventID);
+        void FinishEventForUser(int EventID, string UserID);
     }
 }

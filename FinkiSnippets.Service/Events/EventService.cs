@@ -96,5 +96,12 @@ namespace FinkiSnippets.Service
             var result = db.Answers.Where(x => x.Event.ID == eventID).Include(x => x.User).ToList();
             return result;
         }
+
+        public void FinishEventForUser(int EventID, string UserID)
+        {
+            var userEvent = db.UserEvents.FirstOrDefault(x => x.EventID == EventID && x.UserID == UserID);
+            userEvent.Finished = true;
+            db.SaveChanges();
+        }
     }
 }

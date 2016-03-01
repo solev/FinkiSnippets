@@ -14,14 +14,14 @@
     <fieldset>
         @Html.ValidationSummary(true)
         @Html.LabelFor(model => model.Username, new { @class = "control-label col-md-2" })
-        <div class="input-control text" >            
+        <div class="input-control text span4" >            
             
                 @Html.EditorFor(model => model.Username)
                 
             
         </div>
         @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
-        <div class="input-control text" >            
+        <div class="input-control text span4" >            
             
                 @Html.PasswordFor(model => model.Password)
                 
@@ -36,10 +36,12 @@
         
     </fieldset>
 }
+
 @if(ViewBag.error!=null)
 {
     <p class="text-warning">@ViewBag.error</p>
 }
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
