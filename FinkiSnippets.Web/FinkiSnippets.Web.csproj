@@ -236,6 +236,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\Our Scripts\EditorInitializer.js" />
     <Content Include="Scripts\Our Scripts\GlobalVariables.js" />
+    <Content Include="Scripts\Our Scripts\QuillInitializer.js" />
+    <Content Include="Scripts\Quill\quill.js" />
+    <Content Include="Scripts\Quill\quill.snow.css" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Select2\css\select2-bootstrap.min.css" />
@@ -635,6 +638,7 @@
     <Content Include="Views\Admin\Groups.cshtml" />
     <Content Include="Views\Admin\Group.cshtml" />
     <Content Include="Views\Admin\_ListSnippets.cshtml" />
+    <Content Include="Views\Code\Lobby.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FinkiSnippets.Data\FinkiSnippets.Data.csproj">

@@ -9,52 +9,160 @@
 </h2>
 <hr />
 
-@using(Html.BeginForm())
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     <fieldset>
         <div class="grid">
             <div class="row">
-                <div class="span7">
+                <div class="span8">
                     <label>Име на натпреварот</label>
                     <div class="input-control text">
                         <input type="text" id="name" />
                     </div>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="span3">
+                <div class="span4">
+
                     <label>Датум на натпреварот</label>
                     <div class="input-control text" data-role="datepicker" data-weekstart="1">
                         <input type="text" name="date" id="datepicker">
                         <button class="btn-date"></button>
                     </div>
                 </div>
+            </div>
 
-                <div class="span5">
-                    <label>&nbsp;</label>
-                    <span>од</span>
-                    <div class="input-control text size1">
-                        <input type="text" name="hourStart" id="hourStart" />
-                    </div>
-                    <span>:</span>
-                    <div class="input-control text size1">
-                        <input type="text" name="minStart" id="minStart" />
-                    </div>
-                    <span>до</span>
-                    <div class="input-control text size1">
-                        <input type="text" name="hourEnd" id="hourEnd" />
-                    </div>
-                    <span>:</span>
-                    <div class="input-control text size1">
-                        <input type="text" name="minEnd" id="minEnd" />
+            <div class="row">
+                <div class="span8">
+                    <label>Опис на натпреварот</label>
+                    <div class="advanced-wrapper" style="border: 1px #d9d9d9 solid; min-height: 200px; max-height: 400px;">
+                        <div class="toolbar-container">
+                            <span class="ql-format-group">
+                                <select title="Font" class="ql-font">
+                                    <option value="sans-serif" selected>Sans Serif</option>
+                                    <option value="Georgia, serif">Serif</option>
+                                    <option value="Monaco, 'Courier New', monospace">Monospace</option>
+                                </select>
+                                <select title="Size" class="ql-size">
+                                    <option value="10px">Small</option>
+                                    <option value="13px" selected>Normal</option>
+                                    <option value="18px">Large</option>
+                                    <option value="32px">Huge</option>
+                                </select>
+                            </span><span class="ql-format-group"><span title="Bold" class="ql-format-button ql-bold"></span><span class="ql-format-separator"></span><span title="Italic" class="ql-format-button ql-italic"></span><span class="ql-format-separator"></span><span title="Underline" class="ql-format-button ql-underline"></span></span><span class="ql-format-group">
+                                <select title="Text Color" class="ql-color">
+                                    <option value="rgb(0, 0, 0)" selected></option>
+                                    <option value="rgb(230, 0, 0)"></option>
+                                    <option value="rgb(255, 153, 0)"></option>
+                                    <option value="rgb(255, 255, 0)"></option>
+                                    <option value="rgb(0, 138, 0)"></option>
+                                    <option value="rgb(0, 102, 204)"></option>
+                                    <option value="rgb(153, 51, 255)"></option>
+                                    <option value="rgb(255, 255, 255)"></option>
+                                    <option value="rgb(250, 204, 204)"></option>
+                                    <option value="rgb(255, 235, 204)"></option>
+                                    <option value="rgb(255, 255, 204)"></option>
+                                    <option value="rgb(204, 232, 204)"></option>
+                                    <option value="rgb(204, 224, 245)"></option>
+                                    <option value="rgb(235, 214, 255)"></option>
+                                    <option value="rgb(187, 187, 187)"></option>
+                                    <option value="rgb(240, 102, 102)"></option>
+                                    <option value="rgb(255, 194, 102)"></option>
+                                    <option value="rgb(255, 255, 102)"></option>
+                                    <option value="rgb(102, 185, 102)"></option>
+                                    <option value="rgb(102, 163, 224)"></option>
+                                    <option value="rgb(194, 133, 255)"></option>
+                                    <option value="rgb(136, 136, 136)"></option>
+                                    <option value="rgb(161, 0, 0)"></option>
+                                    <option value="rgb(178, 107, 0)"></option>
+                                    <option value="rgb(178, 178, 0)"></option>
+                                    <option value="rgb(0, 97, 0)"></option>
+                                    <option value="rgb(0, 71, 178)"></option>
+                                    <option value="rgb(107, 36, 178)"></option>
+                                    <option value="rgb(68, 68, 68)"></option>
+                                    <option value="rgb(92, 0, 0)"></option>
+                                    <option value="rgb(102, 61, 0)"></option>
+                                    <option value="rgb(102, 102, 0)"></option>
+                                    <option value="rgb(0, 55, 0)"></option>
+                                    <option value="rgb(0, 41, 102)"></option>
+                                    <option value="rgb(61, 20, 102)"></option>
+                                </select><span class="ql-format-separator"></span>
+                                <select title="Background Color" class="ql-background">
+                                    <option value="rgb(0, 0, 0)"></option>
+                                    <option value="rgb(230, 0, 0)"></option>
+                                    <option value="rgb(255, 153, 0)"></option>
+                                    <option value="rgb(255, 255, 0)"></option>
+                                    <option value="rgb(0, 138, 0)"></option>
+                                    <option value="rgb(0, 102, 204)"></option>
+                                    <option value="rgb(153, 51, 255)"></option>
+                                    <option value="rgb(255, 255, 255)" selected></option>
+                                    <option value="rgb(250, 204, 204)"></option>
+                                    <option value="rgb(255, 235, 204)"></option>
+                                    <option value="rgb(255, 255, 204)"></option>
+                                    <option value="rgb(204, 232, 204)"></option>
+                                    <option value="rgb(204, 224, 245)"></option>
+                                    <option value="rgb(235, 214, 255)"></option>
+                                    <option value="rgb(187, 187, 187)"></option>
+                                    <option value="rgb(240, 102, 102)"></option>
+                                    <option value="rgb(255, 194, 102)"></option>
+                                    <option value="rgb(255, 255, 102)"></option>
+                                    <option value="rgb(102, 185, 102)"></option>
+                                    <option value="rgb(102, 163, 224)"></option>
+                                    <option value="rgb(194, 133, 255)"></option>
+                                    <option value="rgb(136, 136, 136)"></option>
+                                    <option value="rgb(161, 0, 0)"></option>
+                                    <option value="rgb(178, 107, 0)"></option>
+                                    <option value="rgb(178, 178, 0)"></option>
+                                    <option value="rgb(0, 97, 0)"></option>
+                                    <option value="rgb(0, 71, 178)"></option>
+                                    <option value="rgb(107, 36, 178)"></option>
+                                    <option value="rgb(68, 68, 68)"></option>
+                                    <option value="rgb(92, 0, 0)"></option>
+                                    <option value="rgb(102, 61, 0)"></option>
+                                    <option value="rgb(102, 102, 0)"></option>
+                                    <option value="rgb(0, 55, 0)"></option>
+                                    <option value="rgb(0, 41, 102)"></option>
+                                    <option value="rgb(61, 20, 102)"></option>
+                                </select><span class="ql-format-separator"></span>
+                                <select title="Text Alignment" class="ql-align">
+                                    <option value="left" selected></option>
+                                    <option value="center"></option>
+                                    <option value="right"></option>
+                                    <option value="justify"></option>
+                                </select>
+                            </span><span class="ql-format-group"><span title="Link" class="ql-format-button ql-link"></span><span class="ql-format-separator"></span><span title="Image" class="ql-format-button ql-image"></span><span class="ql-format-separator"></span><span title="List" class="ql-format-button ql-list"></span></span>
+                        </div>
+                        <div class="editor-container" style="max-height: 350px;"></div>
                     </div>
                 </div>
+                <div class="span4">
+                    <div class="row">
+                        <div class="span2">
+                            <label>Почеток</label>
+                            <div class="input-control text size1">
+                                <input type="text" name="hourStart" id="hourStart" />
+                            </div>
+                            <span>:</span>
+                            <div class="input-control text size1">
+                                <input type="text" name="minStart" id="minStart" />
+                            </div>
+                        </div>
+                        <div class="span2">
+                            <label>Крај</label>
+                            <div class="input-control text size1">
+                                <input type="text" name="hourEnd" id="hourEnd" />
+                            </div>
+                            <span>:</span>
+                            <div class="input-control text size1">
+                                <input type="text" name="minEnd" id="minEnd" />
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="form-group span1">
-                    <label>&nbsp;</label>
-                    <input type="submit" value="Креирај Натпревар" class="btn success" style="height:34px;"/> <span id="error-message"></span>
+                    <div class="form-group row">
+                        <label>&nbsp;</label>
+                        <input type="submit" value="Креирај Натпревар" class="btn success" style="height:34px;" /> <span id="error-message"></span>
+                    </div>
                 </div>
             </div>
 
@@ -62,19 +170,25 @@
 
             <div class="row">
                 <div class="span6" style="text-align:center">Сите снипети</div>
-                <div class="span6" style="text-align:center">Снипети во евент</div> 
+                <div class="span6" style="text-align:center">Снипети во евент</div>
             </div>
-        
+
             <div class="row">
-                @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, SpanSizeSnippets = "span6", SpanSizeArea = "span6", DivName="snippets"});}
-                
+                @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, SpanSizeSnippets = "span6", SpanSizeArea = "span6", DivName = "snippets" });}
+
                 <div class="span6 listview-outlook addedSnippets"></div>
             </div>
-        </div>   
+        </div>
     </fieldset>
 }
 
+@section Styles{
+    <link href="~/Scripts/Quill/quill.snow.css" rel="stylesheet" />
+}
+
 @section Scripts{
+    <script src="~/Scripts/Quill/quill.js"></script>
+    <script src="~/Scripts/Our Scripts/QuillInitializer.js"></script>
     <script src="~/Scripts/metro-calendar.js"></script>
     <script src="~/Scripts/metro-datepicker.js"></script>
     <script src="~/Scripts/src-noconflict/ace.js"></script>
@@ -103,7 +217,7 @@
             });
 
             $(".addedSnippets").on("click", ".list", function () {
-                
+
                 var id = $(this).attr("id");
 
                 console.log(id);
@@ -117,7 +231,7 @@
                 $(".snippets").append('<div class="row eventSnippet">' + $(this).parent().parent().html() + '</div>');
                 $(this).parent().parent().remove();
             });
-            
+
             $("#hourStart,#hourEnd").focusin(function () {
                 $(this).attr("data-state", "");
             });
@@ -154,7 +268,7 @@
                 var me = $("#minEnd");
                 var group = $("#groupSelect").val();
                 var name = $("#name").val();
-                
+
                 var error = false;
 
 
@@ -207,12 +321,11 @@
                         label.addClass("text-alert").html("Во посакуваното време има активен натпревар!");
                     } else {
                         label.removeClass("text-alert").addClass("text-success").html("Натпреварот е додаден! За 3 секунди ќе бидете пренасочени...");
-                        setTimeout(function () { window.location.replace('@Url.Action("Events","Admin")'); }, 3000);                         
+                        setTimeout(function () { window.location.replace('@Url.Action("Events","Admin")'); }, 3000);
                     }
                 });
 
             });
         });
     </script>
-
 }

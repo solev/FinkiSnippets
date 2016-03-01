@@ -28,7 +28,7 @@
                         <td>@String.Format("{0} / {1} / {2}", ev.Start.Day, ev.Start.Month, ev.Start.Year)</td>
                         <td>@ev.Start.TimeOfDay</td>
                         <td>@ev.End.TimeOfDay</td>
-                        <td style="width:40px;"><a href="@Url.Action("Game", "Code", new { id=ev.ID })" class="button default small">Започни</a></td>
+                        <td style="width:40px;"><a href="@Url.Action("Lobby", "Code", new { id=ev.ID })" class="button default small">Лоби</a></td>
                     </tr>
                 }
             }
@@ -47,6 +47,7 @@
                 <th class="text-left">Датум</th>
                 <th class="text-left">Почеток</th>
                 <th class="text-left">Крај</th>
+                <th class="text-left"></th>
             </tr>
         </thead>
         <tbody>
@@ -59,14 +60,10 @@
                         <td>@String.Format("{0} / {1} / {2}", ev.Start.Day, ev.Start.Month, ev.Start.Year)</td>
                         <td>@ev.Start.TimeOfDay</td>
                         <td>@ev.End.TimeOfDay</td>
+                        <td style="width:40px;"><a href="@Url.Action("Lobby", "Code", new { id=ev.ID })" class="button default small">Лоби</a></td>
                     </tr>
                 }
             }
         </tbody>
     </table>
 </div>
-
-
-@section Scripts{
-    <script src="~/Scripts/metro-countdown.js"></script>
-}
