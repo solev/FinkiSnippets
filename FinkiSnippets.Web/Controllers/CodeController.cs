@@ -38,6 +38,13 @@ namespace App.Controllers
             return View(model);
         }
 
+        public ActionResult Lobby(int id)
+        {
+            Event ev = _eventService.GetEventById(id);
+
+            return View(ev);
+        }
+
         //id == orderNumber
         public ActionResult Game(int id)
         {

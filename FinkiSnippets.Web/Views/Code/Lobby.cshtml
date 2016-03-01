@@ -1,0 +1,22 @@
+﻿@model Entity.Event
+
+@{
+    ViewBag.Title = "Lobby";
+}
+
+<h2>@Model.Name</h2>
+
+<div class="description">Description</div>
+
+@if (Model.Start > Utilities.DateHelper.GetCurrentTime())
+{
+    <div class="countdown" data-role="countdown" data-stoptimer="@Model.Start"></div>
+}
+else
+{
+    <a href="@Url.Action("Game", "Code", new { id = Model.ID })" class="button default large">Започни</a>
+}
+
+@section Scripts{
+    <script src="~/Scripts/metro-countdown.js"></script>
+}
