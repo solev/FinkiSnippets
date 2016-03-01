@@ -19,7 +19,7 @@ namespace FinkiSnippets.Service
             db = _db;
         }
 
-        public Snippet BeginEvent(string UserID, int EventID)
+        public EventSnippets BeginEvent(string UserID, int EventID)
         {
             UserEvents userEvent = new UserEvents
             {
@@ -29,13 +29,13 @@ namespace FinkiSnippets.Service
             };
             db.UserEvents.Add(userEvent);
             int res = db.SaveChanges();
-            
-            return null;
+
+            var firstSnippet = db.EventSnippets.Include(x => x.Snippet).Include(x=>x.Event).FirstOrDefault(x => x.EventID == EventID);
+            return firstSnippet;
         }
 
         public ListUsersDto GetAllUsers(int page, int usersPerPage)
         {
-
             var query = db.Users.OrderBy(x => x.Id);
 
             var tempResult = query.Skip((page - 1) * usersPerPage).Take(usersPerPage).Select(x => new
@@ -61,9 +61,11 @@ namespace FinkiSnippets.Service
             return result;
         }
                
-        public Event UserActiveEvent(string UserID)
+        public EventSnippets UserActiveEvent(string UserID)
         {
-            Event result = db.UserEvents.Where(x => x.UserID == UserID && !x.Finished).Select(x => x.Event).FirstOrDefault();
+            EventSnippets result = db.UserEvents.Include(x => x.Event).Include(x => x.Event.EventSnippets).Where(x => x.UserID == UserID && !x.Finished)
+                .SelectMany(x => x.Event.EventSnippets.Where(y=>y.OrderNumber == x.Event.EventSnippets.Max(t=>t.OrderNumber))).FirstOrDefault();
+                            
             return result;
         }
 

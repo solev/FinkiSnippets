@@ -11,9 +11,9 @@ namespace FinkiSnippets.Service
     public interface ISnippetService
     {
         bool SubmitAnswer(string UserID, int SnippetID, string Answer);        
-        int GetLastAnsweredSnippetOrderNumber(string userID,int EventID,int GroupID);
+        int GetLastAnsweredSnippetOrderNumber(string userID,int EventID);
         int GetLastSnippetOrderNumber(int GroupID);
-        Snippet GetSnippetWithOrderNumber(int OrderNumber, int GroupID);
+        EventSnippets GetSnippetWithOrderNumber(int OrderNumber, int EventID);
         bool CheckIfFirstSnippetAccess(string userID, int snippetID, int EventID);
         bool CreateInitialAnswer(AnswerLog answer);
         bool AddOrUpdateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Group> GroupsString);
