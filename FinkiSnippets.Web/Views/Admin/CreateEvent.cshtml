@@ -268,6 +268,7 @@
                 var me = $("#minEnd");
                 var group = $("#groupSelect").val();
                 var name = $("#name").val();
+                var description = advancedEditor.getHTML();
 
                 var error = false;
 
@@ -306,6 +307,7 @@
                     contentType: 'application/json',
                     data: JSON.stringify({
                         name: name,
+                        description: description,
                         date: dateTemp,
                         hourStart: hs.val(),
                         minStart: ms.val(),

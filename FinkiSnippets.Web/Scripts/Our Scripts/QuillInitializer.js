@@ -1,5 +1,7 @@
-﻿$(function () {
-    var advancedEditor = new Quill('.editor-container', {
+﻿var advancedEditor;
+
+$(function () {
+    advancedEditor = new Quill('.editor-container', {
         modules: {
             'authorship': {
                 authorId: 'advanced',

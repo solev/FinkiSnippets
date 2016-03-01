@@ -10,6 +10,7 @@ namespace App.ViewModels
     {
         public int id { get; set; }
         public string name { get; set; }
+        public string description { get; set; }
         public string date { get; set; }
         public int hourStart { get; set; }
         public int minStart { get; set; }

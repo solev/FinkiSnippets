@@ -74,6 +74,7 @@ namespace FinkiSnippets.Service
                 db.EventSnippets.RemoveRange(eventToUpdate.EventSnippets);
                 res = db.SaveChanges();
                 eventToUpdate.Name = ev.Name;
+                eventToUpdate.Description = ev.Description;
                 eventToUpdate.Start = ev.Start;
                 eventToUpdate.End = ev.End;
                 snippetEvents.ForEach(x => x.EventID = ev.ID);

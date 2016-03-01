@@ -6,7 +6,9 @@
 
 <h2>@Model.Name</h2>
 
-<div class="description">Description</div>
+<hr />
+
+<div class="description">@Html.Raw(Model.Description)</div>
 
 @if (Model.Start > Utilities.DateHelper.GetCurrentTime())
 {
