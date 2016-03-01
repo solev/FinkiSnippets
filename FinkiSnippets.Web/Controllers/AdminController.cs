@@ -198,7 +198,7 @@ namespace App.Controllers
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
 
-            return Json("success", JsonRequestBehavior.AllowGet);
+            return Json("Натпреварот е успешно креиран.", JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult EditEvent(int id)
@@ -235,7 +235,7 @@ namespace App.Controllers
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
 
-            return Json("success", JsonRequestBehavior.AllowGet);
+            return Json("Натпреварот е успешно изменет.", JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Snippets(int page = 1)
@@ -285,9 +285,9 @@ namespace App.Controllers
                 bool res = _snippetService.AddOrUpdateSnippet(snippet, Operators, SnippetGroups);
 
                 if (res)
-                    return Json("Успешно зачуван снипет!", JsonRequestBehavior.AllowGet);
+                    return Json("Успешно зачуван снипет.", JsonRequestBehavior.AllowGet);
             }
-            return Json("FAIIILLL!!!!", JsonRequestBehavior.AllowGet);
+            return Json("error", JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult EditSnippet(int id)

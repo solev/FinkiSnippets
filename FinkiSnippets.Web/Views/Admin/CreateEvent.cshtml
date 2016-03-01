@@ -317,13 +317,25 @@
                     })
                 }).done(function (data) {
 
-                    var label = $("#error-message");
+                    var color;
 
-                    if (data == "error") {
-                        label.addClass("text-alert").html("Во посакуваното време има активен натпревар!");
-                    } else {
-                        label.removeClass("text-alert").addClass("text-success").html("Натпреварот е додаден! За 3 секунди ќе бидете пренасочени...");
-                        setTimeout(function () { window.location.replace('@Url.Action("Events","Admin")'); }, 3000);
+                    if (data == "error")
+                        color = "#9a1616";
+                    else
+                        color = "#60a917";
+
+                    var not = $.Notify({
+                        caption: "Статус",
+                        content: data,
+                        timeout: 3000,
+                        style: { background: color, color: "#fff" }
+                    });
+
+                    if (data != "error") {
+                        setTimeout(function () {
+                            window.location.replace('@Url.Action("Events", "Admin")');
+                        },
+                        3000);
                     }
                 });
 

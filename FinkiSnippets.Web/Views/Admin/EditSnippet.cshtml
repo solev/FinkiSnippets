@@ -188,12 +188,26 @@
                         SnippetGroups: addedGroups
                     })
                 }).done(function (data) {
+                    var color;
+
+                    if (data == "error")
+                        color = "#9a1616";
+                    else
+                        color = "#60a917";
+
                     var not = $.Notify({
                         caption: "Статус",
                         content: data,
-                        timeout: 10000, // 10 seconds
-                        style: { background: "#60a917",color:"#fff" }
+                        timeout: 3000,
+                        style: { background: color, color: "#fff" }
                     });
+
+                    if (data != "error") {
+                        setTimeout(function () {
+                            window.location.replace('@Url.Action("Snippets", "Admin")');
+                        },
+                        3000);
+                    }
                 });
             })
 
