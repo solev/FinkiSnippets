@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Game";
+
 }
 
 <div class="span11">
@@ -29,9 +30,10 @@
     <br>
     <label>Внесете го одговорот овде:</label>
     <br>
-    <input id="output" name="answer" type="text">
-    <input type="text" name="timeInSeconds" hidden value="180" />
-    <input type="text" name="id" value="@Model.SnippetID" hidden />
+    <input id="output" name="answer" type="text">    
+    <input type="text" name="SnippetID" value="@Model.SnippetID" hidden />
+    <input type="text" name="EventID" value="@Model.EventID" hidden />
+
     <div style="padding-top:10px;">
         <button class="button" id="btnClear">Clear</button>
         <input type="submit" value="Next" class="button" />
@@ -44,6 +46,7 @@
 
     <script>
         $(document).ready(function () {
+
             $("#btnClear").click(function (event) {
                 event.preventDefault();
                 $("#output").val("");
@@ -67,6 +70,9 @@
                           * editor.renderer.lineHeight
                           + editor.renderer.scrollBar.getWidth();
 
+                if (newHeight < 100)
+                    newHeight = 100;
+
                 $('#editor').height(newHeight.toString() + "px");
                 $('#editor-section').height(newHeight.toString() + "px");
 
@@ -81,9 +87,7 @@
 
             // Whenever a change happens inside the ACE editor, update
             // the size again
-            editor.getSession().on('change', heightUpdateFunction);
-
-            var timeSinceStart = '@ViewBag.time';
+            editor.getSession().on('change', heightUpdateFunction);                        
         });
     </script>
 }

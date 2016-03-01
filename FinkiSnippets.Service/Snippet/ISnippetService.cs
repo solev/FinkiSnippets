@@ -10,7 +10,7 @@ namespace FinkiSnippets.Service
 {
     public interface ISnippetService
     {
-        bool SubmitAnswer(string UserID, int SnippetID, string Answer);        
+        bool SubmitAnswer(string UserID, int EventID, int SnippetID, string Answer);        
         int GetLastAnsweredSnippetOrderNumber(string userID,int EventID);
         int GetLastSnippetOrderNumber(int GroupID);
         EventSnippets GetSnippetWithOrderNumber(int OrderNumber, int EventID);

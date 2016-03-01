@@ -21,6 +21,10 @@ namespace FinkiSnippets.Service
 
         public EventSnippets BeginEvent(string UserID, int EventID)
         {
+            var checkIfAlreadyFinished = db.UserEvents.Any(x => x.UserID == UserID && x.EventID == EventID && x.Finished);
+            if (checkIfAlreadyFinished)
+                return null;
+
             UserEvents userEvent = new UserEvents
             {
                 UserID = UserID,

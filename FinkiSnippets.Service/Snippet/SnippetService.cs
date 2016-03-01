@@ -21,17 +21,17 @@ namespace FinkiSnippets.Service
             db = _db;
         }
 
-        public bool SubmitAnswer(string userID, int SnippetID, string Answer)
+        public bool SubmitAnswer(string UserID, int EventID, int SnippetID, string Answer)
         {
 
             DateTime currentTime = DateHelper.GetCurrentTime();
 
             var snippetTemp = db.Snippets.Find(SnippetID);
-            var ev = db.Events.FirstOrDefault(x => x.Start < currentTime && x.End > currentTime);
+            var ev = db.Events.Find(EventID);
 
             if (snippetTemp != null && ev != null)
             {
-                var initialAnswer = db.Answers.FirstOrDefault(x => x.Snippet.ID == snippetTemp.ID && x.User.Id == userID && ev.ID == x.Event.ID);
+                var initialAnswer = db.Answers.FirstOrDefault(x => x.Snippet.ID == snippetTemp.ID && x.User.Id == UserID && ev.ID == x.Event.ID);
 
                 if (initialAnswer == null)
                     return false;
@@ -52,16 +52,17 @@ namespace FinkiSnippets.Service
             return false;
         }
 
-        //TO DO: Create new logic
+        
         public int GetLastAnsweredSnippetOrderNumber(string userID, int EventID)
         {
-            int result = db.Answers.Include(x=>x.Snippet).Include(x=>x.Snippet.EventSnippets).Where(x => x.User.Id == userID && x.Event.ID == EventID && x.answered)
-                            .OrderByDescending(x => x.Snippet.EventSnippets.Where(y=>y.EventID == EventID).Select(y=>y.OrderNumber))
-                            .SelectMany(x => x.Snippet.EventSnippets.Select(y=>y.OrderNumber)).Take(1).FirstOrDefault();
-
-            //return result;
-
-            return -1;
+            var snippet = db.Answers.Include(x => x.Snippet).Include(x => x.Snippet.EventSnippets)                            
+                            .Where(x => x.User.Id == userID && x.Event.ID == EventID && x.answered)
+                            .OrderByDescending(x => x.ID)
+                            .Select(x => x.Snippet.EventSnippets.Where(y => y.EventID == EventID).Take(1))
+                            .Select(x => x.Select(y => y.OrderNumber)).FirstOrDefault();
+                           
+                        
+            return snippet.FirstOrDefault();
         }
 
         //TO DO: Create new Logic
