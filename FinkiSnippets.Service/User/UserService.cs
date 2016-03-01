@@ -30,7 +30,7 @@ namespace FinkiSnippets.Service
             db.UserEvents.Add(userEvent);
             int res = db.SaveChanges();
 
-            var firstSnippet = db.EventSnippets.Include(x => x.Snippet).Include(x=>x.Event).FirstOrDefault(x => x.EventID == EventID);
+            var firstSnippet = db.EventSnippets.Include(x => x.Snippet).FirstOrDefault(x => x.EventID == EventID);
             return firstSnippet;
         }
 

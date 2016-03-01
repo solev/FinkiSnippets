@@ -15,7 +15,7 @@ namespace FinkiSnippets.Service
         int GetLastSnippetOrderNumber(int GroupID);
         EventSnippets GetSnippetWithOrderNumber(int OrderNumber, int EventID);
         bool CheckIfFirstSnippetAccess(string userID, int snippetID, int EventID);
-        bool CreateInitialAnswer(AnswerLog answer);
+        bool CreateInitialAnswer(string UserID, int EventID, int SnippetID);
         bool AddOrUpdateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Group> GroupsString);
         List<Operation> GetAllOperations();
         List<Snippet> GetAllSnippets(int page, int snippetsPerPage);

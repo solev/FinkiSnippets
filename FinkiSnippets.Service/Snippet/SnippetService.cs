@@ -31,7 +31,7 @@ namespace FinkiSnippets.Service
 
             if (snippetTemp != null && ev != null)
             {
-                var initialAnswer = db.Answers.FirstOrDefault(x => x.snippet.ID == snippetTemp.ID && x.User.Id == userID && ev.ID == x.Event.ID);
+                var initialAnswer = db.Answers.FirstOrDefault(x => x.Snippet.ID == snippetTemp.ID && x.User.Id == userID && ev.ID == x.Event.ID);
 
                 if (initialAnswer == null)
                     return false;
@@ -55,9 +55,9 @@ namespace FinkiSnippets.Service
         //TO DO: Create new logic
         public int GetLastAnsweredSnippetOrderNumber(string userID, int EventID)
         {
-            int result = db.Answers.Include(x=>x.snippet).Include(x=>x.snippet.EventSnippets).Where(x => x.User.Id == userID && x.Event.ID == EventID && x.answered)
-                            .OrderByDescending(x => x.snippet.EventSnippets.Where(y=>y.EventID == EventID).Select(y=>y.OrderNumber))
-                            .SelectMany(x => x.snippet.EventSnippets.Select(y=>y.OrderNumber)).Take(1).FirstOrDefault();
+            int result = db.Answers.Include(x=>x.Snippet).Include(x=>x.Snippet.EventSnippets).Where(x => x.User.Id == userID && x.Event.ID == EventID && x.answered)
+                            .OrderByDescending(x => x.Snippet.EventSnippets.Where(y=>y.EventID == EventID).Select(y=>y.OrderNumber))
+                            .SelectMany(x => x.Snippet.EventSnippets.Select(y=>y.OrderNumber)).Take(1).FirstOrDefault();
 
             //return result;
 
@@ -75,19 +75,28 @@ namespace FinkiSnippets.Service
 
         public EventSnippets GetSnippetWithOrderNumber(int OrderNumber, int EventID)
         {
-            var result = db.EventSnippets.Include(x => x.Snippet).Where(x => x.OrderNumber == OrderNumber && x.EventID == EventID).FirstOrDefault();
-            return result;            
+            var result = db.EventSnippets.Include(x=>x.Snippet).Where(x=>x.OrderNumber == OrderNumber && x.EventID == EventID).FirstOrDefault();
+            return result;
+            
         }
 
         public bool CheckIfFirstSnippetAccess(string userID, int snippetID, int EventID)
         {
-            var result = db.Answers.Any(x => x.User.UserName == userID && x.snippet.ID == snippetID && x.Event.ID == EventID);
+            var result = db.Answers.Any(x => x.User.UserName == userID && x.Snippet.ID == snippetID && x.Event.ID == EventID);
             return result;
         }
 
-        public bool CreateInitialAnswer(AnswerLog answer)
+        public bool CreateInitialAnswer(string UserID, int EventID, int SnippetID)
         {
-            db.Answers.Add(new AnswerLog { DateCreated = answer.DateCreated, User = answer.User, snippet = answer.snippet, Event = answer.Event });
+            AnswerLog initialAnswer = new AnswerLog
+            {
+                UserID = UserID,
+                EventID = EventID,
+                SnippetID = SnippetID,
+                DateCreated = DateHelper.GetCurrentTime(),
+            };
+
+            db.Answers.Add(initialAnswer);
             int res = db.SaveChanges();
             return res > 0;
         }
@@ -184,7 +193,7 @@ namespace FinkiSnippets.Service
         {
             var snippet = db.Snippets.Find(snippetID);
             var operations = db.SnippetOperations.Where(x => x.SnippetID == snippetID);
-            var answers = db.Answers.Where(x => x.snippet.ID == snippetID);
+            var answers = db.Answers.Where(x => x.Snippet.ID == snippetID);
             db.Snippets.Remove(snippet);
             db.SnippetOperations.RemoveRange(operations);
             db.Answers.RemoveRange(answers);

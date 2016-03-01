@@ -49,8 +49,7 @@ namespace App.Controllers
         public ActionResult Game(int id)
         {
             string userID = User.Identity.GetUserId();
-
-            var user = _userManager.FindById(userID);
+                       
             var userActiveEvent = _userService.UserActiveEvent(userID);
             var validateEvent = _eventService.GetEventById(id);
 
@@ -64,7 +63,7 @@ namespace App.Controllers
             if (userActiveEvent == null)
             {   
                 EventSnippets firstSnippet = _userService.BeginEvent(User.Identity.GetUserId(), validateEvent.ID);
-                _snippetService.CreateInitialAnswer(new AnswerLog { DateCreated = DateTime.Now, Event = firstSnippet.Event, snippet = firstSnippet.Snippet, User = user });
+                _snippetService.CreateInitialAnswer(userID, firstSnippet.EventID,firstSnippet.SnippetID);
                 return View(firstSnippet);
                 //return view with first snippet
             }
