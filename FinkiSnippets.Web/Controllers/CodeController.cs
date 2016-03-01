@@ -53,8 +53,8 @@ namespace App.Controllers
             var userActiveEvent = _userService.UserActiveEvent(userID);
             var validateEvent = _eventService.GetEventById(id);
 
-            //Event doesnt exist
-            if (validateEvent == null || validateEvent.End < DateHelper.GetCurrentTime())
+            //Event doesnt exist , its finished or it is not started yet
+            if (validateEvent == null || validateEvent.End < DateHelper.GetCurrentTime() || validateEvent.Start > DateHelper.GetCurrentTime())
             {                
                 return RedirectToAction("Start");
             }
