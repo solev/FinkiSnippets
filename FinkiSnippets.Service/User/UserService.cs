@@ -40,7 +40,7 @@ namespace FinkiSnippets.Service
 
         public ListUsersDto GetAllUsers(int page, int usersPerPage)
         {
-            var query = db.Users.OrderBy(x => x.Id);
+            var query = db.Users.OrderBy(x => x.UserName);
 
             var tempResult = query.Skip((page - 1) * usersPerPage).Take(usersPerPage).Select(x => new
             {

@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "CreateUsers";
+}
+
+<h2>CreateUsers</h2>
+
+<h3>Формат</h3>
+<p>Tab-delimited, one user = one line</p>
+
+<h3>Параметри</h3>
+<p>username име презиме e-mail password</p>
+
+<form action="@Url.Action("CreateUsers")" class="dropzone" id="dropzone"></form>
+
+@section Scripts
+{
+    <script src="~/Scripts/dropzone/dropzone.js"></script>
+    <script>
+        $(function () {
+
+            Dropzone.autoDiscover = false;
+
+            var dropZone = new Dropzone("#dropzone");
+
+            dropZone.on('success', function (file, response) {
+
+                var color;
+
+                if (response != "success")
+                    color = "#9a1616";
+                else
+                    color = "#60a917";
+
+                var not = $.Notify({
+                    caption: "Статус",
+                    content: response,
+                    timeout: 10000,
+                    style: { background: color, color: "#fff" }
+                });
+
+            });
+
+            dropZone.on('error', function (file, errorMsg) {
+
+                var not = $.Notify({
+                    caption: "Статус",
+                    content: errorMsg,
+                    timeout: 10000,
+                    style: { background: "#9a1616", color: "#fff" }
+                });
+            });
+        });
+    </script>
+}
+
+@section Styles
+{
+    <link href="~/Scripts/dropzone/dropzone.css" rel="stylesheet" />
+}

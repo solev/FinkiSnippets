@@ -10,6 +10,7 @@
 <hr />
 
 @Html.ActionLink("Додади нов корисник", "Register", "Admin", null, new { @class = "button" })
+@Html.ActionLink("Импортирај корисници", "CreateUsers", "Admin", null, new { @class = "button"})
 
 @if(Model.Users.Any())
 {
@@ -18,7 +19,7 @@
             <tr>
                 <th class="text-left">Име</th>
                 <th class="text-left">Презиме</th>
-                <td class="text-left">Корисничко име</td>
+                <th class="text-left">Корисничко име</th>
                 <th class="text-right"></th>
             </tr>
         </thead>

@@ -60,6 +60,42 @@ namespace App.Controllers
                 CreateExcelFile.CreateExcelDocument(result.Table, result.Name + ".xlsx", System.Web.HttpContext.Current.Response);
         }
 
+        public ActionResult CreateUsers()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult CreateUsers(HttpPostedFileBase file)
+        {
+            StreamReader sr = new StreamReader(file.InputStream);
+            string line;
+
+            while ((line = sr.ReadLine()) != null)
+            {
+                string[] user = line.Split();
+
+                if (user.Count() != 5)
+                    return Json("Неправилности во линија:\n"+line);
+
+                string username = user[0];
+                string name = user[1];
+                string surname = user[2];
+                string email = user[3];
+                string password = user[4];
+
+                var result = _userManager.Create(new ApplicationUser { UserName = username, FirstName = name, LastName = surname, Email = email }, password);
+
+                if(!result.Succeeded)
+                {
+                    return Json("error");
+                }
+            }
+
+            return Json("success");
+        }
+
         /*public ActionResult AddTestUsers()
         {
             var path = @"C:\Users\solev\Desktop\Whatever\IT_Sistemi_Users.xlsx";
@@ -130,22 +166,6 @@ namespace App.Controllers
             }
             return View(model);
         }
-
-        //public ActionResult feedFalseUsers()
-        //{
-        //    for(int i = 1; i <= 30;i++ )
-        //    {
-        //        string fname = ("User" + i);
-        //        string sname=" FINKI";
-        //        string password = "finki123";
-        //        string email = String.Format("user{0}@gmail.com",i);
-
-        //        ApplicationUser user = new ApplicationUser { FirstName = fname, LastName = sname, Email = email, UserName = email };
-        //        var res = userManager.Create(user, password);
-
-        //    }
-        //        return RedirectToAction("Users", new { id = 1 });
-        //}
 
         public ActionResult Register()
         {
