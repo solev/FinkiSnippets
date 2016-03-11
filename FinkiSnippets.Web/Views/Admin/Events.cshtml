@@ -74,6 +74,7 @@
             <th class="text-left">Датум</th>
             <th class="text-left">Почеток</th>
             <th class="text-left">Крај</th>
+            <th class="text-left">Учесници</th>
             <th class="text-left"></th>
             <th class="text-left">Export</th>
         </tr>
@@ -90,6 +91,7 @@
                 <td>@String.Format("{0} / {1} / {2}", ev.Start.Day, ev.Start.Month, ev.Start.Year)</td>
                 <td>@ev.Start.TimeOfDay</td>
                 <td>@ev.End.TimeOfDay</td>
+                <td>@ev.NumberOfParticipants</td>
                 <td>@Html.ActionLink("Види резултати", "Results", "Admin", new { id = ev.ID }, null)</td>
                 <td>@Html.ActionLink("Операции", "ExportOperations", "Admin", new { id = ev.ID }, null) | @Html.ActionLink("Резултати", "ExportResults", "Admin", new { id = ev.ID }, null)</td>
             </tr>

@@ -12,5 +12,6 @@ namespace Entity
         public string LastName { get; set; }
 
         public virtual ICollection<UserEvents> Events { get; set; }
+        public virtual ICollection<AnswerLog> Answers { get; set; }
     }
 }

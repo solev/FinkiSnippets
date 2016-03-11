@@ -14,54 +14,72 @@ namespace FinkiSnippets.Service
     {
 
         private CodeDatabase db;
-        
+
         public ExportService(CodeDatabase _db)
         {
             db = _db;
         }
 
         public ExportResultsDto ExportResultsForEvent(int eventID)
-        {        
-            //var tempResult = db.Events.Where(x => x.ID == eventID).Include(x => x.Answers.Select(y => y.User)).SelectMany(x => x.Answers).Select(x => new
-            //{ 
-            //    x.User.FirstName,
-            //    x.User.LastName,
-            //    x.isCorrect,
-            //    x.timeElapsed                
-            //});
+        {
 
-            //DataTable dt = new DataTable();
-            //dt.Columns.Add("Натпревар " + DateTime.Now.ToShortDateString(), typeof(string));
-            //int groupID = db.Events.Where(x => x.ID == eventID).Include(x => x.Group).Select(x => x.Group.ID).FirstOrDefault();
-            //var questions = db.Snippets.Where(x => x.Group.ID == groupID).Count();
+            var ev = db.Events.Where(x => eventID == x.ID).Select(x => new
+            {
+                x.ID,
+                x.Name,
+                Snippets = x.EventSnippets.Select(y => y.OrderNumber)
+            }).FirstOrDefault();
 
-            //for (int i = 1; i <= questions; i++)
-            //{
-            //    dt.Columns.Add(i.ToString(), typeof(string));
-            //}
+            if (ev == null)
+                return null;
 
-            //var tempEvent = db.Events.FirstOrDefault(x => x.ID == eventID);
-            //if (tempEvent == null)
-            //    return null;
+            var tempres = db.UserEvents.Where(x => x.EventID == eventID).Include(x => x.User.Answers).Select(x => new
+            {
+                x.UserID,
+                x.User.UserName,
+                x.User.FirstName,
+                x.User.LastName,
+                Answers = x.User.Answers.Where(y => y.EventID == eventID).Select(y => new
+                {
+                    y.isCorrect,
+                    y.timeElapsed
+                })
+            }).ToList();
 
 
-            //var users = db.Answers.Where(x => x.Event.ID == tempEvent.ID).Select(x => x.User.Id).Distinct().ToList();
-            //foreach (var user in users)
-            //{
-            //    var answers = db.Answers.Where(x => x.Event.ID == tempEvent.ID && x.User.Id == user).ToList();
-            //    object[] rowData = new object[answers.Count + 1];
-            //    rowData[0] = answers[0].User.FirstName + " " + answers[0].User.LastName;
-            //    foreach (var item in answers)
-            //    {
-            //        rowData[item.snippet.OrderNumber] = item.timeElapsed + " | " + (item.isCorrect ? "Точно" : "Погрешно");
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Username", typeof(string));
+            dt.Columns.Add("Име", typeof(string));
 
-            //    }
-            //    dt.Rows.Add(rowData);
-            //}
+
+            foreach (var item in ev.Snippets)
+            {
+                dt.Columns.Add(item.ToString(), typeof(string));
+                dt.Columns.Add(" ", typeof(string));
+            }
+
+
+            foreach (var user in tempres)
+            {
+                object[] rowdata = new object[user.Answers.Count() * 2 + 2];
+                rowdata[0] = user.UserName;
+                rowdata[1] = string.Format("{0} {1}", user.FirstName, user.LastName);
+
+                int i = 2;
+
+                foreach (var item in user.Answers)
+                {
+                    rowdata[i] = item.timeElapsed;
+                    rowdata[i + 1] = item.isCorrect ? 1 : 0;
+                    i += 2;
+                }
+
+                dt.Rows.Add(rowdata);
+            }
 
             ExportResultsDto result = new ExportResultsDto();
-            //result.table = dt;
-            //result.Name = "Natprevar_"+ tempEvent.Start.ToShortDateString();
+            result.table = dt;
+            result.Name = ev.Name;
 
             return result;
         }
@@ -69,44 +87,56 @@ namespace FinkiSnippets.Service
 
         public ExportOperationsDto ExportOperationsForEvent(int eventID)
         {
-            //int groupID = db.Events.Where(x => x.ID == eventID).Select(x => x.Group.ID).FirstOrDefault();
-            //var questions = db.Snippets.Where(x => x.Group.ID == groupID).ToList();
-            //var op = db.Operations.ToList();
 
-            ////create table for snippets and operations
-            //DataTable dtSnippets = new DataTable();
-            //dtSnippets.Columns.Add("Задача", typeof(string));
-            
-            //foreach (var item in op)
-            //{
-            //    dtSnippets.Columns.Add(item.Operator, typeof(int));
-            //}
+            var ev = db.Events.Where(x => x.ID == eventID).Include(x => x.EventSnippets).Include(x=>x.EventSnippets.Select(y=>y.Snippet.Operations)).Select(x => new
+            {
+                
+                x.Name,
+                Snippets = x.EventSnippets.Select(y => new
+                {
+                    y.OrderNumber,
+                    Operations = y.Snippet.Operations
+                })
+            }).FirstOrDefault();
 
-            //foreach (var item in questions)
-            //{
-            //    object[] rowData = new object[op.Count + 1];
-            //    var ops = db.SnippetOperations.Where(x => x.SnippetID == item.ID).Select(x => new { x.OperationID, x.Frequency });
-            //    rowData[0] = "Задача " + item.OrderNumber;
-            //    int idx = 1;
-            //    foreach (var optemp in op)
-            //    {
-            //        var tempOperation = ops.FirstOrDefault(x => x.OperationID == optemp.ID);
-            //        if (tempOperation != null)
-            //        {
+            if (ev == null)
+                return null;
 
-            //            rowData[idx++] = tempOperation.Frequency;
-            //        }
-            //        else
-            //        {
-            //            rowData[idx++] = 0;
-            //        }
-            //    }
-            //    dtSnippets.Rows.Add(rowData);
-            //}
+            var operations = db.Operations.ToList();
+
+
+            //create table for snippets and operations
+            DataTable dtSnippets = new DataTable();
+            dtSnippets.Columns.Add("Задача", typeof(string));
+
+            foreach (var item in operations)
+            {
+                dtSnippets.Columns.Add(item.Operator);
+            }
+
+            foreach (var item in ev.Snippets)
+            {
+                object[] rowData = new object[operations.Count + 1];                
+                rowData[0] = "Задача " + item.OrderNumber;
+                int idx = 1;
+                foreach (var optemp in operations)
+                {
+                    var tempOperation = item.Operations.FirstOrDefault(x => x.OperationID == optemp.ID);
+                    if (tempOperation != null)
+                    {
+                        rowData[idx++] = tempOperation.Frequency;
+                    }
+                    else
+                    {
+                        rowData[idx++] = 0;
+                    }
+                }
+                dtSnippets.Rows.Add(rowData);
+            }
 
             ExportOperationsDto result = new ExportOperationsDto();
-            //result.Table = dtSnippets;
-            
+            result.Table = dtSnippets;
+            result.Name = string.Format("{0} - Operacii", ev.Name);
             return result;
         }
     }

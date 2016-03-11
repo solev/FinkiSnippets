@@ -24,7 +24,7 @@
                     @item.Value[0]
                 </td>
                 <td>
-                    @(item.Value[1]/60) : @(item.Value[1]%60)
+                    @((item.Value[1]/60).ToString("00")) : @((item.Value[1]%60).ToString("00"))
                 </td>
             </tr>
         }

@@ -19,6 +19,8 @@ using FinkiSnippets.Service;
 using FinkiSnippets.Service.Dto;
 using FinkiSnippets.Service.Groups;
 using System.Threading;
+using System.Web.UI.WebControls;
+using System.Web.UI;
 
 namespace App.Controllers
 {
@@ -41,20 +43,21 @@ namespace App.Controllers
             _eventService = eventService;
             _groupService = groupService;
         }
-
+                
         public void ExportResults(int id)
-        {
+            {
             //Create table for results
             var result = _exportService.ExportResultsForEvent(id);
-
-            CreateExcelFile.CreateExcelDocument(result.table, result.Name + ".xlsx", System.Web.HttpContext.Current.Response);
+            if(result!=null)
+                CreateExcelFile.CreateExcelDocument(result.table, result.Name + ".xlsx", System.Web.HttpContext.Current.Response);
         }
 
         public void ExportOperations(int id)
         {
             //Create table for results        
             var result = _exportService.ExportOperationsForEvent(id);
-            CreateExcelFile.CreateExcelDocument(result.Table, "Zadaci.xlsx", System.Web.HttpContext.Current.Response);
+            if (result != null)
+                CreateExcelFile.CreateExcelDocument(result.Table, result.Name + ".xlsx", System.Web.HttpContext.Current.Response);
         }
 
         /*public ActionResult AddTestUsers()
@@ -166,7 +169,7 @@ namespace App.Controllers
             var events = _eventService.GetAllEvents();
             return View(events);
         }
-
+                
         public ActionResult CreateEvent()
         {
             CreateEventViewModel model = new CreateEventViewModel();

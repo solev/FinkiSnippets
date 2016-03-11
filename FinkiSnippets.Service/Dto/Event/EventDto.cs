@@ -12,5 +12,6 @@ namespace FinkiSnippets.Service.Dto
         public String Name { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+        public int NumberOfParticipants { get; set; }
     }
 }

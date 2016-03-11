@@ -23,7 +23,7 @@ namespace FinkiSnippets.Service
 
         public Event GetEventById(int eventID)
         {
-            return db.Events.Where(x => x.ID == eventID).Include(x => x.EventSnippets.Select(y=>y.Snippet)).FirstOrDefault();
+            return db.Events.Where(x => x.ID == eventID).Include(x => x.EventSnippets.Select(y => y.Snippet)).FirstOrDefault();
         }
 
         public List<Event> GetNextEvents()
@@ -45,10 +45,18 @@ namespace FinkiSnippets.Service
                 x.ID,
                 x.Name,
                 x.Start,
-                x.End
+                x.End,
+                Participants = x.UserEvents.Count()
             }).ToList();
 
-            List<EventDto> result = tempResult.Select(x => new EventDto { ID = x.ID, Name = x.Name, Start = x.Start, End = x.End }).ToList();
+            List<EventDto> result = tempResult.Select(x => new EventDto
+            {
+                ID = x.ID,
+                Name = x.Name,
+                Start = x.Start,
+                End = x.End,
+                NumberOfParticipants = x.Participants
+            }).ToList();
             return result;
         }
 
@@ -57,20 +65,20 @@ namespace FinkiSnippets.Service
             int res;
 
             List<EventSnippets> snippetEvents = new List<EventSnippets>();
-            for(int i=0;i<IDs.Count;i++)
+            for (int i = 0; i < IDs.Count; i++)
             {
                 EventSnippets snippetEvent = new EventSnippets
                 {
                     SnippetID = IDs[i],
-                    OrderNumber = i+1
+                    OrderNumber = i + 1
                 };
                 snippetEvents.Add(snippetEvent);
             }
-                        
 
-            if(ev.ID > 0)
+
+            if (ev.ID > 0)
             {
-                Event eventToUpdate = db.Events.Where(x => x.ID == ev.ID).Include(x=> x.EventSnippets).FirstOrDefault();
+                Event eventToUpdate = db.Events.Where(x => x.ID == ev.ID).Include(x => x.EventSnippets).FirstOrDefault();
                 db.EventSnippets.RemoveRange(eventToUpdate.EventSnippets);
                 res = db.SaveChanges();
                 eventToUpdate.Name = ev.Name;
@@ -84,10 +92,10 @@ namespace FinkiSnippets.Service
             else
             {
                 ev.EventSnippets = snippetEvents;
-                db.Events.Add(ev);                
+                db.Events.Add(ev);
                 res = db.SaveChanges();
             }
-            
+
             return res > 0;
         }
 
