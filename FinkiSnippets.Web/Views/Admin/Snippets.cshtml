@@ -8,6 +8,7 @@
     <div class="row">
         <h2 class="span9">Снипети</h2>
         <a class="button large" href="@Url.Action("CreateSnippet","Admin")">Додади нов снипет</a>
+        <hr />
     </div>
 
     @using (Ajax.BeginForm("FilterSnippets", new AjaxOptions { HttpMethod = "GET", LoadingElementId = "loader", UpdateTargetId = "snippetContainer", InsertionMode = InsertionMode.Replace, OnSuccess = "InitializeEditors()" }))

@@ -1,0 +1,57 @@
+﻿@model Entity.Group
+
+@{
+    ViewBag.Title = "EditGroup";
+}
+
+<h2>EditGroup</h2>
+
+<input id="group-name" value="@Model.Name" type="text" placeholder="Име на групата" /> <a href="javascript:void(0)" id="submit" class="button success">Измени група</a>
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $("#submit").click(function () {
+
+                var name = $("#group-name").val();
+
+                console.log(name);
+
+                $.ajax({
+                    url: '@Url.Action("EditGroup", "Admin")',
+                    type: 'POST',
+                    traditional: true,
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        ID: '@Model.ID',
+                        Name: name
+                    })
+                }).done(function (data) {
+
+                    var color;
+
+                    if (data == "error")
+                        color = "#9a1616";
+                    else
+                        color = "#60a917";
+
+                    var not = $.Notify({
+                        caption: "Статус",
+                        content: data,
+                        timeout: 3000,
+                        style: { background: color, color: "#fff" }
+                    });
+
+                    if (data != "error") {
+                        setTimeout(function () {
+                            window.location.replace('@Url.Action("Groups", "Admin")');
+                        },
+                        3000);
+                    }
+                });
+            });
+        });
+    </script>
+}

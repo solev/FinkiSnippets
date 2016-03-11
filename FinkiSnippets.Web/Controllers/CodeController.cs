@@ -72,6 +72,7 @@ namespace App.Controllers
                 _snippetService.CreateInitialAnswer(userID, firstSnippet.EventID,firstSnippet.SnippetID);
                 userActiveEvent = _userService.UserActiveEvent(userID);
                 ViewBag.lastOrderNumber = userActiveEvent.OrderNumber;
+                firstSnippet.Event = validateEvent;
                 return View(firstSnippet);
                 //return view with first snippet
             }
@@ -95,6 +96,8 @@ namespace App.Controllers
             var model = _snippetService.GetSnippetWithOrderNumber(lastAnsweredOrderNumber, userActiveEvent.EventID);
             _snippetService.CreateInitialAnswer(userID, userActiveEvent.EventID, model.SnippetID);
             ViewBag.lastOrderNumber = userActiveEvent.OrderNumber;
+
+            model.Event = validateEvent;
 
             return View(model);
         }

@@ -5,6 +5,8 @@
 
 }
 
+<div class="countdown small span4" data-role="countdown" data-stoptimer="@Model.Event.End"></div>
+
 <div class="span11">
     <ul style="list-style-type:none;margin:0 0 30px 0;padding:0;">
         @for (int i = 1; i <= (int)ViewBag.lastOrderNumber; i++)
@@ -43,7 +45,7 @@
 @section Scripts{
     <script src="~/Scripts/src-noconflict/ace.js"></script>
     <script src="~/Scripts/metro-times.js"></script>
-
+    <script src="~/Scripts/metro-countdown.js"></script>
     <script>
         $(document).ready(function () {
 

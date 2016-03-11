@@ -18,7 +18,8 @@
             <th class="text-left">Почеток</th>
             <th class="text-left">Крај</th>   
             <th class="text-left"></th>  
-            <th class="text-left"></th>       
+            <th class="text-left"></th>    
+            <th class="text-left"></th>   
         </tr>
     </thead>
     <tbody>
@@ -33,6 +34,7 @@
                     <td>@ev.End.TimeOfDay</td>
                     <td>@Html.ActionLink("Види резултати", "Results", "Admin", new { id = ev.ID }, new { @style = "color:black!important;" })</td>
                     <td style="width:40px;"><a href="@Url.Action("EditEvent", "Admin", new { id=ev.ID })" class="button danger small">Измени</a></td>
+                    <td style="width:40px"><a class="button danger small" href="@Url.Action("DeleteEvent", "Admin", new { id = ev.ID})" onclick="return confirm('Дали сте сигурни?')">Избриши</a></td>
                 </tr>
             }
         }
@@ -49,6 +51,7 @@
             <th class="text-left">Почеток</th>
             <th class="text-left">Крај</th>
             <th class="text-left"></th>
+            <th class="text-left"></th>
         </tr>
     </thead>
     <tbody>
@@ -60,6 +63,7 @@
                 <td>@ev.Start.TimeOfDay</td>
                 <td>@ev.End.TimeOfDay</td>
                 <td style="width:40px;"><a href="@Url.Action("EditEvent", "Admin", new { id=ev.ID })" class="button danger small">Измени</a></td>
+                <td style="width:40px"><a class="button danger small" href="@Url.Action("DeleteEvent", "Admin", new { id = ev.ID})" onclick="return confirm('Дали сте сигурни?')">Избриши</a></td>
             </tr>
         }
     </tbody>

@@ -95,41 +95,7 @@ namespace App.Controllers
 
             return Json("success");
         }
-
-        /*public ActionResult AddTestUsers()
-        {
-            var path = @"C:\Users\solev\Desktop\Whatever\IT_Sistemi_Users.xlsx";
-
-            if (!System.IO.File.Exists(path))
-            {
-                return RedirectToAction("Users", new { id = 1 });
-            }
-
-            foreach (var worksheet in Workbook.Worksheets(path))
-            {
-                foreach (var sheet in worksheet.Rows.Skip(153))
-                {
-                    string firstName = sheet.Cells[0].Text.ToString();
-                    string lastName = sheet.Cells[1].Text.ToString();
-                    string index = sheet.Cells[2].Text.ToString();
-                    string email = sheet.Cells[3].Text.ToString();
-                    string password = index + "!";
-
-                    ApplicationUser userTemp = new ApplicationUser { UserName = index, FirstName = firstName, LastName = lastName, Email = email };
-                    var res = _userManager.Create(userTemp, password);
-
-                    if (res.Succeeded == false)
-                    {
-                        return RedirectToAction("Events");
-                    }
-                }
-            }
-
-            //ApplicationUser testUser = new ApplicationUser { UserName = username, FirstName = fname, LastName = lname };
-            //var res = userManager.Create(testUser, password);
-            return RedirectToAction("Users", new { id = 1 });
-        }*/
-
+       
         //id == page
         public ActionResult Users(int id)
         {
@@ -261,6 +227,13 @@ namespace App.Controllers
             return Json("Натпреварот е успешно изменет.", JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult DeleteEvent(int id)
+        {
+            bool res = _eventService.DeleteEvent(id);
+            return RedirectToAction("Events");
+        }
+
+
         public ActionResult Snippets(int page = 1)
         {
             if (page < 1)
@@ -341,6 +314,49 @@ namespace App.Controllers
             var _group = _groupService.GetGroupByID(id);
             SnippetsByGroupViewModel result = new SnippetsByGroupViewModel { Group = _group, Snippets = _snippets };
             return View(result);
+        }
+
+        public ActionResult CreateGroup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult CreateGroup(string Name)
+        {
+            Group group = new Group {Name = Name};
+
+            int res = _groupService.AddOrUpdateGroup(group);
+            
+            if(res > 0)
+                return Json("success");
+
+            return Json("error");
+        }
+
+        public ActionResult EditGroup(int id)
+        {
+            var model = _groupService.GetGroupByID(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult EditGroup(Group group)
+        {
+            int res = _groupService.AddOrUpdateGroup(group);
+            
+            if (res > 0)
+                return Json("success");
+
+            return Json("error");
+        }
+
+        public ActionResult DeleteGroup(int id)
+        {
+            bool res = _groupService.DeleteGroup(id);
+
+            return RedirectToAction("Groups");
         }
 
         [HttpPost]

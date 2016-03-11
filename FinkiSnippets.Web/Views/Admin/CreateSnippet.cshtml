@@ -95,48 +95,47 @@
     <script src="~/Scripts/src-noconflict/ace.js"></script>
     <script src="~/Scripts/Our Scripts/EditorInitializer.js"></script>
     <script>
+        $(document).ready(function () {
 
-    $(document).ready(function () {
+            var addedOperators = [];
+            var addedGroups = [];
 
-        var addedOperators = [];
-        var addedGroups = [];
+            var editor = Variables.initEditors[0];
 
-        var editor = Variables.initEditors[0];
+            editor.setOption("readOnly", false);
+            editor.renderer.$cursorLayer.element.style.opacity = 1;
 
-        editor.setOption("readOnly", false);
-        editor.renderer.$cursorLayer.element.style.opacity = 1;
+            $("#btnAdd").click(function (event) {
+                var code = editor.getSession().getValue();
+                var outputData = $("#outputData").val();
+                var ques = $("#Question").val();
 
-        $("#btnAdd").click(function (event) {
-            var code = editor.getSession().getValue();
-            var outputData = $("#outputData").val();
-            var ques = $("#Question").val();
-
-            var dataModel = {
-                snippet: {
-                    Code: encodeURIComponent(code),
-                    Output: outputData,
-                    Question: ques
-                },
-                Operators: addedOperators,
-                SnippetGroups: addedGroups
-            }
-
-            console.log(dataModel);
-
-            $.ajax({
-                url: '@Url.Action("CreateSnippet","Admin")',
-                    type: "POST",
-                    traditional: true,
-                    dataType: "json",
-                    contentType: 'application/json',
-                    data: JSON.stringify({
+                var dataModel = {
+                    snippet: {
                         Code: encodeURIComponent(code),
                         Output: outputData,
-                        Question: ques,
-                        Operators: addedOperators,
-                        SnippetGroups: addedGroups
-                    })
-            }).done(function (data) {
+                        Question: ques
+                    },
+                    Operators: addedOperators,
+                    SnippetGroups: addedGroups
+                }
+
+                console.log(dataModel);
+
+                $.ajax({
+                    url: '@Url.Action("CreateSnippet","Admin")',
+                        type: "POST",
+                        traditional: true,
+                        dataType: "json",
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            Code: encodeURIComponent(code),
+                            Output: outputData,
+                            Question: ques,
+                            Operators: addedOperators,
+                            SnippetGroups: addedGroups
+                        })
+                }).done(function (data) {
 
                     var color;
 
@@ -159,7 +158,7 @@
                         3000);
                     }
                 });
-            })
+            });
 
             $("#btnAddOperator").click(function () {
                 var oper = $("#operatorSelect").find(":selected").text();
