@@ -16,9 +16,26 @@
 }
 else
 {
+    <br />
     <a href="@Url.Action("Game", "Code", new { id = Model.ID })" class="button default large">Започни</a>
 }
 
 @section Scripts{
     <script src="~/Scripts/metro-countdown.js"></script>
+    <script></script>
+    <script>
+        $(function () {
+           
+            var msg = '@ViewBag.msg';
+
+            if (msg) {
+                $.Notify({
+                    caption: "Статус",
+                    content: msg,
+                    timeout: 10000,
+                    style: { background: "red", color: "#fff" }
+                });
+            }
+        });
+    </script>
 }

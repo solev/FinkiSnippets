@@ -28,7 +28,7 @@ namespace App.Controllers
             _userManager = userManager;
         }
 
-        
+
         public ActionResult Start()
         {
             List<Event> NextEvents = _eventService.GetNextEvents();
@@ -41,6 +41,12 @@ namespace App.Controllers
         public ActionResult Lobby(int id)
         {
             Event ev = _eventService.GetEventById(id);
+
+            //When redirected to this active event present a message
+            if (TempData["RedirectToLobbyMsg"] != null)
+            {
+                ViewBag.msg = "Мора да го завршите активното тестирање пред да започнете ново.";
+            }
 
             return View(ev);
         }
@@ -62,13 +68,14 @@ namespace App.Controllers
             //Has no active events start a new one
             if (userActiveEvent == null)
             {   
-                
                 EventSnippets firstSnippet = _userService.BeginEvent(User.Identity.GetUserId(), validateEvent.ID);
 
                 //Already participated and finished
-                if(firstSnippet == null)
-                    return RedirectToAction("Start");
-
+                if (firstSnippet == null)
+                {
+                    TempData["EventFinished"] = true;
+                    return RedirectToAction("Result");
+                }
                 _snippetService.CreateInitialAnswer(userID, firstSnippet.EventID,firstSnippet.SnippetID);
                 userActiveEvent = _userService.UserActiveEvent(userID);
                 ViewBag.lastOrderNumber = userActiveEvent.OrderNumber;
@@ -81,6 +88,7 @@ namespace App.Controllers
             if(userActiveEvent.EventID != validateEvent.ID)
             {
                 // should redirect to lobby of the event
+                TempData["RedirectToLobbyMsg"] = true;
                 return RedirectToAction("Lobby", new { id = userActiveEvent.EventID });
             }
 
@@ -103,13 +111,13 @@ namespace App.Controllers
         }
 
         [HttpPost]
-        public ActionResult NextSnippet(int SnippetID, int EventID ,string answer)
+        public ActionResult NextSnippet(int SnippetID, int EventID, string answer)
         {
-            
-            string userID = User.Identity.GetUserId();            
+
+            string userID = User.Identity.GetUserId();
             bool res = _snippetService.SubmitAnswer(userID, EventID, SnippetID, answer);
-                      
-            return RedirectToAction("Game", new { id = EventID});
+
+            return RedirectToAction("Game", new { id = EventID });
         }
 
         public ActionResult Result()

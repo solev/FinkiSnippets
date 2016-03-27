@@ -67,7 +67,7 @@ namespace FinkiSnippets.Service
 
         public EventSnippets UserActiveEvent(string UserID)
         {
-            UserEvents activeEvent = db.UserEvents.Include(x => x.Event).Include(x => x.Event.EventSnippets).Where(x => x.UserID == UserID && !x.Finished).FirstOrDefault();
+            UserEvents activeEvent = db.UserEvents.Include(x => x.Event).Where(x => x.UserID == UserID && !x.Finished).FirstOrDefault();
 
             if (activeEvent == null)
                 return null;
@@ -81,6 +81,10 @@ namespace FinkiSnippets.Service
 
             EventSnippets result = db.UserEvents.Include(x => x.Event).Include(x => x.Event.EventSnippets).Where(x => x.UserID == UserID && !x.Finished)
                 .SelectMany(x => x.Event.EventSnippets.Where(y => y.OrderNumber == x.Event.EventSnippets.Max(t => t.OrderNumber))).FirstOrDefault();
+
+            //if()
+
+            //EventSnippets result = activeEvent.Event.EventSnippets.SelectMany(x => x.Event.EventSnippets.Where(y => y.OrderNumber == x.Event.EventSnippets.Max(t => t.OrderNumber))).FirstOrDefault();
 
             return result;
         }
