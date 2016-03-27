@@ -19,6 +19,13 @@
             @Html.EditorFor(model => model.ID)
         </div>
 
+        @Html.LabelFor(model => model.Username, new { @class = "control-label col-md-2" })
+        <div class="input-control text">
+            @Html.EditorFor(model => model.Username)
+            @Html.ValidationMessageFor(model => model.Username)
+
+        </div>
+
         @Html.LabelFor(model => model.Ime, new { @class = "control-label col-md-2" })
         <div class="input-control text">                      
                 @Html.EditorFor(model => model.Ime)

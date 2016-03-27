@@ -12,19 +12,27 @@ namespace App.ViewModels
         public string ID { get; set; }
 
         [Required]
+        [Display(Name="Корисничко име")]
+        public string Username { get; set; }
+
+        [Required]
         [Display(Name="Име")]
         public string Ime { get; set; }
+
         [Required]
         [Display(Name = "Презиме")]
         public string Prezime { get; set; }
+
         [Required]
         [Display(Name = "Email Адреса")]
         [DataType(DataType.EmailAddress)]
         public string email { get; set; }
+
         [Required]
         [Display(Name = "Лозинка")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Повторете Лозинка")]

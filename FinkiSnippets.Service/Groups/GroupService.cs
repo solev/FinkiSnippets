@@ -39,5 +39,32 @@ namespace FinkiSnippets.Service.Groups
 
             return res;
         }
+
+        public int AddOrUpdateGroup(Group group)
+        {
+            int res;
+
+            if(group.ID > 0)
+            {
+                Group gr = db.Groups.Find(group.ID);
+                gr.Name = group.Name;
+                res = db.SaveChanges();
+                return res;
+            }
+
+            db.Groups.Add(group);
+            res = db.SaveChanges();
+            return res;
+        }
+
+        public bool DeleteGroup(int GroupID)
+        {
+            Group g = db.Groups.Find(GroupID);
+            db.Groups.Remove(g);
+
+            int res = db.SaveChanges();
+
+            return res > 0;
+        }
     }
 }

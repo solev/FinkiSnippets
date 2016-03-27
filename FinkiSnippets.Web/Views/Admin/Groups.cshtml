@@ -4,7 +4,13 @@
     ViewBag.Title = "Groups";
 }
 
-<h2>Groups</h2>
+<div class="grid">
+    <div class="row">
+        <h2 class="span9">Groups</h2>
+        <a class="button large" href="@Url.Action("CreateGroup", "Admin")">Додади нова група</a>
+    </div>
+</div>
+<hr />
 
 <div class="listview-outlook">
     @foreach (var group in Model)
@@ -20,8 +26,8 @@
                 </div>
                 <div class="span6">
                     <a class="button success" href="@Url.Action("Group", "Admin", new { id = group.ID })">Преглед на снипети</a>
-                    <a class="button warning" href="" onclick="return alert('NOT IMPLEMENTED')">Измени</a>
-                    <a class="button danger" href="" onclick="return alert('NOT IMPLEMENTED')">Избриши</a>
+                    <a class="button warning" href="@Url.Action("EditGroup", "Admin", new { id = group.ID })">Измени</a>
+                    <a class="button danger" href="@Url.Action("DeleteGroup", "Admin", new { id = group.ID })" onclick="return confirm('Дали сте сигурни?')">Избриши</a>
                 </div>
             </div>
         </div>

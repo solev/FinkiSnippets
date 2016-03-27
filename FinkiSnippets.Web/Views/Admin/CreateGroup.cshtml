@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "CreateGroup";
+}
+
+<h2>CreateGroup</h2>
+
+<input id="group-name"type="text" placeholder="Име на групата"/> <a href="javascript:void(0)" id="submit" class="button success">Креирај група</a>
+
+@section Scripts
+{   
+    <script>
+        $(function () {
+            $("#submit").click(function () {
+                
+                var name = $("#group-name").val();
+
+                console.log(name);
+
+                $.ajax({
+                    url: '@Url.Action("CreateGroup", "Admin")',
+                    type: 'POST',
+                    traditional: true,
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        Name: name 
+                    })
+                }).done(function (data) {
+                    
+                    var color;
+
+                    if (data == "error")
+                        color = "#9a1616";
+                    else
+                        color = "#60a917";
+
+                    var not = $.Notify({
+                        caption: "Статус",
+                        content: data,
+                        timeout: 3000,
+                        style: { background: color, color: "#fff" }
+                    });
+
+                    if (data != "error") {
+                        setTimeout(function () {
+                            window.location.replace('@Url.Action("Groups", "Admin")');
+                        },
+                        3000);
+                    }
+                });
+            });
+        });
+    </script>
+}

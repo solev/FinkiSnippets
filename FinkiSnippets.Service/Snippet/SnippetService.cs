@@ -60,7 +60,9 @@ namespace FinkiSnippets.Service
                             .OrderByDescending(x => x.ID)
                             .Select(x => x.Snippet.EventSnippets.Where(y => y.EventID == EventID).Take(1))
                             .Select(x => x.Select(y => y.OrderNumber)).FirstOrDefault();
-                           
+
+            if (snippet == null)
+                return 0;
                         
             return snippet.FirstOrDefault();
         }
@@ -89,6 +91,11 @@ namespace FinkiSnippets.Service
 
         public bool CreateInitialAnswer(string UserID, int EventID, int SnippetID)
         {
+            var answer = db.Answers.Where(x => x.UserID == UserID && x.EventID == EventID && x.SnippetID == SnippetID).FirstOrDefault();
+
+            if (answer != null)
+                return false;
+
             AnswerLog initialAnswer = new AnswerLog
             {
                 UserID = UserID,

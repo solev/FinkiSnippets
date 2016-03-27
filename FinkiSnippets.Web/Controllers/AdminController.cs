@@ -21,6 +21,7 @@ using FinkiSnippets.Service.Groups;
 using System.Threading;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using System.Text;
 
 namespace App.Controllers
 {
@@ -62,7 +63,6 @@ namespace App.Controllers
 
         public ActionResult CreateUsers()
         {
-
             return View();
         }
 
@@ -71,65 +71,39 @@ namespace App.Controllers
         {
             StreamReader sr = new StreamReader(file.InputStream);
             string line;
-
+            int i = 1;
             while ((line = sr.ReadLine()) != null)
             {
                 string[] user = line.Split();
 
-                if (user.Count() != 5)
-                    return Json("Неправилности во линија:\n"+line);
+                if (user.Count() != 4)
+                    return Json("Погрешен формат на линија " + i + ". <br /> Сите претходни корисници се успешно додадени.");
 
                 string username = user[0];
                 string name = user[1];
                 string surname = user[2];
-                string email = user[3];
-                string password = user[4];
+                string password = user[3];
 
-                var result = _userManager.Create(new ApplicationUser { UserName = username, FirstName = name, LastName = surname, Email = email }, password);
+                var result = _userManager.Create(new ApplicationUser { UserName = username, FirstName = name, LastName = surname }, password);
 
                 if(!result.Succeeded)
-                {
-                    return Json("error");
-                }
-            }
+                {   
+                    StringBuilder errors = new StringBuilder();
 
-            return Json("success");
-        }
-
-        /*public ActionResult AddTestUsers()
-        {
-            var path = @"C:\Users\solev\Desktop\Whatever\IT_Sistemi_Users.xlsx";
-
-            if (!System.IO.File.Exists(path))
-            {
-                return RedirectToAction("Users", new { id = 1 });
-            }
-
-            foreach (var worksheet in Workbook.Worksheets(path))
-            {
-                foreach (var sheet in worksheet.Rows.Skip(153))
-                {
-                    string firstName = sheet.Cells[0].Text.ToString();
-                    string lastName = sheet.Cells[1].Text.ToString();
-                    string index = sheet.Cells[2].Text.ToString();
-                    string email = sheet.Cells[3].Text.ToString();
-                    string password = index + "!";
-
-                    ApplicationUser userTemp = new ApplicationUser { UserName = index, FirstName = firstName, LastName = lastName, Email = email };
-                    var res = _userManager.Create(userTemp, password);
-
-                    if (res.Succeeded == false)
+                    foreach(String s in result.Errors)
                     {
-                        return RedirectToAction("Events");
+                        errors.Append("<br />");
+                        errors.Append(s);
                     }
+
+                    return Json("Следните неправилности се најдени во линија " + i + ":" + errors + "<br /> Сите претходни корисници се успешно додадени.");
                 }
+                i++;
             }
 
-            //ApplicationUser testUser = new ApplicationUser { UserName = username, FirstName = fname, LastName = lname };
-            //var res = userManager.Create(testUser, password);
-            return RedirectToAction("Users", new { id = 1 });
-        }*/
-
+            return Json("Сите корисници се успешно креирани.");
+        }
+       
         //id == page
         public ActionResult Users(int id)
         {
@@ -147,7 +121,7 @@ namespace App.Controllers
         public ActionResult Edit(string id)
         {
             var user = _userManager.FindById(id);
-            return View(new RegisterViewModel { Ime = user.FirstName, Prezime = user.LastName, email = user.Email, ID = user.Id });
+            return View(new RegisterViewModel { Username = user.UserName, Ime = user.FirstName, Prezime = user.LastName, email = user.Email, ID = user.Id });
         }
 
         [HttpPost]
@@ -157,11 +131,14 @@ namespace App.Controllers
             {
                 var user = _userManager.FindById(model.ID);
 
+                user.UserName = model.Username;
                 user.FirstName = model.Ime;
                 user.LastName = model.Prezime;
 
+                user.PasswordHash = _userManager.PasswordHasher.HashPassword(model.Password);
+
                 var res = _userManager.Update(user);
-                return RedirectToAction("Users");
+                return RedirectToAction("Users", new { id = 1 });
 
             }
             return View(model);
@@ -261,6 +238,13 @@ namespace App.Controllers
             return Json("Натпреварот е успешно изменет.", JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult DeleteEvent(int id)
+        {
+            bool res = _eventService.DeleteEvent(id);
+            return RedirectToAction("Events");
+        }
+
+
         public ActionResult Snippets(int page = 1)
         {
             if (page < 1)
@@ -341,6 +325,49 @@ namespace App.Controllers
             var _group = _groupService.GetGroupByID(id);
             SnippetsByGroupViewModel result = new SnippetsByGroupViewModel { Group = _group, Snippets = _snippets };
             return View(result);
+        }
+
+        public ActionResult CreateGroup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult CreateGroup(string Name)
+        {
+            Group group = new Group {Name = Name};
+
+            int res = _groupService.AddOrUpdateGroup(group);
+            
+            if(res > 0)
+                return Json("success");
+
+            return Json("error");
+        }
+
+        public ActionResult EditGroup(int id)
+        {
+            var model = _groupService.GetGroupByID(id);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public JsonResult EditGroup(Group group)
+        {
+            int res = _groupService.AddOrUpdateGroup(group);
+            
+            if (res > 0)
+                return Json("success");
+
+            return Json("error");
+        }
+
+        public ActionResult DeleteGroup(int id)
+        {
+            bool res = _groupService.DeleteGroup(id);
+
+            return RedirectToAction("Groups");
         }
 
         [HttpPost]

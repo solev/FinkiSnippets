@@ -111,5 +111,20 @@ namespace FinkiSnippets.Service
             userEvent.Finished = true;
             db.SaveChanges();
         }
+
+        public bool DeleteEvent(int EventID)
+        {
+            var ev = db.Events.Find(EventID);
+            var EventSnippets = db.EventSnippets.Where(x => x.EventID == EventID);
+            var UserEvents = db.UserEvents.Where(x => x.EventID == EventID);
+
+            db.Events.Remove(ev);
+            db.EventSnippets.RemoveRange(EventSnippets);
+            db.UserEvents.RemoveRange(UserEvents);
+
+            int res = db.SaveChanges();
+            
+            return res > 0;
+        }
     }
 }
