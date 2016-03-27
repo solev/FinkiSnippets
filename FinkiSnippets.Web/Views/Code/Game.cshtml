@@ -5,22 +5,28 @@
 
 }
 
-<div class="countdown small span4" data-role="countdown" data-stoptimer="@Model.Event.End"></div>
+@*<div class="countdown small span4" data-role="countdown" data-stoptimer="@Model.Event.End"></div>*@
 
-<div class="span11">
-    <ul style="list-style-type:none;margin:0 0 30px 0;padding:0;">
-        @for (int i = 1; i <= (int)ViewBag.lastOrderNumber; i++)
-        {
-            if(i == Model.OrderNumber)
-            {
-                <li style="display:inline;"><button class="danger mini">@i</button></li>
-            }
-            else
-            {
-                <li style="display:inline;"><button class="mini">@i</button></li>
-            }
-        }
-    </ul>
+
+<div class="grid">
+    <div class="row">
+        <div class="span9">
+            <ul style="list-style-type:none;margin:0 0 30px 0;padding:0;">
+                @for (int i = 1; i <= (int)ViewBag.lastOrderNumber; i++)
+                {
+                    if (i == Model.OrderNumber)
+                    {
+                        <li style="display:inline;"><button class="danger mini">@i</button></li>
+                    }
+                    else
+                    {
+                        <li style="display:inline;"><button class="mini">@i</button></li>
+                    }
+                }
+            </ul>
+        </div>
+        <div id="CDT" class="small span3"></div>
+    </div>
 </div>
 <h2 style="margin-bottom:25px;">@Model.Snippet.Question</h2>
 
@@ -91,5 +97,45 @@
             // the size again
             editor.getSession().on('change', heightUpdateFunction);                        
         });
+    </script>
+    <script language="JavaScript" type="text/javascript">
+        function CountdownTimer(elm, tl, mes) {
+            this.initialize.apply(this, arguments);
+        }
+        CountdownTimer.prototype = {
+            initialize: function (elm, tl, mes) {
+                this.elem = document.getElementById(elm);
+                this.tl = tl;
+                this.mes = mes;
+            }, countDown: function () {
+                var timer = '';
+                var today = new Date();
+                var day = Math.floor((this.tl - today) / (24 * 60 * 60 * 1000));
+                var hour = Math.floor(((this.tl - today) % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+                var min = Math.floor(((this.tl - today) % (24 * 60 * 60 * 1000)) / (60 * 1000)) % 60;
+                var sec = Math.floor(((this.tl - today) % (24 * 60 * 60 * 1000)) / 1000) % 60 % 60;
+                var milli = Math.floor(((this.tl - today) % (24 * 60 * 60 * 1000)) / 10) % 100;
+                var me = this;
+
+                if ((this.tl - today) > 0) {
+                    if (day) timer += '<span class="day">' + day + ' : </span>';
+                    if (hour) timer += '<span class="hour">' + hour + ' : </span>';
+                    timer += '<span class="min">' + this.addZero(min) + ' : </span><span class="sec">' + this.addZero(sec) + '</span>';//<span class="milli">' + this.addZero(milli) + '</span>';
+                    this.elem.innerHTML = timer;
+                    tid = setTimeout(function () { me.countDown(); }, 10);
+                } else {
+                    this.elem.innerHTML = this.mes;
+                    return;
+                }
+            }, addZero: function (num) { return ('0' + num).slice(-2); }
+        }
+        function CDT() {
+            var tl = new Date('@Model.Event.End.AddHours(-1)');
+            var timer = new CountdownTimer('CDT', tl, 'Времето истече, тестирањето заврши!');
+            timer.countDown();
+        }
+        window.onload = function () {
+            CDT();
+        }
     </script>
 }

@@ -13,7 +13,7 @@ namespace FinkiSnippets.Service
     public class UserService : IUserService
     {
         private CodeDatabase db;
-               
+
         public UserService(CodeDatabase _db)
         {
             db = _db;
@@ -57,21 +57,32 @@ namespace FinkiSnippets.Service
                 {
                     ID = x.Id,
                     FirstName = x.FirstName,
-                    LastName=x.LastName,
+                    LastName = x.LastName,
                     Username = x.UserName
                 }).ToList()
             };
 
             return result;
         }
-               
+
         public EventSnippets UserActiveEvent(string UserID)
         {
+            UserEvents activeEvent = db.UserEvents.Include(x => x.Event).Include(x => x.Event.EventSnippets).Where(x => x.UserID == UserID && !x.Finished).FirstOrDefault();
+
+            if (activeEvent == null)
+                return null;
+
+            if (activeEvent.Event.End < Utilities.DateHelper.GetCurrentTime())
+            {
+                activeEvent.Finished = true;
+                db.SaveChanges();
+                return null;
+            }
+
             EventSnippets result = db.UserEvents.Include(x => x.Event).Include(x => x.Event.EventSnippets).Where(x => x.UserID == UserID && !x.Finished)
-                .SelectMany(x => x.Event.EventSnippets.Where(y=>y.OrderNumber == x.Event.EventSnippets.Max(t=>t.OrderNumber))).FirstOrDefault();
-                            
+                .SelectMany(x => x.Event.EventSnippets.Where(y => y.OrderNumber == x.Event.EventSnippets.Max(t => t.OrderNumber))).FirstOrDefault();
+
             return result;
         }
-
     }
 }
