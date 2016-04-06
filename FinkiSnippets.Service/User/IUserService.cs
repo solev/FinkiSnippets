@@ -10,7 +10,7 @@ namespace FinkiSnippets.Service
 {
     public interface IUserService
     {
-        ListUsersDto GetAllUsers(int page, int usersPerPage);
+        ListUsersDto GetAllUsers(ListUsersInput input);
         EventSnippets UserActiveEvent(string UserID);
         EventSnippets BeginEvent(string UserID, int EventID);    
     }

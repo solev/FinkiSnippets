@@ -37,9 +37,12 @@
     });
 });
 
-function InitializeEditors()
+function InitializeEditors(container)
 {
-    var editors = $(".codeEditor");
+    if (container == null || container == undefined)
+        container = "";
+
+    var editors = $(container+".codeEditor");
 
     editors.each(function (idx) {
 

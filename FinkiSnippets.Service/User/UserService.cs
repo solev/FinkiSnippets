@@ -38,11 +38,34 @@ namespace FinkiSnippets.Service
             return firstSnippet;
         }
 
-        public ListUsersDto GetAllUsers(int page, int usersPerPage)
+        public ListUsersDto GetAllUsers(ListUsersInput input)
         {
-            var query = db.Users.OrderBy(x => x.UserName);
+            var query = db.Users.AsQueryable();
 
-            var tempResult = query.Skip((page - 1) * usersPerPage).Take(usersPerPage).Select(x => new
+            if(input.option == "asc")
+            {
+                if (input.orderby == "firstname")
+                    query = query.OrderBy(x => x.FirstName);
+                else if (input.orderby == "lastname")
+                    query = query.OrderBy(x => x.LastName);
+                else if (input.orderby == "username")
+                    query = query.OrderBy(x => x.UserName);
+                else
+                    query = query.OrderBy(x => x.LastName);
+            }
+            else
+            {
+                if (input.orderby == "firstname")
+                    query = query.OrderByDescending(x => x.FirstName);
+                else if (input.orderby == "lastname")
+                    query = query.OrderByDescending(x => x.LastName);
+                else if (input.orderby == "username")
+                    query = query.OrderByDescending(x => x.UserName);
+                else
+                    query = query.OrderBy(x => x.LastName);
+            }
+
+            var tempResult = query.Skip((input.page - 1) * input.PageSize).Take(input.PageSize).Select(x => new
             {
                 x.Id,
                 x.FirstName,

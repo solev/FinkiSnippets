@@ -1,30 +1,50 @@
 ﻿@model FinkiSnippets.Service.Dto.ListUsersDto
-
-
 @{
     ViewBag.Title = "Index";
     int page = Int32.Parse(ViewContext.RouteData.Values["id"].ToString());
+    string option = Request.QueryString["option"];
+    string orderby = Request.QueryString["orderby"];
+    int? pageSize = null;
+    if (Request.QueryString["PageSize"] != null)
+    {
+        pageSize = Int32.Parse(Request.QueryString["PageSize"]);
+    }
 }
 
 <h2>Корисници</h2>
 <hr />
 
 @Html.ActionLink("Додади нов корисник", "Register", "Admin", null, new { @class = "button" })
-@Html.ActionLink("Импортирај корисници", "CreateUsers", "Admin", null, new { @class = "button"})
+@Html.ActionLink("Импортирај корисници", "CreateUsers", "Admin", null, new { @class = "button" })
 
-@if(Model.Users.Any())
+@if (Model.Users.Any())
 {
     <table class="table striped" style="margin-top:15px;">
         <thead>
             <tr>
-                <th class="text-left">Име</th>
-                <th class="text-left">Презиме</th>
-                <th class="text-left">Корисничко име</th>
-                <th class="text-right"></th>
+                <th class="text-left" id="FirstName"><a href="@Url.Action("Users",new {orderby = "FirstName", option = ViewBag.FirstNameOption})" class="thLink">Име</a></th>
+                <th class="text-left" id="LastName">
+                    <a href="@Url.Action("Users",new {orderby = "LastName", option = ViewBag.LastNameOption})" class="thLink">Презиме</a>
+                    @if (string.IsNullOrEmpty(orderby))
+                    { <i class="icon-arrow-up-2 place-right"></i>}
+                </th>
+                <th class="text-left" id="Username"><a href="@Url.Action("Users", new { orderby = "Username", option = ViewBag.UsernameOption })" class="thLink">Корисничко име</a></th>
+                <th class="text-right">
+                    Редови
+                    <div class="span1 input-control select">
+                        <select id="pageSizeRows">
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </th>
             </tr>
         </thead>
         <tbody>
-            @foreach(var item in Model.Users)
+            @foreach (var item in Model.Users)
             {
                 <tr>
                     <td>@item.FirstName</td>
@@ -35,44 +55,96 @@
             }
         </tbody>
     </table>
-    
- if(ViewBag.pages > 1) { 
-    <div class="pagination" >
-        <ul>
-            <li class="first"><a href="@Url.Action("Users", "Admin", new { id=1 })"><i class="icon-first-2"></i></a></li>
-            @if(page == 1) {
-                <li class="prev"><a href="#" class="disabled"><i class="icon-previous"></i></a></li>
-            } 
-            else { 
-                <li class="prev"><a href="@Url.Action("Users", "Admin", new { id=page-1 })"><i class="icon-previous"></i></a></li>
-            }
-            @for(int i = 1; i <= ViewBag.pages; i++)
-            {
-                if(page == i) { 
-                    <li><a class="disabled">@i</a></li>
+
+    if (ViewBag.pages > 1)
+    {
+        <div class="pagination">
+            <ul>
+                <li class="first"><a href="@Url.Action("Users", "Admin", new { id=1,@option = option,@orderby = orderby, @pageSize = pageSize })"><i class="icon-first-2"></i></a></li>
+                @if (page == 1)
+                {
+                    <li class="prev"><a href="#" class="disabled"><i class="icon-previous"></i></a></li>
                 }
                 else
                 {
-                   <li><a href="@Url.Action("Users", "Admin", new { id=i })">@i</a></li> 
+                    <li class="prev"><a href="@Url.Action("Users", "Admin", new { id = page - 1, @option = option, @orderby = orderby, @pageSize = pageSize })"><i class="icon-previous"></i></a></li>
                 }
-            }
+                @for (int i = 1; i <= ViewBag.pages; i++)
+                {
+                    if (page == i)
+                    {
+                        <li><a class="disabled">@i</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("Users", "Admin", new { id = i, @option = option, @orderby = orderby, @pageSize = pageSize })">@i</a></li>
+                    }
+                }
 
-            @if(page == ViewBag.pages)
-            {
-                <li class="prev"><a href="#" class="disabled"><i class="icon-next"></i></a></li>
-            }
-            else
-            {
-               <li class="next"><a href="@Url.Action("Users", "Admin", new { id=page+1 })"><i class="icon-next"></i></a></li>
-            }
-            
-            <li class="last"><a href="@Url.Action("Users", "Admin", new { id=ViewBag.pages })"><i class="icon-last-2"></i></a></li>
-        </ul>
-    </div>
- }
+                @if (page == ViewBag.pages)
+                {
+                    <li class="prev"><a href="#" class="disabled"><i class="icon-next"></i></a></li>
+                }
+                else
+                {
+                    <li class="next"><a href="@Url.Action("Users", "Admin", new { id = page + 1, @option = option, @orderby = orderby, @pageSize = pageSize })"><i class="icon-next"></i></a></li>
+                }
 
+                <li class="last"><a href="@Url.Action("Users", "Admin", new { id = ViewBag.pages, @option = option, @orderby = orderby, @pageSize = pageSize })"><i class="icon-last-2"></i></a></li>
+            </ul>
+        </div>
+    }
 }
 else
 {
     <h2>Нема додадено корисници...</h2>
+}
+
+
+@section Scripts{
+    <script>
+        $(function () {
+
+            var orderby = '@orderby';
+            var option = '@option';
+            var pageSize = +'@pageSize';
+
+            if (pageSize > 0) {
+                $("#pageSizeRows").val(pageSize);
+            }
+
+            if (orderby != '') {
+                if (option == 'asc') {
+                    $("#" + orderby).append('<i class="icon-arrow-up-2 place-right"></i>');
+                }
+                else {
+                    $("#" + orderby).append('<i class="icon-arrow-down-2 place-right"></i>');
+                }
+            }
+
+            $(".thLink").on("click", function (e) {
+                e.preventDefault();
+                var pageSize = $("#pageSizeRows").val();
+                var link = $(this).attr("href");
+                link = link + "&PageSize=" + pageSize;
+                window.location.replace(link);
+            });
+
+            $("#pageSizeRows").on("change", function () {
+                var url = '@Url.Action("Users")';
+                var pageSize = $(this).val();
+                if (orderby != '') {
+                    url = url + "?orderby=" + orderby;
+                    if (option != '') {
+                        url += "&option=" + option;
+                    }
+                    url += "&PageSize=" + pageSize;
+                    window.location.replace(url);
+                    return;
+                }
+                url += "?PageSize=" + pageSize;
+                window.location.replace(url);
+            });
+        })
+    </script>
 }

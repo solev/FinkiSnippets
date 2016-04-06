@@ -105,12 +105,28 @@ namespace App.Controllers
         }
        
         //id == page
-        public ActionResult Users(int id)
+        public ActionResult Users(int id, string orderby = "", string option = "", int pageSize = 10)
         {
             int page = id;
-            var result = _userService.GetAllUsers(page, Utilities.Constants.stuffPerPage);
-            int maxPages = result.TotalCount / Utilities.Constants.stuffPerPage;
-            if (result.TotalCount % Utilities.Constants.stuffPerPage > 0)
+
+            orderby = orderby.ToLower();
+            option = option.ToLower();
+
+            ViewBag.FirstNameOption = (orderby == "firstname" && option == "asc") ? "desc" : "asc";
+            ViewBag.LastNameOption = (orderby == "lastname" && option == "asc") ? "desc" : "asc";
+            ViewBag.UsernameOption = (orderby == "username" && option == "asc") ? "desc" : "asc";
+
+            ListUsersInput input = new ListUsersInput
+            {
+                page = id,
+                orderby = orderby,
+                option = option,
+                PageSize = pageSize
+            };
+
+            var result = _userService.GetAllUsers(input);
+            int maxPages = result.TotalCount / pageSize;
+            if (result.TotalCount % pageSize > 0)
                 maxPages++;
 
             ViewBag.pages = maxPages;
@@ -266,13 +282,25 @@ namespace App.Controllers
                 Snippets = snippets
             };
 
+            if(!string.IsNullOrEmpty(filterData.selectedSnippets))
+            {
+                List<int> selectedSnippets = filterData.selectedSnippets.Split(',').Select(Int32.Parse).ToList();
+                vm.Snippets = vm.Snippets.Where(x => !selectedSnippets.Contains(x.ID)).ToList();
+            }
+
             if(view == "snippets")
             {
                 vm.SnippetsButtons = true;
                 vm.SpanSizeSnippets = "span9";
                 vm.SpanSizeArea = "span12";
             }
-
+            else if(view == "CreateEvent")
+            {
+                vm.SnippetsButtons = false;
+                vm.SpanSizeSnippets = "span6";
+                vm.SpanSizeArea = "span6";
+                vm.DivName = "snippets";
+            }
             return PartialView("_ListSnippets", vm);
         }
 

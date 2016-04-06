@@ -56,12 +56,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\BaseDto\PagedResultInputBase.cs" />
     <Compile Include="Dto\Event\EventDto.cs" />
     <Compile Include="Dto\Export\ExportOperationsDto.cs" />
     <Compile Include="Dto\Export\ExportResultsDto.cs" />
     <Compile Include="Dto\Snippet\FilterSnippetsInput.cs" />
     <Compile Include="Dto\Snippet\OperatorsHelper.cs" />
     <Compile Include="Dto\User\ListUsersDto.cs" />
+    <Compile Include="Dto\User\ListUsersInput.cs" />
     <Compile Include="Dto\User\UserDto.cs" />
     <Compile Include="Export\ExportService.cs" />
     <Compile Include="Events\EventService.cs" />

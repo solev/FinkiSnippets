@@ -32,6 +32,7 @@
                 </div>
             </div>
 
+
             <div class="row">
                 <div class="span8">
                     <label>Опис на натпреварот</label>
@@ -161,26 +162,70 @@
 
                     <div class="form-group row">
                         <label>&nbsp;</label>
-                        <input type="submit" value="Креирај Натпревар" class="btn success" style="height:34px;" /> <span id="error-message"></span>
+                        <input type="submit" value="Креирај Натпревар" class="btn success" style="height:34px;" id="submitEventBtn" /> <span id="error-message"></span>
                     </div>
                 </div>
-            </div>
-
-            <hr />
-
-            <div class="row">
-                <div class="span6" style="text-align:center">Сите снипети</div>
-                <div class="span6" style="text-align:center">Снипети во евент</div>
-            </div>
-
-            <div class="row">
-                @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, SpanSizeSnippets = "span6", SpanSizeArea = "span6", DivName = "snippets" });}
-
-                <div class="span6 listview-outlook addedSnippets"></div>
             </div>
         </div>
     </fieldset>
 }
+<hr />
+
+<div class="grid">
+    @using (Ajax.BeginForm("FilterSnippets", new AjaxOptions { HttpMethod = "GET", LoadingElementId = "loader", UpdateTargetId = "snippetContainer", InsertionMode = InsertionMode.Replace, OnSuccess = "InitializeEditors('#snippetContainer')" }))
+    {
+        <div class="row">
+            <div class="span9">
+                <div class="example">
+                    <form>
+                        <fieldset>
+                            <legend>Филтер</legend>
+                            <label>Групи</label>
+
+                            <div class="input-control select">
+                                <select id="groupSelect" name="SelectedGroups" multiple style="width:100%;">
+                                    @foreach (var item in Model.AllGroups)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <label>Операции</label>
+                            <div class="input-control select">
+                                <select id="operationSelect" name="SelectedOperations" multiple style="width:100%;">
+                                    @foreach (var item in Model.AllOperations)
+                                    {
+                                        <option value="@item.ID">@item.Name (@item.Operator)</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <input type="text" hidden name="selectedSnippets" id="selectedSnippetsInput" />
+                            <input type="text" value="CreateEvent" hidden name="view" />
+                            <input type="submit" value="Филтрирај">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+
+
+    <div class="row">
+        <div class="span6" style="text-align:center">Сите снипети</div>
+        <div class="span6" style="text-align:center">Снипети во евент</div>
+    </div>
+
+    <div class="row">
+        <div id="snippetContainer">
+            @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, SpanSizeSnippets = "span6", SpanSizeArea = "span6", DivName = "snippets" });}
+        </div>
+        <div class="span6 listview-outlook addedSnippets"></div>
+    </div>
+
+</div>
+
 
 @section Styles{
     <link href="~/Scripts/Quill/quill.snow.css" rel="stylesheet" />
@@ -196,9 +241,21 @@
     <script>
         $(function () {
 
+
+            $("#groupSelect").select2({
+                placeholder: "Селектирај групи",
+                allowClear: true
+            });
+
+            $("#operationSelect").select2({
+                placeholder: "Селектирај операции",
+                allowClear: true
+            });
+
+
             var addedSnippets = [];
 
-            $(".snippets").on("click", ".list", function () {
+            $("#snippetContainer").on("click", ".list", function () {
 
                 var id = $(this).attr("id");
 
@@ -210,7 +267,8 @@
                     return;
 
                 addedSnippets.push(id);
-                console.log(addedSnippets);
+                var snippetsCommaSeparated = addedSnippets.join(",");
+                $("#selectedSnippetsInput").val(snippetsCommaSeparated);
 
                 $(".addedSnippets").append('<div class="row eventSnippet">' + $(this).parent().parent().html() + '</div>');
                 $(this).parent().parent().remove();
@@ -226,7 +284,8 @@
                     return el != id;
                 });
 
-                console.log(addedSnippets);
+                var snippetsCommaSeparated = addedSnippets.join(",");
+                $("#selectedSnippetsInput").val(snippetsCommaSeparated);
 
                 $(".snippets").append('<div class="row eventSnippet">' + $(this).parent().parent().html() + '</div>');
                 $(this).parent().parent().remove();
@@ -258,7 +317,7 @@
                 $(this).attr("data-state", "");
             })
 
-            $("form").submit(function (event) {
+            $("#submitEventBtn").click(function (event) {
                 event.preventDefault();
 
                 var dateTemp = $("#datepicker").val();
@@ -340,6 +399,9 @@
                 });
 
             });
+
+
+
         });
     </script>
 }

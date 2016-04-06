@@ -10,5 +10,8 @@ namespace FinkiSnippets.Service.Dto
     {
         public List<int> SelectedGroups { get; set; }
         public List<int> SelectedOperations { get; set; }
+
+        //Already selected snippets, dont include in filter
+        public string selectedSnippets { get; set; }
     }
 }
