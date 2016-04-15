@@ -42,7 +42,7 @@ function InitializeEditors(container)
     if (container == null || container == undefined)
         container = "";
 
-    var editors = $(container+".codeEditor");
+    var editors = $(container+" .codeEditor");
 
     editors.each(function (idx) {
 

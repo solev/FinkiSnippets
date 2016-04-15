@@ -170,7 +170,7 @@ namespace App.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = _userManager.Create(new ApplicationUser { FirstName = model.Ime, LastName = model.Prezime, Email = model.email, UserName = model.email }, model.Password);
+                var result = _userManager.Create(new ApplicationUser { FirstName = model.Ime, LastName = model.Prezime, Email = model.email, UserName = model.Username }, model.Password);
                 if (result.Succeeded)
                     return RedirectToAction("Users", new { id = 1 });
             }

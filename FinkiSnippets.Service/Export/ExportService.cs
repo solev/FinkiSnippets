@@ -54,8 +54,8 @@ namespace FinkiSnippets.Service
 
             foreach (var item in ev.Snippets)
             {
-                dt.Columns.Add(item.ToString(), typeof(string));
-                dt.Columns.Add(" ", typeof(string));
+                dt.Columns.Add(item.ToString()+" (Time)");
+                dt.Columns.Add(item.ToString() + " (Correctness)");
             }
 
 

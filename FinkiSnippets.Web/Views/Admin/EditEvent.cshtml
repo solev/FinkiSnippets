@@ -12,7 +12,7 @@
 </h2>
 <hr />
 
-@using(Html.BeginForm())
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     <fieldset>
@@ -21,7 +21,7 @@
                 <div class="span8">
                     <label>Име на натпреварот</label>
                     <div class="input-control text">
-                        <input type="text" value="@Model.Event.Name"id="name" />
+                        <input type="text" value="@Model.Event.Name" id="name" />
                     </div>
                 </div>
 
@@ -145,7 +145,7 @@
                         <div class="span2">
                             <label>Почеток</label>
                             <div class="input-control text size1">
-                                <input type="text" name="hourStart" value ="@Model.Event.Start.Hour" id="hourStart" />
+                                <input type="text" name="hourStart" value="@Model.Event.Start.Hour" id="hourStart" />
                             </div>
                             <span>:</span>
                             <div class="input-control text size1">
@@ -166,26 +166,71 @@
 
                     <div class="form-group row">
                         <label>&nbsp;</label>
-                        <input type="submit" value="Измени Натпревар" class="btn success" style="height:34px;" />
+                        <input type="submit" value="Измени Натпревар" class="btn success" style="height:34px;" id="submitEventBtn" />
                     </div>
                 </div>
             </div>
 
             <hr />
 
-            <div class="row">
-                <div class="span6" style="text-align:center">Сите снипети</div>
-                <div class="span6" style="text-align:center">Снипети во евент</div>
-            </div>
 
-            <div class="row">
-                @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, DivName = "snippets", SpanSizeSnippets = "span6", SpanSizeArea = "span6" });}
-
-                @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Event.Snippets.ToList(), DivName = "addedSnippets", StartCounter = Model.AllSnippets.Count, SpanSizeSnippets = "span6", SpanSizeArea = "span6" });}
-            </div>
         </div>
     </fieldset>
 }
+
+<div class="grid">
+    @using (Ajax.BeginForm("FilterSnippets", new AjaxOptions { HttpMethod = "GET", LoadingElementId = "loader", UpdateTargetId = "snippetContainer", InsertionMode = InsertionMode.Replace, OnSuccess = "InitializeEditors('#snippetContainer')" }))
+    {
+        <div class="row">
+            <div class="span9">
+                <div class="example">
+                    <form>
+                        <fieldset>
+                            <legend>Филтер</legend>
+                            <label>Групи</label>
+
+                            <div class="input-control select">
+                                <select id="groupSelect" name="SelectedGroups" multiple style="width:100%;">
+                                    @foreach (var item in Model.AllGroups)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <label>Операции</label>
+                            <div class="input-control select">
+                                <select id="operationSelect" name="SelectedOperations" multiple style="width:100%;">
+                                    @foreach (var item in Model.AllOperations)
+                                    {
+                                        <option value="@item.ID">@item.Name (@item.Operator)</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <input type="text" hidden name="selectedSnippets" id="selectedSnippetsInput" />
+                            <input type="text" value="CreateEvent" hidden name="view" />
+                            <input type="submit" value="Филтрирај">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row">
+        <div class="span6" style="text-align:center">Сите снипети</div>
+        <div class="span6" style="text-align:center">Снипети во евент</div>
+    </div>
+
+    <div class="row">
+        <div id="snippetContainer">
+            @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.AllSnippets, DivName = "snippets", SpanSizeSnippets = "span6", SpanSizeArea = "span6" });}
+        </div>
+        @{Html.RenderPartial("_ListSnippets", new App.ViewModels.ListSnippetsPartialViewModel { Snippets = Model.Event.Snippets.ToList(), DivName = "addedSnippets", StartCounter = Model.AllSnippets.Count, SpanSizeSnippets = "span6", SpanSizeArea = "span6" });}
+    </div>
+</div>
+
 
 @section Styles{
     <link href="~/Scripts/Quill/quill.snow.css" rel="stylesheet" />
@@ -201,11 +246,22 @@
     <script>
         $(function () {
 
-            var addedSnippets = @Html.Raw(Json.Encode(addedSnippets));
+            var addedSnippets = @Html.Raw(Json.Encode(addedSnippets));            
 
-            console.log(addedSnippets);
+            var snippetsCommaSeparated = addedSnippets.join(",");
+            $("#selectedSnippetsInput").val(snippetsCommaSeparated);
 
-            $(".snippets").on("click", ".list", function () {
+            $("#groupSelect").select2({
+                placeholder: "Селектирај групи",
+                allowClear: true
+            });
+
+            $("#operationSelect").select2({
+                placeholder: "Селектирај операции",
+                allowClear: true
+            });
+
+            $("#snippetContainer").on("click", ".list", function () {
 
                 var id = $(this).attr("id");
 
@@ -218,6 +274,8 @@
 
                 addedSnippets.push(id);
                 console.log(addedSnippets);
+                snippetsCommaSeparated = addedSnippets.join(",");
+                $("#selectedSnippetsInput").val(snippetsCommaSeparated);
 
                 $(".addedSnippets").append('<div class="row eventSnippet">' + $(this).parent().parent().html() + '</div>');
                 $(this).parent().parent().remove();
@@ -234,6 +292,8 @@
                 });
 
                 console.log(addedSnippets);
+                snippetsCommaSeparated = addedSnippets.join(",");
+                $("#selectedSnippetsInput").val(snippetsCommaSeparated);
 
                 $(".snippets").append('<div class="row eventSnippet">' + $(this).parent().parent().html() + '</div>');
                 $(this).parent().parent().remove();
@@ -265,7 +325,7 @@
                 $(this).attr("data-state", "");
             })
 
-            $("form").submit(function (event) {
+            $("#submitEventBtn").click(function (event) {
                 event.preventDefault();
 
                 var dateTemp = $("#datepicker").val();

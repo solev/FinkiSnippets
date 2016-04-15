@@ -5,54 +5,61 @@
 }
 
 <h2>Нов Корисник</h2>
-
+<div>
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <fieldset >        
         <hr />
-        @Html.ValidationSummary(true)
+        <div class="span5">
 
-        @Html.LabelFor(model => model.Ime, new { @class = "control-label col-md-2" })
-        <div class="input-control text">                      
+            @Html.ValidationSummary(true)
+
+            @Html.LabelFor(model => model.Ime, new { @class = "control-label col-md-2" })
+            <div class="input-control text">
                 @Html.EditorFor(model => model.Ime)
                 @Html.ValidationMessageFor(model => model.Ime)
-            
+            </div>
+
+            @Html.LabelFor(model => model.Prezime, new { @class = "control-label col-md-2" })
+            <div class="input-control text">
+
+
+                @Html.EditorFor(model => model.Prezime)
+                @Html.ValidationMessageFor(model => model.Prezime)
+
+            </div>
+
+            @Html.LabelFor(model => model.Username, new { @class = "control-label col-md-2" })
+            <div class="input-control text">
+                @Html.EditorFor(model => model.Username)
+                @Html.ValidationMessageFor(model => model.Username)
+            </div>
+
+            @Html.LabelFor(model => model.email, new { @class = "control-label col-md-2" })
+            <div class="input-control text">
+                @Html.EditorFor(model => model.email)
+                @Html.ValidationMessageFor(model => model.email)
+            </div>
+
+            @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
+            <div class="input-control text">
+
+
+                @Html.EditorFor(model => model.Password)
+                @Html.ValidationMessageFor(model => model.Password)
+
+            </div>
+            @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label col-md-2" })
+            <div class="input-control text">
+
+
+                @Html.EditorFor(model => model.ConfirmPassword)
+                @Html.ValidationMessageFor(model => model.ConfirmPassword)
+
+            </div>
         </div>
-
-        @Html.LabelFor(model => model.Prezime, new { @class = "control-label col-md-2" })
-        <div class="input-control text">
-
-
-            @Html.EditorFor(model => model.Prezime)
-            @Html.ValidationMessageFor(model => model.Prezime)
-
-        </div>
-
-        @Html.LabelFor(model => model.email, new { @class = "control-label col-md-2" })
-        <div class="input-control text">
-            @Html.EditorFor(model => model.email)
-            @Html.ValidationMessageFor(model => model.email)
-        </div>
-
-        @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
-        <div class="input-control text">
-
-
-            @Html.EditorFor(model => model.Password)
-            @Html.ValidationMessageFor(model => model.Password)
-
-        </div>
-        @Html.LabelFor(model => model.ConfirmPassword, new { @class = "control-label col-md-2" })
-        <div class="input-control text">
-
-
-            @Html.EditorFor(model => model.ConfirmPassword)
-            @Html.ValidationMessageFor(model => model.ConfirmPassword)
-
-        </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Додади" class="btn btn-default" />
