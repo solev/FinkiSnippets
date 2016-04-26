@@ -12,6 +12,8 @@
 
 @if (Model.Start > Utilities.DateHelper.GetCurrentTime())
 {
+    @Model.Start
+    @Utilities.DateHelper.GetCurrentTime()
     <div class="countdown" data-role="countdown" data-stoptimer="@Model.Start"></div>
 }
 else

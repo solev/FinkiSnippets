@@ -10,7 +10,7 @@ namespace Utilities
     {
         public static DateTime GetCurrentTime()
         {
-            return DateTime.Now.AddHours(1);
+            return DateTime.Now.AddHours(2);
         }
     }
 }

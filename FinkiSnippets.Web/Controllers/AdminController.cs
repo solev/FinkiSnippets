@@ -151,7 +151,8 @@ namespace App.Controllers
                 user.FirstName = model.Ime;
                 user.LastName = model.Prezime;
 
-                user.PasswordHash = _userManager.PasswordHasher.HashPassword(model.Password);
+                if(model.Password != null)
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(model.Password);
 
                 var res = _userManager.Update(user);
                 return RedirectToAction("Users", new { id = 1 });
