@@ -134,11 +134,21 @@ namespace App.Controllers
             return View(result);
         }
 
+        [HttpPost]
+        public ActionResult GetUsers(String Query)
+        {
+            ListUsersDto Users = _userService.GetUsers(Query);
+            return Json(Users);
+        }
+
+
         public ActionResult Edit(string id)
         {
             var user = _userManager.FindById(id);
             return View(new RegisterViewModel { Username = user.UserName, Ime = user.FirstName, Prezime = user.LastName, email = user.Email, ID = user.Id });
         }
+
+
 
         [HttpPost]
         public ActionResult Edit(RegisterViewModel model)
