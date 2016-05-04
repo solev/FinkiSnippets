@@ -134,11 +134,21 @@ namespace App.Controllers
             return View(result);
         }
 
+        [HttpPost]
+        public ActionResult GetUsers(String Query)
+        {
+            ListUsersDto Users = _userService.GetUsers(Query);
+            return Json(Users);
+        }
+
+
         public ActionResult Edit(string id)
         {
             var user = _userManager.FindById(id);
             return View(new RegisterViewModel { Username = user.UserName, Ime = user.FirstName, Prezime = user.LastName, email = user.Email, ID = user.Id });
         }
+
+
 
         [HttpPost]
         public ActionResult Edit(RegisterViewModel model)
@@ -151,7 +161,8 @@ namespace App.Controllers
                 user.FirstName = model.Ime;
                 user.LastName = model.Prezime;
 
-                user.PasswordHash = _userManager.PasswordHasher.HashPassword(model.Password);
+                if(model.Password != null)
+                    user.PasswordHash = _userManager.PasswordHasher.HashPassword(model.Password);
 
                 var res = _userManager.Update(user);
                 return RedirectToAction("Users", new { id = 1 });

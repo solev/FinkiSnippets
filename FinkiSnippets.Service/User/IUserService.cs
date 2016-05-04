@@ -12,6 +12,8 @@ namespace FinkiSnippets.Service
     {
         ListUsersDto GetAllUsers(ListUsersInput input);
         EventSnippets UserActiveEvent(string UserID);
-        EventSnippets BeginEvent(string UserID, int EventID);    
+        EventSnippets BeginEvent(string UserID, int EventID);
+
+        ListUsersDto GetUsers(String Query);
     }
 }

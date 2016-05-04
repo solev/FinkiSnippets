@@ -17,6 +17,9 @@
 @Html.ActionLink("Додади нов корисник", "Register", "Admin", null, new { @class = "button" })
 @Html.ActionLink("Импортирај корисници", "CreateUsers", "Admin", null, new { @class = "button" })
 
+<input id ="query" type="text"/>
+<button id="search">Барај корисници</button>
+
 @if (Model.Users.Any())
 {
     <table class="table striped" style="margin-top:15px;">
@@ -144,6 +147,25 @@ else
                 }
                 url += "?PageSize=" + pageSize;
                 window.location.replace(url);
+            });
+
+            $("#search").click(function () {
+
+                var query = $("#query").val();
+
+                console.log(query);
+
+                $.ajax({
+                    url: '@Url.Action("GetUsers","Admin")',
+                    type: "POST",
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        Query: query,
+                    })
+                }).done(function (data) {
+
+                    console.log(data);
+                });
             });
         })
     </script>

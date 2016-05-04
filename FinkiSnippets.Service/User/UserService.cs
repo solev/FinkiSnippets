@@ -111,5 +111,25 @@ namespace FinkiSnippets.Service
 
             return result;
         }
+
+
+        public ListUsersDto GetUsers(string Query)
+        {
+            List<ApplicationUser> Users = db.Users.Where(x => x.FirstName.Contains(Query) || x.LastName.Contains(Query) || x.UserName.Contains(Query)).ToList();
+
+            ListUsersDto result = new ListUsersDto
+            {
+                TotalCount = Users.Count(),
+                Users = Users.Select(x => new UserDto
+                {
+                    ID = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Username = x.UserName
+                }).ToList()
+            };
+
+            return result;
+        }
     }
 }

@@ -130,7 +130,7 @@
             }, addZero: function (num) { return ('0' + num).slice(-2); }
         }
         function CDT() {
-            var tl = new Date('@Model.Event.End.AddHours(-1)');
+            var tl = new Date('@Model.Event.End');
             var timer = new CountdownTimer('CDT', tl, 'Времето истече, тестирањето заврши!');
             timer.countDown();
         }
