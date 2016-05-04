@@ -30,7 +30,7 @@ namespace App.Controllers
             {
                 if(User.IsInRole("Admin"))
                 {
-                    return RedirectToAction("Users", "Admin", new {id=1 });
+                    return RedirectToAction("Users", "Admin");
                 }
                 return RedirectToAction("Start", "Code");            
             }

@@ -44,12 +44,12 @@ namespace App.Controllers
             _eventService = eventService;
             _groupService = groupService;
         }
-                
+
         public void ExportResults(int id)
-            {
+        {
             //Create table for results
             var result = _exportService.ExportResultsForEvent(id);
-            if(result!=null)
+            if(result != null)
                 CreateExcelFile.CreateExcelDocument(result.table, result.Name + ".xlsx", System.Web.HttpContext.Current.Response);
         }
 
@@ -57,7 +57,7 @@ namespace App.Controllers
         {
             //Create table for results        
             var result = _exportService.ExportOperationsForEvent(id);
-            if (result != null)
+            if(result != null)
                 CreateExcelFile.CreateExcelDocument(result.Table, result.Name + ".xlsx", System.Web.HttpContext.Current.Response);
         }
 
@@ -72,11 +72,11 @@ namespace App.Controllers
             StreamReader sr = new StreamReader(file.InputStream);
             string line;
             int i = 1;
-            while ((line = sr.ReadLine()) != null)
+            while((line = sr.ReadLine()) != null)
             {
                 string[] user = line.Split();
 
-                if (user.Count() != 4)
+                if(user.Count() != 4)
                     return Json("Погрешен формат на линија " + i + ". <br /> Сите претходни корисници се успешно додадени.");
 
                 string username = user[0];
@@ -87,7 +87,7 @@ namespace App.Controllers
                 var result = _userManager.Create(new ApplicationUser { UserName = username, FirstName = name, LastName = surname }, password);
 
                 if(!result.Succeeded)
-                {   
+                {
                     StringBuilder errors = new StringBuilder();
 
                     foreach(String s in result.Errors)
@@ -103,11 +103,12 @@ namespace App.Controllers
 
             return Json("Сите корисници се успешно креирани.");
         }
-       
+
         //id == page
-        public ActionResult Users(int id, string orderby = "", string option = "", int pageSize = 10)
+        public ActionResult Users(int page = 1, string orderby = "", string option = "", int pageSize = 10, string search = "")
         {
-            int page = id;
+            if(page < 1)
+                page = 1;
 
             orderby = orderby.ToLower();
             option = option.ToLower();
@@ -118,42 +119,33 @@ namespace App.Controllers
 
             ListUsersInput input = new ListUsersInput
             {
-                page = id,
+                page = page,
                 orderby = orderby,
                 option = option,
-                PageSize = pageSize
+                PageSize = pageSize,
+                search = search
             };
 
             var result = _userService.GetAllUsers(input);
             int maxPages = result.TotalCount / pageSize;
-            if (result.TotalCount % pageSize > 0)
+            if(result.TotalCount % pageSize > 0)
                 maxPages++;
 
             ViewBag.pages = maxPages;
 
             return View(result);
-        }
-
-        [HttpPost]
-        public ActionResult GetUsers(String Query)
-        {
-            ListUsersDto Users = _userService.GetUsers(Query);
-            return Json(Users);
-        }
-
+        }    
 
         public ActionResult Edit(string id)
         {
             var user = _userManager.FindById(id);
             return View(new RegisterViewModel { Username = user.UserName, Ime = user.FirstName, Prezime = user.LastName, email = user.Email, ID = user.Id });
         }
-
-
-
+        
         [HttpPost]
         public ActionResult Edit(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
                 var user = _userManager.FindById(model.ID);
 
@@ -179,10 +171,10 @@ namespace App.Controllers
         [HttpPost]
         public ActionResult Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
                 var result = _userManager.Create(new ApplicationUser { FirstName = model.Ime, LastName = model.Prezime, Email = model.email, UserName = model.Username }, model.Password);
-                if (result.Succeeded)
+                if(result.Succeeded)
                     return RedirectToAction("Users", new { id = 1 });
             }
             return View(model);
@@ -193,7 +185,7 @@ namespace App.Controllers
             var events = _eventService.GetAllEvents();
             return View(events);
         }
-                
+
         public ActionResult CreateEvent()
         {
             CreateEventViewModel model = new CreateEventViewModel();
@@ -220,7 +212,7 @@ namespace App.Controllers
 
             bool res = _eventService.AddOrUpdateEvent(ev, model.Snippets);
 
-            if (!res)
+            if(!res)
             {
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
@@ -231,7 +223,7 @@ namespace App.Controllers
         public ActionResult EditEvent(int id)
         {
             EditEventViewModel model = new EditEventViewModel();
-            
+
             model.AllGroups = _groupService.GetAllGroups();
             model.AllSnippets = _snippetService.GetAllSnippets(1, 20);
             model.AllOperations = _snippetService.GetAllOperations();
@@ -257,7 +249,7 @@ namespace App.Controllers
 
             bool res = _eventService.AddOrUpdateEvent(ev, model.Snippets);
 
-            if (!res)
+            if(!res)
             {
                 return Json("error", JsonRequestBehavior.AllowGet);
             }
@@ -274,14 +266,14 @@ namespace App.Controllers
 
         public ActionResult Snippets(int page = 1)
         {
-            if (page < 1)
+            if(page < 1)
                 page = 1;
 
             FilterSnippetsViewModel model = new FilterSnippetsViewModel();
             model.Groups = _groupService.GetAllGroups();
             model.Operations = _snippetService.GetAllOperations();
             model.Snippets = _snippetService.GetAllSnippets(page, Utilities.Constants.stuffPerPage);
-                        
+
             return View(model);
         }
 
@@ -326,11 +318,11 @@ namespace App.Controllers
         [HttpPost]
         public JsonResult CreateSnippet(Snippet snippet, List<OperatorsHelper> Operators, List<Group> SnippetGroups)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
                 bool res = _snippetService.AddOrUpdateSnippet(snippet, Operators, SnippetGroups);
 
-                if (res)
+                if(res)
                     return Json("Успешно зачуван снипет.", JsonRequestBehavior.AllowGet);
             }
             return Json("error", JsonRequestBehavior.AllowGet);
@@ -374,10 +366,10 @@ namespace App.Controllers
         [HttpPost]
         public JsonResult CreateGroup(string Name)
         {
-            Group group = new Group {Name = Name};
+            Group group = new Group { Name = Name };
 
             int res = _groupService.AddOrUpdateGroup(group);
-            
+
             if(res > 0)
                 return Json("success");
 
@@ -395,8 +387,8 @@ namespace App.Controllers
         public JsonResult EditGroup(Group group)
         {
             int res = _groupService.AddOrUpdateGroup(group);
-            
-            if (res > 0)
+
+            if(res > 0)
                 return Json("success");
 
             return Json("error");
@@ -424,9 +416,9 @@ namespace App.Controllers
             Dictionary<ApplicationUser, List<AnswerLog>> result = new Dictionary<ApplicationUser, List<AnswerLog>>();
             Dictionary<ApplicationUser, int[]> points = new Dictionary<ApplicationUser, int[]>();
 
-            foreach (var item in answerlog)
+            foreach(var item in answerlog)
             {
-                if (!result.ContainsKey(item.User))
+                if(!result.ContainsKey(item.User))
                 {
                     result.Add(item.User, new List<AnswerLog>());
                     points.Add(item.User, new int[2]);
@@ -434,7 +426,7 @@ namespace App.Controllers
 
                 result[item.User].Add(item);
                 points[item.User][1] += item.timeElapsed;
-                if (item.isCorrect)
+                if(item.isCorrect)
                 {
                     points[item.User][0]++;
                 }
@@ -442,21 +434,21 @@ namespace App.Controllers
 
             Dictionary<ApplicationUser, int[]> finalResult = new Dictionary<ApplicationUser, int[]>();
 
-            while (points.Count > 0)
+            while(points.Count > 0)
             {
                 int i = -1, t = 1000;
                 ApplicationUser tmp = null;
-                foreach (var item in points)
+                foreach(var item in points)
                 {
-                    if (item.Value[0] > i)
+                    if(item.Value[0] > i)
                     {
                         i = item.Value[0];
                         t = item.Value[1];
                         tmp = item.Key;
                     }
-                    else if (item.Value[0] == i)
+                    else if(item.Value[0] == i)
                     {
-                        if (item.Value[1] < t)
+                        if(item.Value[1] < t)
                         {
                             i = item.Value[0];
                             t = item.Value[1];

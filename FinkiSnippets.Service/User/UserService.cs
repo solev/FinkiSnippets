@@ -65,6 +65,13 @@ namespace FinkiSnippets.Service
                     query = query.OrderBy(x => x.LastName);
             }
 
+            if(!string.IsNullOrEmpty(input.search))
+            {
+                query = query.Where(x => x.FirstName.Contains(input.search) ||
+                                         x.LastName.Contains(input.search) ||
+                                         x.UserName.Contains(input.search));
+            }
+
             var tempResult = query.Skip((input.page - 1) * input.PageSize).Take(input.PageSize).Select(x => new
             {
                 x.Id,
@@ -111,25 +118,6 @@ namespace FinkiSnippets.Service
 
             return result;
         }
-
-
-        public ListUsersDto GetUsers(string Query)
-        {
-            List<ApplicationUser> Users = db.Users.Where(x => x.FirstName.Contains(Query) || x.LastName.Contains(Query) || x.UserName.Contains(Query)).ToList();
-
-            ListUsersDto result = new ListUsersDto
-            {
-                TotalCount = Users.Count(),
-                Users = Users.Select(x => new UserDto
-                {
-                    ID = x.Id,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    Username = x.UserName
-                }).ToList()
-            };
-
-            return result;
-        }
+                        
     }
 }
