@@ -65,6 +65,7 @@
     <Compile Include="Snippet.cs" />
     <Compile Include="SnippetEvents.cs" />
     <Compile Include="SnippetOperation.cs" />
+    <Compile Include="TemporarySnippet.cs" />
     <Compile Include="UserEvents.cs" />
   </ItemGroup>
   <ItemGroup>

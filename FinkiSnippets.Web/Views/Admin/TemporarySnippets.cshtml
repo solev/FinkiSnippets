@@ -1,0 +1,101 @@
+﻿@model List<FinkiSnippets.Entity.TemporarySnippet>
+
+@{
+    ViewBag.Title = "TemporarySnippets";
+    int length;
+}
+
+<h2>Привремени Снипети</h2>
+
+<div class="grid">
+    <div class="row">
+        <table id="tmp-snippets">
+            <thead>
+                <tr>
+                    <th style="display:none;">Id</th>
+                    <th>Code</th>
+                    <th>Output</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (FinkiSnippets.Entity.TemporarySnippet tmpSnippet in Model)
+                {
+                    <tr>
+                        <td style="display:none;">@tmpSnippet.ID</td>
+                        <td>
+                            @if (HttpUtility.UrlDecode(tmpSnippet.Code).Length > 130)
+                            {
+                                <span>@HttpUtility.UrlDecode(tmpSnippet.Code).Substring(0, 130) ...</span>
+                            }
+                            else
+                            {
+                                <span>@HttpUtility.UrlDecode(tmpSnippet.Code)</span>
+                            }
+                        </td>
+                        <td>@tmpSnippet.Output</td>
+                        <td>
+                            <a class="button success" href="@Url.Action("CreateTmpSnippet", "Admin", new { id = tmpSnippet.ID})"> Зачувај </a>
+                            <a class="button danger delete" href="javascript:void(0)"> Избриши </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(function () {
+
+            var table = $('#tmp-snippets').DataTable({
+                "autoWidth": false,
+            });
+
+            $('.delete').on('click', function () {
+
+                var tmpSnippetId = table.row($(this).parents('tr')).data()[0];
+                var row = table.row($(this).parents('tr'));
+
+                console.log(tmpSnippetId);
+                
+                $.ajax({
+                    url: '@Url.Action("DeleteTmpSnippet","Admin")',
+                    type: "POST",
+                    traditional: true,
+                    dataType: "json",
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        Id: tmpSnippetId
+                    })
+                }).done(function (data) {
+                    console.log(data);
+                    if (data === "success")
+                        row.remove().draw();
+
+                    var msg;
+
+                    if (data === "error") {
+                        color = "#9a1616";
+                        msg = "Грешка при бришење";
+                    } else {
+                        color = "#60a917";
+                        msg = "Бришењето е успешно"
+                    }
+
+                    var not = $.Notify({
+                        caption: "Статус",
+                        content: msg,
+                        timeout: 3000,
+                        style: { background: color, color: "#fff" }
+                    });
+
+                });
+
+            });
+        });
+    </script>
+}
+

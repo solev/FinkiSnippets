@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utilities;
+using FinkiSnippets.Entity;
 
 namespace FinkiSnippets.Service
 {
@@ -51,7 +52,6 @@ namespace FinkiSnippets.Service
 
             return false;
         }
-
         
         public int GetLastAnsweredSnippetOrderNumber(string userID, int EventID)
         {
@@ -65,15 +65,6 @@ namespace FinkiSnippets.Service
                 return 0;
                         
             return snippet.FirstOrDefault();
-        }
-
-        //TO DO: Create new Logic
-        public int GetLastSnippetOrderNumber(int GroupID)
-        {
-            //var result = db.Snippets.Where(x => x.Group.ID == GroupID).OrderByDescending(x => x.ID).Select(x => x.OrderNumber).Take(1).FirstOrDefault();
-
-            //return result;
-            return -1;
         }
 
         public EventSnippets GetSnippetWithOrderNumber(int OrderNumber, int EventID)
@@ -248,6 +239,40 @@ namespace FinkiSnippets.Service
             }).ToList();
 
             return filteredSnippets;
+        }
+
+        public List<TemporarySnippet> GetAllTemporarySnippets()
+        {
+            List<TemporarySnippet> result = db.TemporarySnippets.ToList<TemporarySnippet>();
+
+            return result;
+        }
+
+        public bool AddTemporarySnippets(List<TemporarySnippet> tmpSnippets)
+        {
+            db.TemporarySnippets.AddRange(tmpSnippets);
+
+            int result = db.SaveChanges();
+
+            return result > 0;
+        }
+
+        public TemporarySnippet GetTemporarySnippetById(int tmpSnippetID)
+        {
+            TemporarySnippet tmpSnippet = db.TemporarySnippets.FirstOrDefault(x => x.ID == tmpSnippetID);
+
+            return tmpSnippet;
+        }
+
+
+        public bool DeleteTemporarySnippetById(int tmpSnippetID)
+        {
+            TemporarySnippet tmpSnippet = GetTemporarySnippetById(tmpSnippetID);
+            db.TemporarySnippets.Remove(tmpSnippet);
+
+            int result = db.SaveChanges();
+
+            return result > 0;
         }
     }
 }

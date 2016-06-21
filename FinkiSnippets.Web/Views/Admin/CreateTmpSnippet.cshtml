@@ -1,0 +1,248 @@
+﻿@model App.ViewModels.SaveTmpSnippetViewModel
+@{
+    ViewBag.Title = "CreateTmpSnippet";
+}
+
+<h2>CreateTmpSnippet</h2>
+
+<div class="grid">
+    <div class="row">
+        <div class="span8">
+            <h2>Кодот овде:</h2>
+            <div id="editor_0" class="codeEditor" data-editable="true">@HttpUtility.UrlDecode(Model.TmpSnippet.Code)</div>
+            <br>
+        </div>
+        <div class="span6">
+            <h2>Операции во овој код:</h2>
+            <div class="row">
+                <div class="span3 input-control select">
+                    <select id="operatorSelect">
+                        @foreach (var item in Model.Operations)
+                        {
+                            <option value="@item.ID">@item.Name  ( @item.Operator )</option>
+                        }
+                    </select>
+                </div>
+                <div class="input-control number span2" style="padding-left:15px">
+                    <input type="number" value="1" id="operatorFrequency" />
+                </div>
+                <div class="span1">
+                    <button class="large" id="btnAddOperator">Додади</button>
+                </div>
+            </div>
+            <table id="operatorTable" class="table hovered">
+                <thead>
+                    <tr>
+                        <th class="text-left">Оператор</th>
+                        <th class="text-left">Честота</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <h2>Постоечки групи:</h2>
+            <div class="row">
+                <div class="span3 input-control select">
+                    <select id="groupSelect">
+                        @foreach (var item in Model.Groups)
+                        {
+                            <option value="@item.ID"> @item.Name </option>
+                        }
+                    </select>
+                </div>
+                <div class="span1">
+                    <button class="large" id="btnAddGroup">Додади</button>
+                </div>
+            </div>
+            <table id="groupTable" class="table hovered">
+                <thead>
+                    <tr>
+                        <th class="text-left">Групи</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="row">
+                <label>Прашање:</label>
+                <div class="input-control text">
+                    <input type="text" id="Question" />
+                </div>
+                <label>Излез:</label>
+                <div class="input-control text">
+                    <input type="text" id="outputData" value="@HttpUtility.UrlDecode(Model.TmpSnippet.Output)" />
+                </div>
+                <div>
+                    <button id="btnAdd" class="success large" style="width:150px;height:50px;margin-top:11px">Зачувај код</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/src-noconflict/ace.js"></script>
+    <script src="~/Scripts/Our Scripts/EditorInitializer.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var addedOperators = [];
+            var addedGroups = [];
+            var tmpSnippetId = +'@Model.TmpSnippet.ID';
+            console.log(tmpSnippetId);
+
+            var editor = ace.edit("editor_0");
+
+            editor.setOption("readOnly", false);
+            editor.renderer.$cursorLayer.element.style.opacity = 1;
+
+            $("#btnAdd").click(function (event) {
+                var code = editor.getSession().getValue();
+                var outputData = $("#outputData").val();
+                var ques = $("#Question").val();
+
+                var dataModel = {
+                    snippet: {
+                        Code: encodeURIComponent(code),
+                        Output: outputData,
+                        Question: ques
+                    },
+                    Operators: addedOperators,
+                    SnippetGroups: addedGroups
+                }
+
+                console.log(dataModel);
+
+                $.ajax({
+                    url: '@Url.Action("CreateSnippet","Admin")',
+                        type: "POST",
+                        traditional: true,
+                        dataType: "json",
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            Code: encodeURIComponent(code),
+                            Output: outputData,
+                            Question: ques,
+                            Operators: addedOperators,
+                            SnippetGroups: addedGroups
+                        })
+                }).done(function (data) {
+
+                    var color;
+
+                    if (data == "error")
+                        color = "#9a1616";
+                    else
+                        color = "#60a917";
+
+                    var not = $.Notify({
+                        caption: "Статус",
+                        content: data,
+                        timeout: 3000,
+                        style: { background: color, color: "#fff" }
+                    });
+
+                    if (data != "error") {
+
+                        $.ajax({
+                            url: '@Url.Action("DeleteTmpSnippet","Admin")',
+                            type: "POST",
+                            traditional: true,
+                            dataType: "json",
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                Id: tmpSnippetId
+                            })
+                        }).done(function (data){
+
+                            console.log(data);
+                        });
+
+                        setTimeout(function(){
+                            window.location.replace('@Url.Action("Snippets", "Admin")');
+                        },
+                        3000);
+                    }
+                });
+            });
+
+            $("#btnAddOperator").click(function () {
+                var oper = $("#operatorSelect").find(":selected").text();
+                var operId = $("#operatorSelect").val();
+                var freq = $("#operatorFrequency").val();
+
+                var t = addedOperators.filter(function (el) {
+                    return el.OperationID == operId;
+                });
+
+                if (t.length > 0)
+                    return;
+
+                var result = "<tr><td>" + oper + "</td><td>" + freq + "</td><td style='width:60px;'><a href='#' data-operid='" + operId + "' class='text-alert deleteBtn' hidden>Delete</a></td></tr>";
+                $("#operatorTable > tbody").append(result);
+
+
+                var operator = {
+                    OperationID: operId,
+                    Frequency: freq
+                }
+
+                addedOperators.push(operator);
+            });
+
+            $("#btnAddGroup").click(function () {
+                var group = $("#groupSelect").find(":selected").text();
+                var groupID = $("#groupSelect").val();
+
+                var t = addedGroups.filter(function (el) {
+                    return el.ID == groupID;
+                });
+
+                if (t.length > 0)
+                    return;
+
+                var result = "<tr><td>" + group + "</td><td style='width:60px;'><a href='#' data-groupid='" + groupID + "' class='text-alert deleteBtn' hidden>Delete</a></td></tr>";;
+                $("#groupTable > tbody").append(result);
+
+                var group = {
+                    ID: groupID,
+                    Name: group
+                }
+
+                addedGroups.push(group);
+            });
+
+            $(".table").on("mouseenter", "tr", function () {
+
+                $(this).find(".deleteBtn").show();
+            });
+
+            $(".table").on("mouseleave", "tr", function () {
+
+                $(this).find(".deleteBtn").hide();
+            });
+
+            $("#operatorTable").on("click", ".deleteBtn", function () {
+
+                var tmpOperId = $(this).attr("data-operid");
+
+                addedOperators = addedOperators.filter(function (el) {
+                    return el.OperationID != tmpOperId;
+                });
+
+                $(this).parent().parent().remove();
+            });
+
+            $("#groupTable").on("click", ".deleteBtn", function () {
+
+                var tmpGroupID = $(this).attr("data-groupid");
+
+                addedGroups = addedGroups.filter(function (el) {
+                    return el.ID != tmpGroupID;
+                });
+
+                $(this).parent().parent().remove();
+            });
+        });
+    </script>
+}

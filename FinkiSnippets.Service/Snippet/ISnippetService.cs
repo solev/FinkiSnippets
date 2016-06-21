@@ -1,4 +1,5 @@
 ﻿using Entity;
+using FinkiSnippets.Entity;
 using FinkiSnippets.Service.Dto;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,6 @@ namespace FinkiSnippets.Service
     {
         bool SubmitAnswer(string UserID, int EventID, int SnippetID, string Answer);        
         int GetLastAnsweredSnippetOrderNumber(string userID,int EventID);
-        int GetLastSnippetOrderNumber(int GroupID);
         EventSnippets GetSnippetWithOrderNumber(int OrderNumber, int EventID);
         bool CheckIfFirstSnippetAccess(string userID, int snippetID, int EventID);
         bool CreateInitialAnswer(string UserID, int EventID, int SnippetID);
@@ -22,8 +22,11 @@ namespace FinkiSnippets.Service
         List<Snippet> FilterSnippets(FilterSnippetsInput input);
         List<Snippet> GetSnippetsFromGroup(int groupID);
         Snippet GetSnippetById(int snippetID);
-
         List<Snippet> GetAllSnippetsByID(List<Int32> IDs);
         bool DeleteSnippet(int snippetID);
+        List<TemporarySnippet> GetAllTemporarySnippets();
+        bool AddTemporarySnippets(List<TemporarySnippet> tmpSnippets);
+        TemporarySnippet GetTemporarySnippetById(int tmpSnippetID);
+        bool DeleteTemporarySnippetById(int tmpSnippetID);
     }
 }

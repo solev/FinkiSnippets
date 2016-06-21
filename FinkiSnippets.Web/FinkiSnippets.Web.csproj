@@ -204,6 +204,7 @@
     <Compile Include="ViewModels\SnippetsByGroupViewModel.cs" />
     <Compile Include="ViewModels\ListSnippetsPartialViewModel.cs" />
     <Compile Include="ViewModels\StartViewModel.cs" />
+    <Compile Include="ViewModels\SaveTmpSnippetViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\iconFont.min.css" />
@@ -652,6 +653,9 @@
     <Content Include="Views\Admin\CreateUsers.cshtml" />
     <Content Include="Views\Admin\CreateGroup.cshtml" />
     <Content Include="Views\Admin\EditGroup.cshtml" />
+    <Content Include="Views\Admin\ImportCodes.cshtml" />
+    <Content Include="Views\Admin\TemporarySnippets.cshtml" />
+    <Content Include="Views\Admin\CreateTmpSnippet.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FinkiSnippets.Data\FinkiSnippets.Data.csproj">

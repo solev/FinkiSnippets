@@ -27,6 +27,7 @@
                      <ul class="dropdown-menu" data-role="dropdown" data-show="hover">
                          <li></li>
                          <li>@Html.ActionLink("Снипети", "Snippets", "Admin")</li>
+                         <li>@Html.ActionLink("Привремени Снипети", "TemporarySnippets", "Admin")</li>
                          <li>@Html.ActionLink("Групи", "Groups", "Admin")</li>
                          <li>@Html.ActionLink("Корисници", "Users", "Admin")</li>
                          <li>@Html.ActionLink("Натпревари", "Events", "Admin")</li>
@@ -90,7 +91,10 @@
     <div id="loaderContainer">
         <div id="loader">Loading...</div>
     </div>
-    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/jquery")*@
+    <script src="https://code.jquery.com/jquery-1.12.3.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
     <script src="~/Scripts/jquery-ui.js"></script>
     <script src="~/Scripts/metro.min.js"></script>
     <script src="~/Scripts/Select2/js/select2.min.js"></script>

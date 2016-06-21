@@ -1,4 +1,5 @@
 ﻿using Entity;
+using FinkiSnippets.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -24,5 +25,6 @@ namespace FinkiSnippets.Data
         public DbSet<Group> Groups{ get; set; }
         public DbSet<UserEvents> UserEvents { get; set; }
         public DbSet<EventSnippets> EventSnippets { get; set; }
+        public DbSet<TemporarySnippet> TemporarySnippets { get; set; }
     }
 }

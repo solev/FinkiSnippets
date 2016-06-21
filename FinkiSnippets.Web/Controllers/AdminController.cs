@@ -22,6 +22,8 @@ using System.Threading;
 using System.Web.UI.WebControls;
 using System.Web.UI;
 using System.Text;
+using System.Xml;
+using FinkiSnippets.Entity;
 
 namespace App.Controllers
 {
@@ -59,6 +61,64 @@ namespace App.Controllers
             var result = _exportService.ExportOperationsForEvent(id);
             if(result != null)
                 CreateExcelFile.CreateExcelDocument(result.Table, result.Name + ".xlsx", System.Web.HttpContext.Current.Response);
+        }
+
+        public ActionResult TemporarySnippets()
+        {
+            List<TemporarySnippet> tmpSnippets = _snippetService.GetAllTemporarySnippets();
+
+            return View(tmpSnippets);
+        }
+
+        public ActionResult ImportCodes()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult ImportCodes(HttpPostedFileBase file)
+        {
+            try
+            {
+                XmlDocument codes = new XmlDocument();
+                codes.Load(file.InputStream);
+
+                StringBuilder sb = new StringBuilder();
+
+                List<TemporarySnippet> tmpSnippets = new List<TemporarySnippet>();
+
+                foreach (XmlNode xmlNode in codes.DocumentElement)
+                {
+                    TemporarySnippet tmpSnippet = new TemporarySnippet();
+
+                    foreach (XmlNode innerNode in xmlNode)
+                    {
+                        if (innerNode.Name.Equals("code"))
+                        {
+                            tmpSnippet.Code = innerNode.InnerText;
+                        }
+                        else
+                        {
+                            tmpSnippet.Output = innerNode.InnerText;
+                        }
+                    }
+
+                    tmpSnippets.Add(tmpSnippet);
+                }
+
+                bool result = _snippetService.AddTemporarySnippets(tmpSnippets);
+
+                if (result)
+                {
+                    return Json("Success");
+                }
+
+                return Json("Error");
+            }
+            catch
+            {
+                return Json("Check the XML format");
+            }
         }
 
         public ActionResult CreateUsers()
@@ -336,6 +396,30 @@ namespace App.Controllers
             EditSnippetModel.Operations = _snippetService.GetAllOperations();
             EditSnippetModel.Groups = _groupService.GetAllGroups();
             return View(EditSnippetModel);
+        }
+
+        public ActionResult CreateTmpSnippet(int id)
+        {
+            SaveTmpSnippetViewModel SaveTmpSnippetModel = new SaveTmpSnippetViewModel();
+
+            SaveTmpSnippetModel.TmpSnippet = _snippetService.GetTemporarySnippetById(id);
+            SaveTmpSnippetModel.Operations = _snippetService.GetAllOperations();
+            SaveTmpSnippetModel.Groups = _groupService.GetAllGroups();
+
+            return View(SaveTmpSnippetModel);
+        }
+
+        [HttpPost]
+        public JsonResult DeleteTmpSnippet(int id)
+        {
+            bool result = _snippetService.DeleteTemporarySnippetById(id);
+
+            if(result)
+            {
+                return Json("success");
+            }
+
+            return Json("error");
         }
 
         public ActionResult DeleteSnippet(int id)
