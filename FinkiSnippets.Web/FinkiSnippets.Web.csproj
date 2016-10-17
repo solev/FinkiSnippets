@@ -220,6 +220,7 @@
     <Content Include="fonts\metroSysIcons.ttf" />
     <Content Include="fonts\iconFont.ttf" />
     <Content Include="fonts\iconFont.woff" />
+    <None Include="Properties\PublishProfiles\FINKI.pubxml" />
     <None Include="Properties\PublishProfiles\finkisnippets - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\finkisnippets - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\finkisnippets-dev.pubxml" />
