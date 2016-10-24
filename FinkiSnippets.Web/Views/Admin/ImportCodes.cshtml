@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "ImportCodes";
+}
+
+<h2>ImportCodes</h2>
+
+<form action="@Url.Action("ImportCodes")" class="dropzone" id="dropzone"></form>
+
+@section Scripts
+{
+    <script src="~/Scripts/dropzone/dropzone.js"></script>
+    <script>
+        $(function () {
+
+            Dropzone.autoDiscover = false;
+
+            var dropZone = new Dropzone("#dropzone");
+
+            dropZone.on('success', function (file, response) {
+
+             
+                console.log(response);
+            });
+
+            dropZone.on('error', function (file, errorMsg) {
+
+                console.log(errorMsg);
+            });
+        });
+    </script>
+}
+@section Styles
+{
+    <link href="~/Scripts/dropzone/dropzone.css" rel="stylesheet" />
+}
