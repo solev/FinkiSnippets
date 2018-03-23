@@ -10,7 +10,8 @@ namespace Utilities
     {
         public static DateTime GetCurrentTime()
         {
-            return DateTime.Now.AddHours(2);
+            // TODO: Time Zone
+            return DateTime.Now.AddHours(0);
         }
     }
 }

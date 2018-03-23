@@ -9,7 +9,7 @@ namespace FinkiSnippets.Data.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
             ContextKey = "App.Migrations.Configuration";
         }
 

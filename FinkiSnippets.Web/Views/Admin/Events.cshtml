@@ -1,8 +1,11 @@
-﻿@model List<FinkiSnippets.Service.Dto.EventDto>
+﻿@using Utilities;
+
+@model List<FinkiSnippets.Service.Dto.EventDto>
 @{
     ViewBag.Title = "Events";
-    var NextEvents = Model.Where(x => x.Start > DateTime.Now.AddHours(1)).OrderBy(x=>x.Start);
-    var ActiveEvents = Model.Where(x => x.Start < DateTime.Now.AddHours(1) && x.End > DateTime.Now.AddHours(1)).ToList();
+    var currentTime = DateHelper.GetCurrentTime();
+    var NextEvents = Model.Where(x => x.Start > currentTime).OrderBy(x=>x.Start);
+    var ActiveEvents = Model.Where(x => x.Start < currentTime && x.End > currentTime).ToList();
     ActiveEvents.ForEach(x => Model.Remove(x));
 }
 

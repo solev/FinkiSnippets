@@ -239,12 +239,14 @@ namespace App.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Register(RegisterViewModel model)
         {
             if(ModelState.IsValid)
