@@ -224,6 +224,7 @@
     <None Include="Properties\PublishProfiles\finkisnippets - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\finkisnippets - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\finkisnippets-dev.pubxml" />
+    <None Include="Properties\PublishProfiles\FinkiSnippets-Local.pubxml" />
     <None Include="Properties\PublishProfiles\finkiSnippetsDev.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\dropzone\basic.css" />

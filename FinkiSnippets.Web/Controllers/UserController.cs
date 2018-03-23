@@ -55,10 +55,18 @@ namespace App.Controllers
                     return RedirectToAction("Login");
                 }                
             }
-            ViewBag.error = "Корисничкото име или лозинката ви е погрешна";
+
+            ViewBag.error = "Корисничкото име или лозинката ви е погрешна";            
+
             return View(model);
         }
 
+        [NonAction]
+        public string HashPassword(string password)
+        {
+            var hashed = _userManager.PasswordHasher.HashPassword(password);
+            return hashed;
+        }
         
         public ActionResult Logout()
         {
