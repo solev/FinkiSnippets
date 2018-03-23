@@ -12,7 +12,6 @@ namespace FinkiSnippets.Service
 {
     public class ExportService : IExportService
     {
-
         private CodeDatabase db;
 
         public ExportService(CodeDatabase _db)
@@ -137,6 +136,99 @@ namespace FinkiSnippets.Service
             ExportOperationsDto result = new ExportOperationsDto();
             result.Table = dtSnippets;
             result.Name = string.Format("{0} - Operacii", ev.Name);
+            return result;
+        }
+
+
+        public ExportResultsDto ExportResultsForEventOld(int eventID)
+        {           
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add("Натпревар " + DateTime.Now.ToShortDateString(), typeof(string));
+
+            var evt = db.Events.Where(x => x.ID == eventID)
+                .Include(x => x.Answers)                
+                .FirstOrDefault();
+
+            if (evt == null)
+                return null;
+
+            for (int i = 1; i <= evt.Answers.Count; i++)
+            {
+                dt.Columns.Add(i.ToString(), typeof(string));
+            }            
+            
+            var users = evt.Answers.Select(x=>x.UserID).Distinct().ToList();
+
+            foreach (var user in users)
+            {
+                var User = db.Users.Find(user);
+                var answers = evt.Answers.Where(x => x.UserID == user).ToList();
+
+                object[] rowData = new object[answers.Count + 1];
+                rowData[0] = User.FirstName + " " + User.LastName;
+
+                int ct = 1;
+                foreach (var item in answers)
+                {  
+                    rowData[ct] = item.timeElapsed + " | " + (item.isCorrect ? "Точно" : "Погрешно");
+                    ct++;
+                }
+
+                dt.Rows.Add(rowData);
+            }
+
+            ExportResultsDto result = new ExportResultsDto();
+            result.table = dt;
+            result.Name = "natprevar_" + evt.Start.ToShortDateString();
+
+            return result;
+        }
+
+        public ExportOperationsDto ExportOperationsForEventOld(int eventID)
+        {
+            var snippets = db.Answers.Where(x=>x.EventID == eventID)
+                .Select(x=>x.SnippetID)              
+                .ToList();
+
+            //var op = db.Operations.ToList();
+            //var snippetoperators = db.SnippetOperations.Where(x => snippets.Contains(x.SnippetID)).Include(x=>x.Operation).ToList();
+
+            ////create table for snippets and operations
+            DataTable dtSnippets = new DataTable();
+            dtSnippets.Columns.Add("Задача", typeof(string));
+
+            //foreach (var item in op)
+            //{
+            //    dtSnippets.Columns.Add(item.Operator, typeof(int));
+            //}
+            //int ct = 1;
+            //foreach (var item in snippetoperators)
+            //{
+            //    object[] rowData = new object[op.Count + 1];
+            //    var ops = snippetoperators.ToList();
+            //    rowData[0] = "Задача " + ct;
+            //    int idx = 1;
+            //    foreach (var optemp in op)
+            //    {
+            //        var tempOperation = ops.FirstOrDefault(x => x.OperationID == optemp.ID);
+            //        if (tempOperation != null)
+            //        {
+
+            //            rowData[idx++] = tempOperation.Frequency;
+            //        }
+            //        else
+            //        {
+            //            rowData[idx++] = 0;
+            //        }
+            //    }
+            //    ct++;
+            //    dtSnippets.Rows.Add(rowData);
+            //}
+
+            ExportOperationsDto result = new ExportOperationsDto();
+            ////result.Table = dtSnippets;
+
             return result;
         }
     }

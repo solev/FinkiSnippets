@@ -12,5 +12,8 @@ namespace FinkiSnippets.Service
     {
         ExportResultsDto ExportResultsForEvent(int eventID);
         ExportOperationsDto ExportOperationsForEvent(int eventID);
+
+        ExportResultsDto ExportResultsForEventOld(int eventID);
+        ExportOperationsDto ExportOperationsForEventOld(int eventID);
     }
 }

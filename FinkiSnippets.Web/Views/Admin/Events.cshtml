@@ -98,7 +98,7 @@
                 <td>@ev.End.TimeOfDay</td>
                 <td>@ev.NumberOfParticipants</td>
                 <td>@Html.ActionLink("Види резултати", "Results", "Admin", new { id = ev.ID }, null)</td>
-                <td>@Html.ActionLink("Операции", "ExportOperations", "Admin", new { id = ev.ID }, null) | @Html.ActionLink("Резултати", "ExportResults", "Admin", new { id = ev.ID }, null)</td>
+                <td>@Html.ActionLink("Операции", "ExportOperations", "Admin", new { id = ev.ID }, null)| @Html.ActionLink("_Операции", "ExportOperationsOld", "Admin", new { id = ev.ID }, null) | @Html.ActionLink("Резултати", "ExportResults", "Admin", new { id = ev.ID }, null) | @Html.ActionLink("_Резултати", "ExportResultsOld", "Admin", new { id = ev.ID }, null)</td>
                 <td style="width:40px;"><a href="@Url.Action("EditEvent", "Admin", new { id=ev.ID })" class="button danger small">Измени</a></td>
             </tr>
         }

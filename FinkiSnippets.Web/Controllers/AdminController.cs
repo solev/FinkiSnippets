@@ -55,11 +55,27 @@ namespace App.Controllers
                 CreateExcelFile.CreateExcelDocument(result.table, result.Name + ".xlsx", System.Web.HttpContext.Current.Response);
         }
 
+        public void ExportResultsOld(int id)
+        {
+            //Create table for results
+            var result = _exportService.ExportResultsForEventOld(id);
+            if (result != null)
+                CreateExcelFile.CreateExcelDocument(result.table, result.Name + ".xlsx", System.Web.HttpContext.Current.Response);
+        }
+
         public void ExportOperations(int id)
         {
             //Create table for results        
             var result = _exportService.ExportOperationsForEvent(id);
             if(result != null)
+                CreateExcelFile.CreateExcelDocument(result.Table, result.Name + ".xlsx", System.Web.HttpContext.Current.Response);
+        }
+
+        public void ExportOperationsOld(int id)
+        {
+            //Create table for results        
+            var result = _exportService.ExportOperationsForEventOld(id);
+            if (result != null)
                 CreateExcelFile.CreateExcelDocument(result.Table, result.Name + ".xlsx", System.Web.HttpContext.Current.Response);
         }
 
